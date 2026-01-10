@@ -23,7 +23,7 @@ export default function LoginPage() {
             <motion.div
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
+                transition={{ duration: 0.8 }}
                 className="hidden lg:flex flex-col relative w-1/2 h-full bg-brand-surface border-r border-brand-primary/10 p-12 justify-between"
             >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(0,200,83,0.1),_transparent_70%)] pointer-events-none" />
