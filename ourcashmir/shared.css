@@ -1,0 +1,442 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-decoration: none;
+    font-family: "poppins";
+    color: white;
+    box-sizing: border-box;
+    --primary-color: #21e855;
+    --secondary-color: #bac0ff;
+    --primary-bg: #02221a;
+    --secondary-bg: #0b3f32;
+    --primary-stroke: #409471;
+    --primary-white: #dedede;
+}
+
+    
+body {
+    background-color: var(--primary-bg);
+}
+
+/* ----------------------------------------------------
+Loading Screen
+---------------------------------------------------- */
+/* #loading-screen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000000;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+} */
+
+/* ----------------------------------------------------
+CTA Buttons
+---------------------------------------------------- */
+.ctas {
+    display: flex;
+    justify-content: center;
+}
+
+/* Normal CTA */
+
+.cta {
+    display: inline-block;
+    border: 2px solid var(--primary-stroke);
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 2rem;
+    background-color: var(--primary-bg);
+    font-size: 1rem;
+    color: white;
+    font-weight: 600;
+    transition: all 0.5s;
+}
+
+.cta:hover {
+    background-color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-bg);
+}
+
+/* Filled CTA */
+
+.cta.filled-cta {
+    background-color: var(--primary-color);
+    color: var(--primary-bg);
+    border: 2px solid var(--primary-color);
+    transition: all .5s
+}
+
+.cta.filled-cta:hover {
+    box-shadow: inset 0 0 5px var(--primary-bg);
+    border: 2px solid var(--primary-bg);
+}
+@media (max-width: 1060px) {
+    .cta {
+        border-radius: 9px;
+        padding: 0.5rem 1.5rem !important;
+        font-size: .9rem;
+    }
+
+}
+/* ----------------------------------------------------
+All Headings (PRE And Spans)
+---------------------------------------------------- */
+
+pre {
+    text-align: center;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 4rem;
+}
+
+pre span {
+    color: var(--primary-color);
+}
+
+@media (max-width: 600px) {
+    pre {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 4rem;
+    }
+    
+    pre span {
+        color: var(--primary-color);
+    }
+    
+
+}
+
+/* ----------------------------------------------------
+Header
+---------------------------------------------------- */
+header {
+    position: relative;
+    left: 0;
+    top: 0;
+    position: sticky !important;
+    z-index: 999999;
+    padding: 0 5rem;
+}
+
+header nav {
+    max-width: 80rem;
+    margin: 0 auto;
+    height: max-content;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 5;
+    padding: 1rem 0 0 0;
+}
+
+/* HDR Logo */
+header nav .logo img {
+    height: 5.5rem;
+}
+
+header nav .logo .small-logo {
+    display: none;
+}
+
+/* HDR Links */
+header nav .links-box {
+    height: 3.5rem;
+    background-color: var(--primary-bg);
+    border: 2px solid var(--primary-stroke);
+    border-radius: 9px;
+    padding: 0 2rem;
+}
+
+header nav .links-box ul {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+header nav .links-box ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+header nav .links-box ul li a {
+    color: white;
+    font-weight: 500;
+}
+
+header nav .links-box ul li a:hover {
+    transition: all .5s;
+    color: var(--primary-color);
+    text-shadow: 0 0 25px var(--primary-color);
+}
+
+.active {
+    transition: all .5s;
+    color: var(--primary-color) !important;
+    text-shadow: 0 0 25px var(--primary-color);
+}
+
+
+/* HDR CTA */
+header nav .hdr-cta {
+    height: 3.5rem;
+    background-color: var(--primary-bg);
+    border: 2px solid var(--primary-stroke);
+    border-radius: 9px;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.5s;
+
+}
+
+header nav .hdr-cta a {
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: all 0.5s;
+
+
+}
+
+header nav .hdr-cta:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+header nav .hdr-cta:hover a {
+    color: var(--primary-bg);
+}
+
+/*--------------------------
+# SideBar For Tab And Mobiles
+-----------------------------*/
+.toggle-btn i {
+    display: none;
+
+}
+
+.toggle-btn i {
+    color: var(--primary-color) !important;
+
+}
+
+.sidebar-menu {
+    display: block;
+    position: absolute;
+    right: 2rem;
+    top: 5.5rem;
+    width: 18.75rem;
+    height: 0;
+    z-index: 9999999999999999;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* OverLay */
+.overlay {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    backdrop-filter: blur(4px);
+    background-color: #02001291;
+    display: none;
+    position: absolute;
+}
+
+div.overlay.blurred {
+    display: block;
+}
+
+.open {
+    height: max-content;
+    display: block;
+    background-color: var(--primary-color);
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.199);
+}
+
+.sidebar-menu .links {
+    display: flex;
+    padding: 2rem;
+    flex-direction: column;
+    align-items: left;
+    gap: 1rem;
+}
+
+.sidebar-menu .links li a {
+    font-size: 1rem;
+    font-family: "montserrat";
+    color: black;
+    font-weight: 600;
+}
+
+.sidebar-menu .links li a:hover {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/*--------------------------
+Book a Call Section
+-----------------------------*/
+.book-a-call {
+    margin: 5rem 0;
+    padding: 0 5rem;
+}
+
+.book-a-call .container {
+    border: 2px solid var(--primary-stroke);
+    max-width: 80rem;
+    margin: auto;
+    border-radius: 2rem;
+    padding: 2rem 3rem 3rem 3rem;
+    box-sizing: border-box;
+}
+
+.book-a-call .container img {
+    height: 5rem;
+    margin-bottom: 1rem;
+}
+
+.book-a-call .container h2 {
+    text-align: left;
+    font-size: 2.5rem;
+    margin-bottom: .5rem;
+}
+
+.book-a-call .container p {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 3rem;
+    font-weight: 500;
+    text-shadow: 2px 2px 20px var(--primary-color);
+}
+
+.book-a-call .container a {
+    display: inline;
+font-size: 1rem ; 
+}
+.book-a-call .container a.filled-cta {
+    margin-right: 1rem;
+
+}
+
+
+/*--------------------------------------
+Footer
+----------------------------------------- */
+
+footer {
+    background-color: var(--secondary-bg) !important;
+    height: max-content;
+    padding: 2rem 0 4rem 0;
+    margin-top: 2rem;
+}
+
+footer .icons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+footer hr {
+    width: 50%;
+    margin: auto;
+    margin-bottom: 1rem;
+}
+
+footer .icons img {
+    height: 2.5rem;
+    margin-bottom: 0;
+    margin-top: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary-color);
+
+}
+
+
+footer p {
+    text-align: center;
+    color: white;
+    font-family: "montserrat";
+    font-weight: 500;
+    margin-top: 1rem;
+}
+
+/* -----------------------------------------
+Footer Responsive
+----------------------------------------- */
+/* ---------------------------
+Big Screens
+--------------------------- */
+@media (min-width: 1550px) {
+    footer hr {
+        max-width: 80rem;
+        margin: auto;
+    }
+}
+
+@media (max-width:980px) {
+    footer {
+        margin-top: 0;
+    }
+}
+
+@media (max-width:650px) {
+    footer {
+        /* height: 4rem; */
+    }
+
+    footer .icons {
+        gap: 0.6rem;
+    }
+
+    footer img {
+        height: 1rem !important;
+    }
+
+    footer p {
+        font-size: 0.8rem !important;
+    }
+    footer a {
+        font-size: 0.8rem !important;
+    }
+}
+
+@media (max-width:380px) {
+    footer .icons {
+        gap: 0.5rem;
+    }
+
+    footer p {
+        font-size: 0.5rem !important;
+    }
+}

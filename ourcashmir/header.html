@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+
+<script src="script.js" defer></script>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="#body">
+                    <img src="Images/Logo/Full Logo.png" alt="" loading="lazy">
+                    <img class="small-logo" src="Images/Logo/Logo Mark.png" alt="" loading="lazy">
+                </a>
+            </div>
+            <div class="links-box">
+                <ul>
+                    <li><a href="#body">Home</a></li>
+                    <li><a href="#clients">Our Clients</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <!-- <li><a href="#team">Team</a></li> -->
+                </ul>
+                <div class="toggle-btn">
+                    <i class="fa-solid fa-bars" style="color: #ffffff"></i>
+                </div>
+            </div>
+            <div class="hdr-cta">
+                <a href="#clients">Our Clients</a>
+            </div>
+        </nav>
+
+        <!-- Mobile SideBar -->
+
+        <div class="sidebar-menu">
+            <ul class="links">
+                <li><a href="#body">Home</a></li>
+                <li><a href="#clients">Our Clients</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <!-- <li><a href="#team">Team</a></li> -->
+            </ul>
+        </div>
+        <div id="overlay" class="overlay"></div>
+    </header>
+    <script>
+        const toggleBtn = document.querySelector(".toggle-btn");
+      const toggleBtnIcon = document.querySelector(".toggle-btn i");
+      const sideBarMenu = document.querySelector(".sidebar-menu");
+      const overlay = document.querySelector(".overlay");
+      const sideBarBtns = document.querySelectorAll(".links li");
+  
+      sideBarBtns.forEach(function(btn) {
+          btn.addEventListener("click", function () {
+              closeSidebar();
+          });
+      });
+  
+      toggleBtn.addEventListener("click", function () {
+          sideBarMenu.classList.toggle("open");
+          overlay.classList.toggle("blurred");
+  
+  
+  
+          const isOpen = sideBarMenu.classList.contains("open");
+  
+          toggleBtnIcon.classList = isOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
+  
+      });
+  
+      function closeSidebar() {
+          sideBarMenu.classList.remove("open");
+          toggleBtnIcon.classList = "fa-solid fa-bars";
+          overlay.classList.remove("blurred");
+  
+  
+      }
+  
+      window.addEventListener("click", function (event) {
+          if (
+              !sideBarMenu.contains(event.target) && // Clicked outside the sidebar
+              event.target !== toggleBtnIcon // Clicked outside the toggle button
+          ) {
+              closeSidebar();
+          }
+      });
+    </script>
+</body>
+</html>

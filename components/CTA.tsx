@@ -14,29 +14,29 @@ const CTA: React.FC = () => {
           <p className="text-xs text-gray-400 leading-relaxed max-w-xs">
             The essential to combine empathy, creativity and rationality to meet user needs and business success
           </p>
-          <button className="flex items-center gap-3 bg-brand-primary text-black px-6 py-4 rounded-full text-xs font-bold tracking-widest hover:bg-green-400 transition-colors mt-4">
+          <button className="flex items-center gap-3 bg-brand-primary text-black px-6 py-4 rounded-full text-xs font-bold tracking-widest hover:bg-brand-primary/90 transition-colors mt-4">
             GET STARTED
-            <div className="border border-gray-500 rounded-full p-0.5">
+            <div className="border border-black/30 rounded-full p-0.5">
               <ArrowRight size={14} />
             </div>
           </button>
         </div>
 
         {/* Right Abstract Art */}
-        <div className="absolute right-[-10%] md:right-0 top-1/2 transform -translate-y-1/2 w-[400px] h-[400px] md:w-[600px] md:h-[600px] pointer-events-none opacity-80">
+        <div className="absolute right-[-10%] md:right-0 top-1/2 transform -translate-y-1/2 w-[400px] h-[400px] md:w-[600px] md:h-[600px] pointer-events-none opacity-80 text-brand-primary">
           <svg viewBox="0 0 500 500" className="w-full h-full">
             {/* Concentric Circles / Arcs */}
-            <circle cx="350" cy="250" r="100" fill="none" stroke="#22c55e" strokeWidth="1" />
-            <circle cx="350" cy="250" r="160" fill="none" stroke="#22c55e" strokeWidth="1" />
-            <circle cx="350" cy="250" r="220" fill="none" stroke="#22c55e" strokeWidth="1" />
-            <path d="M150,250 Q250,100 350,250 T550,250" fill="none" stroke="#22c55e" strokeWidth="1" />
+            <circle cx="350" cy="250" r="100" fill="none" stroke="currentColor" strokeWidth="1" />
+            <circle cx="350" cy="250" r="160" fill="none" stroke="currentColor" strokeWidth="1" />
+            <circle cx="350" cy="250" r="220" fill="none" stroke="currentColor" strokeWidth="1" />
+            <path d="M150,250 Q250,100 350,250 T550,250" fill="none" stroke="currentColor" strokeWidth="1" />
 
             {/* Yellow Accents */}
-            <circle cx="200" cy="250" r="25" fill="#22c55e" stroke="#22c55e" strokeWidth="1" />
-            <circle cx="350" cy="110" r="25" fill="#22c55e" stroke="#22c55e" strokeWidth="1" />
-            <circle cx="450" cy="200" r="25" fill="#22c55e" stroke="#22c55e" strokeWidth="1" />
-            <circle cx="410" cy="350" r="25" fill="#22c55e" stroke="#22c55e" strokeWidth="1" />
-            <circle cx="260" cy="360" r="25" fill="#22c55e" stroke="#22c55e" strokeWidth="1" />
+            <circle cx="200" cy="250" r="25" fill="currentColor" stroke="currentColor" strokeWidth="1" />
+            <circle cx="350" cy="110" r="25" fill="currentColor" stroke="currentColor" strokeWidth="1" />
+            <circle cx="450" cy="200" r="25" fill="currentColor" stroke="currentColor" strokeWidth="1" />
+            <circle cx="410" cy="350" r="25" fill="currentColor" stroke="currentColor" strokeWidth="1" />
+            <circle cx="260" cy="360" r="25" fill="currentColor" stroke="currentColor" strokeWidth="1" />
           </svg>
         </div>
 

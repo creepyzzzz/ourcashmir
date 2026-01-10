@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter, usePathname } from 'next/navigation';
 import { OptimizedLink } from './ui/OptimizedLink';
@@ -51,8 +52,8 @@ export const Navbar: React.FC = () => {
 
   const links = [
     { name: 'Services', href: '#services' },
-    { name: 'Portfolio', href: '#work' },
-    { name: 'Philosophy', href: '#philosophy' },
+    { name: 'Portfolio', href: '/portfolio' },
+    { name: 'Influencers', href: '/influencers' },
     { name: 'Contact', href: '/contact' },
   ];
 
@@ -78,7 +79,7 @@ export const Navbar: React.FC = () => {
         className="fixed top-0 left-0 right-0 z-50 flex justify-center pointer-events-none"
       >
         <div className={`pointer-events-auto relative flex items-center justify-between transition-all duration-700 ease-nav ${isScrolled
-          ? "mt-4 sm:mt-6 w-[95%] max-w-4xl h-12 sm:h-14 px-3 sm:px-4 md:px-6 rounded-full bg-brand-dark/80 backdrop-blur-xl border border-brand-primary/20 shadow-xl shadow-brand-primary/10"
+          ? "mt-4 sm:mt-6 w-[95%] max-w-4xl h-12 sm:h-14 px-3 sm:px-4 md:px-6 rounded-full bg-brand-dark/80 backdrop-blur-xl border border-brand-primary/20 shadow-xl shadow-black/20"
           : "mt-0 w-full max-w-7xl h-20 px-6 sm:px-8 bg-transparent border-transparent rounded-none"
           }`}>
 
@@ -146,9 +147,15 @@ export const Navbar: React.FC = () => {
           {/* Right Actions */}
           <div className="flex items-center gap-2 sm:gap-3 relative z-10 ml-auto flex-shrink-0">
             {/* AnimatedThemeToggler removed */}
+            <Link
+              href="/login"
+              className="hidden sm:inline-flex items-center justify-center text-sm font-medium text-gray-400 hover:text-brand-white transition-colors mr-4"
+            >
+              Log in
+            </Link>
             <InteractiveHoverButton
               onClick={() => {
-                router.push('/client/login');
+                router.push('/login');
                 setMobileMenuOpen(false);
               }}
               className="hidden sm:inline-flex items-center justify-center text-sm"
@@ -182,7 +189,7 @@ export const Navbar: React.FC = () => {
             className="fixed inset-0 bg-brand-dark z-40 md:hidden flex flex-col justify-center items-center"
           >
             {/* Background Elements */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,200,83,0.1),transparent_50%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.03),transparent_50%)] pointer-events-none" />
 
             <div className="flex flex-col gap-6 items-center z-10 w-full max-w-md px-6">
               {links.map((link, i) => {
@@ -243,7 +250,7 @@ export const Navbar: React.FC = () => {
                 className="w-full mt-8"
               >
                 <OptimizedLink
-                  href="/client/login"
+                  href="/login"
                   onClick={() => {
                     setMobileMenuOpen(false);
                   }}

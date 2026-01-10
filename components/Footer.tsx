@@ -1,5 +1,6 @@
 import React from 'react';
 import { ArrowRight, Mail } from 'lucide-react';
+import Link from 'next/link';
 
 const Footer: React.FC = () => {
     return (
@@ -18,24 +19,24 @@ const Footer: React.FC = () => {
                     </div>
 
                     <div className="space-y-4 max-w-sm">
-                        <p className="text-[10px] text-gray-400 uppercase tracking-wider">Subscribe to our weekly newsletter</p>
+                        <p className="text-xs text-gray-400 uppercase tracking-wider">Subscribe to our weekly newsletter</p>
                         <div className="relative">
                             <input
                                 type="email"
                                 placeholder="ENTER YOUR EMAIL"
                                 className="w-full bg-brand-surface border border-gray-700 rounded-full py-4 pl-6 pr-14 text-xs font-bold tracking-wide text-brand-white placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-brand-primary"
                             />
-                            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center text-black hover:bg-green-400 transition-colors">
+                            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 bg-brand-primary rounded-full flex items-center justify-center text-black hover:bg-brand-primary/90 transition-colors">
                                 <ArrowRight size={16} />
                             </button>
                         </div>
                     </div>
 
                     <div className="pt-4 space-y-2">
-                        <p className="text-[10px] text-gray-400">Best sales management tool to boost your business.</p>
-                        <a href="mailto:hello@ourcashmir.com" className="flex items-center gap-2 text-xl font-bold text-brand-white hover:text-brand-primary transition-colors">
+                        <p className="text-xs text-gray-400">Kashmir&apos;s premier marketing agency for brand growth.</p>
+                        <a href="mailto:teamourcashmir@gmail.com" className="flex items-center gap-2 text-xl font-bold text-brand-white hover:text-brand-primary transition-colors">
                             <Mail size={20} />
-                            hello@ourcashmir.com
+                            teamourcashmir@gmail.com
                         </a>
                     </div>
                 </div>
@@ -43,31 +44,32 @@ const Footer: React.FC = () => {
                 {/* Right Links */}
                 <div className="flex flex-wrap gap-10 md:gap-20">
                     <div className="space-y-6">
-                        <h4 className="text-[10px] font-bold text-brand-white uppercase tracking-widest">COMPANY</h4>
-                        <ul className="space-y-4 text-[10px] md:text-xs font-medium text-gray-400 uppercase tracking-wide">
-                            <li><a href="#" className="hover:text-brand-white">ABOUT</a></li>
-                            <li><a href="#" className="hover:text-brand-white">CAREERS</a></li>
-                            <li><a href="#" className="hover:text-brand-white">WE'RE HIRING</a></li>
-                            <li><a href="#" className="hover:text-brand-white">PRESS</a></li>
-                            <li><a href="#" className="hover:text-brand-white">TERMS OF SERVICE</a></li>
-                            <li><a href="#" className="hover:text-brand-white">PRIVACY POLICY</a></li>
-                            <li><a href="#" className="hover:text-brand-white">COOKIE POLICY</a></li>
+                        <h4 className="text-xs font-bold text-brand-white uppercase tracking-widest">COMPANY</h4>
+                        <ul className="space-y-4 text-xs font-medium text-gray-400 uppercase tracking-wide">
+                            <li><Link href="/faq" className="hover:text-brand-white transition-colors">FAQ</Link></li>
+                            <li><Link href="/clients" className="hover:text-brand-white transition-colors">OUR CLIENTS</Link></li>
+                            <li><Link href="/influencers" className="hover:text-brand-white transition-colors">INFLUENCERS</Link></li>
+                            <li><Link href="/affiliate" className="hover:text-brand-white transition-colors">AFFILIATE PROGRAM</Link></li>
+                            <li><Link href="/contact" className="hover:text-brand-white transition-colors">CONTACT US</Link></li>
+                            <li><Link href="/terms" className="hover:text-brand-white transition-colors">TERMS OF SERVICE</Link></li>
+                            <li><Link href="/privacy" className="hover:text-brand-white transition-colors">PRIVACY POLICY</Link></li>
                         </ul>
                     </div>
                     <div className="space-y-6">
-                        <h4 className="text-[10px] font-bold text-brand-white uppercase tracking-widest">PRODUCT</h4>
-                        <ul className="space-y-4 text-[10px] md:text-xs font-medium text-gray-400 uppercase tracking-wide">
-                            <li><a href="#" className="hover:text-brand-white">SERVICES</a></li>
-                            <li><a href="#" className="hover:text-brand-white">PRICING</a></li>
-                            <li><a href="#" className="hover:text-brand-white">FEATURES</a></li>
+                        <h4 className="text-xs font-bold text-brand-white uppercase tracking-widest">PRODUCT</h4>
+                        <ul className="space-y-4 text-xs font-medium text-gray-400 uppercase tracking-wide">
+                            <li><Link href="/#services" className="hover:text-brand-white transition-colors">SERVICES</Link></li>
+                            <li><Link href="/portfolio" className="hover:text-brand-white transition-colors">PORTFOLIO</Link></li>
+                            <li><Link href="/shipping" className="hover:text-brand-white transition-colors">SHIPPING POLICY</Link></li>
+                            <li><Link href="/refunds" className="hover:text-brand-white transition-colors">REFUNDS</Link></li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center pt-10 gap-4">
-                <p className="text-[10px] text-gray-500">© 2026 OurCashmir, Inc. All rights reserved</p>
-                <p className="text-[10px] text-gray-500">Design by Slabdsgn</p>
+                <p className="text-xs text-gray-500">© 2025 OurCashmir. All rights reserved</p>
+                <p className="text-xs text-gray-500">Growing Brands of Kashmir</p>
             </div>
         </footer>
     );

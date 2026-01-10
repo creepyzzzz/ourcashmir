@@ -52,7 +52,7 @@ const About: React.FC = () => {
               ].map((activity, idx) => (
                 <div key={idx} className="flex items-start justify-between">
                   <div className="flex gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-green-900/50 flex items-center justify-center text-brand-primary text-xs">
+                    <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-primary text-xs">
                       🌱
                     </div>
                     <div>
@@ -79,8 +79,8 @@ const About: React.FC = () => {
               </div>
             </div>
             <p className="text-[10px] text-gray-400 mb-2">Since previous 30 days</p>
-            <div className="h-16 w-full opacity-50">
-              <ResponsiveContainer width="100%" height="100%">
+            <div className="h-16 w-full opacity-50 min-h-[64px]">
+              <ResponsiveContainer width="100%" height={64}>
                 <AreaChart data={data}>
                   <defs>
                     <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">

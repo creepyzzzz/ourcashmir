@@ -12,11 +12,11 @@ const Team: React.FC = () => {
         </h2>
 
         <div className="max-w-xs space-y-6">
-          <p className="text-[10px] md:text-xs text-gray-400 leading-relaxed">
+          <p className="text-sm text-gray-400 leading-relaxed">
             Your business has a story to tell—we'll help you tell it. Our team features a roster of industry experts and highly-skilled creatives because we won't settle for less.
           </p>
 
-          <button className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-brand-white group">
+          <button className="flex items-center gap-2 text-xs font-bold tracking-widest text-brand-white group">
             VIEW MORE
             <span className="bg-transparent border border-gray-500 rounded-full p-1 group-hover:bg-brand-primary group-hover:border-brand-primary group-hover:text-black transition-all">
               <ArrowRight size={12} />

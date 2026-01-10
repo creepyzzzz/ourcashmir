@@ -1,0 +1,102 @@
+/* === Neon Background + Floating Dots === */
+body {
+  position: relative;
+  background: #000;
+  overflow-x: hidden;
+}
+
+.bg-animation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.floating-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 255, 150, 0.4);
+  filter: blur(3px);
+  animation: float 10s infinite ease-in-out;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.6;
+  }
+
+  50% {
+    transform: translateY(-100px) translateX(50px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.6;
+  }
+}
+
+/* Subtle neon grid effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(rgba(0, 255, 150, 0.25) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridFloat 8s infinite ease-in-out;
+  filter: blur(1px);
+  z-index: 0;
+}
+
+@keyframes gridFloat {
+  0% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: translateY(-30px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+}
+
+/* Ensure header, main, footer are above animation */
+header,
+main,
+footer {
+  position: relative;
+  z-index: 2;
+}
+
+<!-- Background Styles -->
+<link rel="stylesheet" href="background.css">
+<!-- End Background Styles -->
+
+<!-- Floating Dots Script -->
+<script>
+  const bg = document.querySelector(".bg-animation");
+  for (let i = 0; i < 30; i++) {
+    const dot = document.createElement("div");
+    dot.classList.add("floating-dot");
+    dot.style.width = Math.random() * 8 + 4 + "px";
+    dot.style.height = dot.style.width;
+    dot.style.top = Math.random() * 100 + "%";
+    dot.style.left = Math.random() * 100 + "%";
+    dot.style.animationDuration = Math.random() * 8 + 5 + "s";
+    bg.appendChild(dot);
+  }
+</script>

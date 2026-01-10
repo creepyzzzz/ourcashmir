@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>OC Affiliate Scouts — Build Modern Kashmir</title>
+  <meta name="description" content="Join OC Affiliate Scouts — earn commissions, get training, and help build Modern Kashmir. Become a scout, find brands, and get paid." />
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#040405;
+      --panel:#071014;
+      --neon:#18FF7A; /* neon green */
+      --neon-2:#00f07a;
+      --muted:#9aa7a3;
+      --glass: rgba(255,255,255,0.03);
+      --glass-2: rgba(255,255,255,0.04);
+      --radius:16px;
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      background: radial-gradient(ellipse at 10% 10%, rgba(24,255,122,0.06), transparent 8%), radial-gradient(ellipse at 90% 85%, rgba(0,240,122,0.03), transparent 12%), var(--bg);
+      color:#e6fff4;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow-x:hidden;
+    }
+
+    /* Floating canvas sits behind everything */
+    #float-bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+    /* Container */
+    .wrap{position:relative;z-index:2;max-width:1100px;margin:0 auto;padding:48px 24px}
+
+    header{display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .logo{display:flex;align-items:center;gap:12px}
+    .badge{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--neon),var(--neon-2));display:flex;align-items:center;justify-content:center;box-shadow:0 8px 30px rgba(0,240,122,0.12), 0 0 18px rgba(24,255,122,0.06);}
+    .badge svg{filter:drop-shadow(0 6px 18px rgba(0,240,122,0.12))}
+    .brand{font-weight:800;font-size:18px;letter-spacing:0.2px}
+    .sub{font-size:12px;color:var(--muted);margin-top:-4px}
+
+    nav{display:flex;gap:12px;align-items:center}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 14px;border-radius:12px;color:var(--neon);font-weight:600;backdrop-filter: blur(6px);}
+    .btn.cta{background:linear-gradient(90deg, rgba(24,255,122,0.12), rgba(0,240,122,0.08));border:1px solid rgba(24,255,122,0.18);box-shadow:0 8px 30px rgba(24,255,122,0.06);}
+
+    /* Hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:36px;align-items:center;padding:40px 0}
+    .eyebrow{display:inline-flex;gap:10px;align-items:center;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(24,255,122,0.04), transparent);border:1px solid rgba(24,255,122,0.06);color:var(--neon);font-weight:700;font-size:13px}
+
+    h1{font-size:42px;line-height:1.02;margin:18px 0;color:transparent;background:linear-gradient(180deg,var(--neon),#baffcf);-webkit-background-clip:text;background-clip:text;text-shadow:0 8px 30px rgba(24,255,122,0.06)}
+    p.lead{color:var(--muted);font-size:16px;max-width:60ch}
+
+    .hero-cta{display:flex;gap:12px;margin-top:18px}
+
+    /* Card */
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:18px;padding:22px;border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(8px);box-shadow:0 12px 40px rgba(0,0,0,0.6)}
+    .earnings{display:flex;flex-direction:column;gap:12px}
+    .earn-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:12px;background:linear-gradient(90deg, rgba(0,0,0,0.12), rgba(0,0,0,0.03));border:1px solid rgba(255,255,255,0.02)}
+    .earn-item strong{font-size:20px;color:var(--neon)}
+    .muted{color:var(--muted);font-size:13px}
+
+    /* Process grid */
+    .process{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px}
+    .step{padding:18px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.03);}
+    .step h4{margin:0 0 8px;font-size:16px;color:var(--neon)}
+    .step p{margin:0;color:var(--muted);font-size:13px}
+
+    /* Features & perks */
+    .two-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:36px}
+    .perk{display:flex;gap:12px;align-items:flex-start}
+    .perk .icon{min-width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(24,255,122,0.12),transparent);display:grid;place-items:center;border:1px solid rgba(24,255,122,0.06)}
+    .perk h5{margin:0 0 6px}
+    .perk p{margin:0;color:var(--muted);font-size:13px}
+
+    /* CTA strip */
+    .cta-strip{margin-top:42px;padding:22px;border-radius:14px;background:linear-gradient(90deg, rgba(24,255,122,0.03), rgba(0,240,122,0.02));display:flex;align-items:center;justify-content:space-between;gap:18px;border:1px solid rgba(24,255,122,0.04)}
+
+    footer{margin-top:60px;padding:40px 0;color:var(--muted);font-size:13px;display:flex;justify-content:space-between;align-items:center}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .two-cols{grid-template-columns:1fr}
+      .process{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:560px){
+      h1{font-size:32px}
+      header{flex-direction:column;align-items:flex-start}
+      nav{width:100%;display:flex;justify-content:space-between}
+    }
+
+    /* Neon animated underline */
+    .neon-line{height:3px;background:linear-gradient(90deg,var(--neon),var(--neon-2));border-radius:999px;box-shadow:0 8px 30px rgba(24,255,122,0.08);}
+
+    /* small shine animation */
+    .glow{animation:glow 2.4s ease-in-out infinite}
+    @keyframes glow{0%{filter:drop-shadow(0 0 0 rgba(24,255,122,0))}50%{filter:drop-shadow(0 20px 60px rgba(24,255,122,0.08))}100%{filter:drop-shadow(0 0 0 rgba(24,255,122,0))}}
+
+    /* subtle floating cards */
+    .floaty{transform:translateZ(0);will-change:transform;animation:floaty 6s ease-in-out infinite}
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+
+    /* utility */
+    .small{font-size:13px}
+  </style>
+</head>
+<body>
+  <!-- Floating animated background canvas -->
+  <canvas id="float-bg"></canvas>
+
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <div class="badge glow">
+          <!-- simple logo svg -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="18" height="18" rx="5" fill="white" fill-opacity="0.06" />
+            <path d="M6 12h12M12 6v12" stroke="#0A0A0A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <div>
+          <div class="brand">Our Cashmir</div>
+          <div class="sub">OC Affiliate Scouts</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="https://chat.whatsapp.com/Gd9PhmHFisv2iuEH4IoPQh" target="_blank" class="btn cta">💬 Join WhatsApp Group</a>
+
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow">Become a Scout • Earn Real Money</div>
+          <h1>Build Modern Kashmir — Earn as an <span style="color:var(--neon)">OC Affiliate Scout</span></h1>
+          <p class="lead">Join Our Cashmir's affiliate program. Find brands, pitch OC's services, submit leads, and get paid — while learning real marketing & building your network.</p>
+
+          <div class="hero-cta">
+            <a href="https://chat.whatsapp.com/Gd9PhmHFisv2iuEH4IoPQh" target="_blank" class="btn cta">Get Started - Join Now</a>
+            <button class="btn" onclick="scrollToSection('how')">See How It Works</button>
+          </div>
+
+          <div class="process" id="how">
+            <div class="step floaty">
+              <h4>01 — Find Brands</h4>
+              <p>Search local and online brands on Instagram, Facebook, and local contacts.</p>
+            </div>
+            <div class="step floaty">
+              <h4>02 — Make Contact</h4>
+              <p>DM professionally, introduce OC, and open a conversation.</p>
+            </div>
+            <div class="step floaty">
+              <h4>03 — Submit & Get Paid</h4>
+              <p>Collect details, submit to OC, and receive your commission.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- right panel -->
+        <aside class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="small muted">Potential Earnings</div>
+              <div style="display:flex;gap:8px;align-items:end;margin-top:6px">
+                <div style="font-size:28px;font-weight:800;color:var(--neon)">Unlimited</div>
+                <div class="muted small">Earn per successful lead</div>
+              </div>
+            </div>
+            <div style="text-align:right">
+              <div class="muted small">Scout Level</div>
+              <div style="font-weight:700">Starter • Pro • Elite</div>
+            </div>
+          </div>
+
+          <hr style="border:none;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent);margin:14px 0;border-radius:999px">
+
+          <div class="earnings">
+            <div class="earn-item">
+              <div>
+                <div class="small muted">If brand pays</div>
+                <div class="muted">₹10,000</div>
+              </div>
+              <strong>₹2,000</strong>
+            </div>
+
+            <div class="earn-item">
+              <div>
+                <div class="small muted">If brand pays</div>
+                <div class="muted">₹50,000</div>
+              </div>
+              <strong>₹10,000</strong>
+            </div>
+
+            <div class="earn-item">
+              <div>
+                <div class="small muted">No limit</div>
+                <div class="muted">Scale with referrals</div>
+              </div>
+              <strong>Unlimited</strong>
+            </div>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:10px">
+            <a href="https://chat.whatsapp.com/Gd9PhmHFisv2iuEH4IoPQh" target="_blank" class="btn cta">Become a Scout</a>
+
+            <button class="btn" style="width:48px" title="Share">🔗</button>
+          </div>
+        </aside>
+      </section>
+
+      <!-- perks -->
+      <section class="two-cols">
+        <div class="card">
+          <h3 style="margin-top:0;color:var(--neon)">What You'll Get</h3>
+          <div style="display:grid;gap:12px;margin-top:12px">
+            <div class="perk">
+              <div class="icon">🎫</div>
+              <div>
+                <h5>Official Scout ID</h5>
+                <p>Receive an OC Scout ID card to represent the brand while pitching locally.</p>
+              </div>
+            </div>
+
+            <div class="perk">
+              <div class="icon">👕</div>
+              <div>
+                <h5>OC T-shirt</h5>
+                <p>Claim a limited edition T-shirt after your first approved lead.</p>
+              </div>
+            </div>
+
+            <div class="perk">
+              <div class="icon">📜</div>
+              <div>
+                <h5>Training & Certificates</h5>
+                <p>Access marketing training and get certificates to boost your profile.</p>
+              </div>
+            </div>
+
+            <div class="perk">
+              <div class="icon">🏆</div>
+              <div>
+                <h5>Monthly Rewards</h5>
+                <p>Top performers receive cash rewards, recognition, and special perks.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-top:0;color:var(--neon)">Winning Pitch</h3>
+          <p class="muted small">Use this short script when DMing brands — practice it and make it your own:</p>
+          <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)">
+            <code style="display:block;color:var(--neon);font-weight:700">"Hi, I’m a scout from Our Cashmir. We help brands grow using influencer marketing, ads, and creative content. Can I share how we can help your brand scale online?"</code>
+          </div>
+
+          <h4 style="margin-top:18px;color:var(--neon)">Three Ways to Find Brands</h4>
+          <ul class="muted small" style="margin-top:8px;line-height:1.6">
+            <li>Search Instagram & Facebook: local shops, cafes, service providers.</li>
+            <li>Present value: emphasize growth, content, and ad expertise.</li>
+            <li>Collect clear details: budget, goals, decision maker contact.</li>
+          </ul>
+
+        </div>
+      </section>
+
+      <section class="cta-strip">
+        <div>
+          <div style="font-weight:800;font-size:18px;color:var(--neon)">Ready to start?</div>
+          <div class="muted small">Join OC Affiliate Scouts and help build Modern Kashmir while earning real money.</div>
+        </div>
+        <div style="display:flex;gap:12px">
+          <button class="btn" onclick="scrollToSection('how')">Learn More</button>
+          <a href="https://chat.whatsapp.com/Gd9PhmHFisv2iuEH4IoPQh" target="_blank" class="btn cta">💬 Join WhatsApp Group</a>
+
+        </div>
+      </section>
+
+      <footer>
+        <div>© <strong>Our Cashmir</strong> • Building Modern Kashmir</div>
+        <div class="muted small">Questions? DM us on Instagram • @ourcashmir</div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Floating background canvas animation
+    const canvas = document.getElementById('float-bg');
+    const ctx = canvas.getContext('2d');
+    let w, h, dots = [];
+
+    function resize(){
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = canvas.width = Math.floor(window.innerWidth * dpr);
+      h = canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+
+    function rand(min,max){return Math.random()*(max-min)+min}
+
+    function initDots(){
+      dots = [];
+      const count = Math.round((window.innerWidth * window.innerHeight) / 90000); // responsive density
+      for(let i=0;i<count;i++){
+        dots.push({
+          x: rand(0,window.innerWidth),
+          y: rand(0,window.innerHeight),
+          r: rand(8,36),
+          vx: rand(-0.15,0.15),
+          vy: rand(-0.05,0.05),
+          alpha: rand(0.06,0.22),
+          hue: rand(140,160)
+        });
+      }
+    }
+
+    function draw(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // soft vignette
+      for(const d of dots){
+        d.x += d.vx; d.y += d.vy;
+        if(d.x < -100) d.x = window.innerWidth + 100;
+        if(d.x > window.innerWidth + 100) d.x = -100;
+        if(d.y < -200) d.y = window.innerHeight + 200;
+        if(d.y > window.innerHeight + 200) d.y = -200;
+
+        const g = ctx.createRadialGradient(d.x, d.y, d.r*0.1, d.x, d.y, d.r);
+        g.addColorStop(0, `rgba(24,255,122,${d.alpha})`);
+        g.addColorStop(0.45, `rgba(0,240,122,${d.alpha*0.45})`);
+        g.addColorStop(1, `rgba(0,0,0,0)`);
+        ctx.beginPath();
+        ctx.fillStyle = g;
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      // connecting lines (very subtle)
+      for(let i=0;i<dots.length;i++){
+        for(let j=i+1;j<dots.length;j++){
+          const a = dots[i], b = dots[j];
+          const dx = a.x-b.x, dy=a.y-b.y; const dist = Math.sqrt(dx*dx+dy*dy);
+          if(dist < 180){
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(24,255,122,${Math.max(0,0.12 - dist/900)})`;
+            ctx.lineWidth = 0.6;
+            ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    function setup(){
+      resize(); initDots(); draw();
+    }
+
+    window.addEventListener('resize', ()=>{resize(); initDots();});
+    setup();
+
+    // small interactions: scroll to section
+    function scrollToSection(id){
+      const el = document.getElementById(id);
+      if(!el) return window.scrollTo({top:0,behavior:'smooth'});
+      const y = el.getBoundingClientRect().top + window.scrollY - 60;
+      window.scrollTo({top:y,behavior:'smooth'});
+    }
+
+    function openSignup(){
+      // simple modal-like signup using prompt (can be replaced with form)
+      const name = prompt('Enter your full name to join OC Affiliate Scouts');
+      if(!name) return alert('Signup cancelled');
+      const phone = prompt('Enter phone or Instagram handle');
+      if(!phone) return alert('Signup cancelled');
+      alert('Thanks ' + name + '! We received your interest. Our team will contact you at: ' + phone + '\n(For demo only — replace with real signup integration)');
+    }
+  </script>
+</body>
+</html>

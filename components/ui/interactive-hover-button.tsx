@@ -27,7 +27,7 @@ export const InteractiveHoverButton = forwardRef<
                 <span>{children}</span>
                 <ArrowRight className="ml-1 size-4 transition-transform duration-300" />
             </div>
-            <div className="absolute left-[20%] top-[40%] h-2 w-2 scale-[1] rounded-lg bg-black transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-black"></div>
+            <div className="absolute left-[20%] top-[40%] h-0 w-0 scale-[1] rounded-lg bg-black transition-all duration-300 group-hover:left-[0%] group-hover:top-[0%] group-hover:h-full group-hover:w-full group-hover:scale-[1.8] group-hover:bg-black"></div>
         </button>
     );
 });

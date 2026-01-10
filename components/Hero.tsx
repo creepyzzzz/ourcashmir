@@ -8,12 +8,12 @@ const Hero: React.FC = () => {
       {/* Background Decorative Elements */}
       <div className="absolute top-0 right-0 -z-10 w-1/2 h-full opacity-30 pointer-events-none">
         {/* Abstract curve simulation */}
-        <div className="absolute top-[-100px] right-[-100px] w-[600px] h-[600px] bg-green-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute top-[-100px] right-[-100px] w-[600px] h-[600px] bg-brand-primary/5 rounded-full blur-3xl"></div>
       </div>
 
       {/* Left Content */}
       <div className="flex-1 space-y-8 z-10">
-        <div className="inline-block bg-brand-primary px-4 py-1.5 rounded-full text-[10px] md:text-xs font-bold tracking-wider uppercase text-black">
+        <div className="inline-block bg-brand-primary px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase text-black">
           We can help you
         </div>
 
@@ -28,7 +28,7 @@ const Hero: React.FC = () => {
         </p>
 
         <div className="flex items-center gap-6 pt-2">
-          <button className="flex items-center gap-2 md:gap-3 bg-brand-primary text-black px-4 py-2.5 md:px-6 md:py-4 rounded-full text-[10px] md:text-xs font-bold tracking-widest hover:bg-green-400 transition-colors">
+          <button className="flex items-center gap-2 md:gap-3 bg-brand-primary text-black px-6 py-3 md:px-6 md:py-4 rounded-full text-xs font-bold tracking-widest hover:bg-brand-primary/90 transition-colors">
             GET STARTED
             <div className="border border-black/30 rounded-full p-0.5">
               <ArrowRight size={12} />
@@ -57,13 +57,13 @@ const Hero: React.FC = () => {
           {/* Floating Card */}
           <div className="absolute top-6 -left-8 md:top-20 md:-left-24 bg-gradient-to-br from-gray-900 via-gray-900 to-brand-secondary/30 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl w-[160px] md:w-[220px] backdrop-blur-md border border-brand-primary/20 transform scale-90 md:scale-100">
             <div className="flex justify-between items-start mb-2">
-              <div className="bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">1</div>
+              <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-primary text-xs font-bold">1</div>
               <div className="bg-white p-1 rounded-lg shadow-sm">
                 <Sprout size={24} className="text-brand-primary" />
               </div>
             </div>
             <div className="space-y-1 mt-3">
-              <p className="text-[10px] font-bold text-gray-300">Congrats!</p>
+              <p className="text-xs font-bold text-gray-300">Congrats!</p>
               <p className="text-2xl font-bold text-white">$12.5</p>
               <p className="text-[8px] text-gray-400">16 hours ago</p>
               <p className="text-[8px] text-gray-400 truncate">1x Gymnocalycium mihanovichii ..</p>
