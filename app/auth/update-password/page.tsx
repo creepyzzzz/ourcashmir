@@ -12,9 +12,9 @@ export default function UpdatePasswordPage() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<string | null>(null);
     const router = useRouter();
-    const supabase = createClient();
 
     const handleUpdatePassword = async (e: React.FormEvent) => {
+        const supabase = createClient();
         e.preventDefault();
         setLoading(true);
         setMessage(null);
