@@ -231,6 +231,7 @@ export default function AdminClientsPage() {
                                             </div>
                                             <div>
                                                 <p className="font-medium text-brand-white">{client.name}</p>
+                                                <p className="text-xs text-brand-primary/80 mb-0.5">{client.email || ''}</p>
                                                 <p className="text-xs text-gray-500">{client.company || 'No Company'}</p>
                                             </div>
                                         </div>

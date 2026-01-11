@@ -33,24 +33,40 @@ export async function updateSession(request: NextRequest) {
     // supabase.auth.getUser(). A simple mistake could make it very hard to debug
     // issues with users being randomly logged out.
 
-    const {
-        data: { user },
-    } = await supabase.auth.getUser()
-
-    if (
-        !user &&
-        !request.nextUrl.pathname.startsWith('/login') &&
-        !request.nextUrl.pathname.startsWith('/auth') &&
-        request.nextUrl.pathname !== '/'
-    ) {
-        // no user, potentially redirect
-        // const url = request.nextUrl.clone()
-        // url.pathname = '/login'
-        // return NextResponse.redirect(url)
+    // console.log('Refreshing session for:', request.nextUrl.pathname)
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+        // console.error('Supabase environment variables are missing!')
+        return supabaseResponse
     }
 
-    // Role based protection logic can go here or in specific layouts
-    // For now, we just ensure session data is refreshed
+    try {
+        const {
+            data: { user },
+            error
+        } = await supabase.auth.getUser()
 
-    return supabaseResponse
+        // if (error) {
+        //     console.error('Supabase getUser error:', error.message)
+        // }
+
+        if (
+            !user &&
+            !request.nextUrl.pathname.startsWith('/login') &&
+            !request.nextUrl.pathname.startsWith('/auth') &&
+            request.nextUrl.pathname !== '/'
+        ) {
+            // no user, potentially redirect
+            // const url = request.nextUrl.clone()
+            // url.pathname = '/login'
+            // return NextResponse.redirect(url)
+        }
+
+        // Role based protection logic can go here or in specific layouts
+        // For now, we just ensure session data is refreshed
+
+        return supabaseResponse
+    } catch (e) {
+        // console.error('Supabase auth unexpected error in proxy:', e)
+        return supabaseResponse
+    }
 }

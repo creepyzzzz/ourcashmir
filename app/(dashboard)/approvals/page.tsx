@@ -1,49 +1,55 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchApprovals, ApprovalItem } from '@/lib/data';
-import { approveItem, rejectItem } from '@/actions/dashboard';
+import { fetchApprovals, ApprovalItem, updateAssetStatus, updateAssetComment } from '@/lib/data';
 import { Check, X, MessageSquare, Clock } from 'lucide-react';
 
 export default function ApprovalsPage() {
     const [items, setItems] = useState<ApprovalItem[]>([]);
     const [loading, setLoading] = useState(true);
+    const [commentModalOpen, setCommentModalOpen] = useState(false);
+    const [activeItemId, setActiveItemId] = useState<string | null>(null);
+    const [commentText, setCommentText] = useState('');
+    const [actionType, setActionType] = useState<'approve' | 'reject' | 'comment' | null>(null);
+
+    const loadData = async () => {
+        setLoading(true);
+        const data = await fetchApprovals();
+        setItems(data);
+        setLoading(false);
+    };
 
     useEffect(() => {
-        fetchApprovals().then(data => {
-            setItems(data.filter(i => i.status === 'pending')); // Only show pending in this view? Or all? Let's assume pending based on typical workflow, or maybe all and filter.
-            // The previous mock data mostly returns pending for this view list, but let's show all or just pending. 
-            // The dashboard showed 'Pending Approvals', this page suggests 'Pending Approvals' in title.
-            // Let's filter client-side for now or rely on fetchApprovals returning what's needed.
-            // fetchApprovals returns all. Let's filter for pending to match "Pending Approvals" title.
-            // Actually, usually an approvals page might show history too. But title says "Pending Approvals".
-            // I'll stick to showing all for now but maybe sort by pending first?
-            // Re-reading code: title says "Pending Approvals".
-            setLoading(false);
-        });
-    }, []);
-
-    // Better effect with filtering
-    useEffect(() => {
-        fetchApprovals().then(data => {
-            setItems(data.filter(i => i.status === 'pending'));
-            setLoading(false);
-        });
+        loadData();
     }, []);
 
 
-    const handleAction = async (id: string, action: 'approve' | 'reject') => {
-        // Optimistic update
-        setItems(items.filter(i => i.id !== id));
+    const handleActionClick = (id: string, action: 'approve' | 'reject' | 'comment') => {
+        setActiveItemId(id);
+        setActionType(action);
+        setCommentModalOpen(true);
+        setCommentText('');
+    };
+
+    const submitAction = async () => {
+        if (!activeItemId || !actionType) return;
+
         try {
-            if (action === 'approve') {
-                await approveItem(id);
+            if (actionType === 'comment') {
+                await updateAssetComment(activeItemId, commentText);
+                setItems(prev => prev.map(i => i.id === activeItemId ? { ...i, comments: commentText } : i));
             } else {
-                await rejectItem(id);
+                await updateAssetStatus(activeItemId, actionType === 'approve' ? 'approved' : 'rejected', commentText);
+                setItems(prev => prev.map(i => i.id === activeItemId ? { ...i, status: actionType === 'approve' ? 'approved' : 'rejected', comments: commentText } : i));
             }
+
+            setCommentModalOpen(false);
+            setActiveItemId(null);
+            setActionType(null);
+            setCommentText('');
         } catch (error) {
-            console.error(error);
-            // Revert on error? For now simple optimistic.
+            console.error('Error updating status:', error);
+            alert('Failed to update status');
         }
     };
 
@@ -52,8 +58,8 @@ export default function ApprovalsPage() {
     return (
         <div>
             <div className="mb-8">
-                <h2 className="text-2xl font-bold text-brand-white">Pending Approvals</h2>
-                <p className="text-gray-400 text-sm mt-1">Review and approve creative assets to keep projects moving.</p>
+                <h2 className="text-2xl font-bold text-brand-white">Approvals & Feedback</h2>
+                <p className="text-gray-400 text-sm mt-1">Review creative assets and provide feedback.</p>
             </div>
 
             {items.length === 0 ? (
@@ -61,55 +67,128 @@ export default function ApprovalsPage() {
                     <div className="w-16 h-16 bg-brand-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 text-brand-primary">
                         <Check size={32} />
                     </div>
-                    <h3 className="text-xl font-bold text-brand-white">All Caught Up!</h3>
-                    <p className="text-gray-500 mt-2">You have no items waiting for review.</p>
+                    <h3 className="text-xl font-bold text-brand-white">No Assets Found</h3>
+                    <p className="text-gray-500 mt-2">There are no assets to display.</p>
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {items.map((item) => (
-                        <div key={item.id} className="bg-brand-surface border border-brand-primary/10 rounded-xl overflow-hidden group">
+                        <div key={item.id} className="bg-brand-surface border border-brand-primary/10 rounded-xl overflow-hidden group flex flex-col">
                             {/* Preview Area */}
                             <div className="h-48 bg-gray-800 relative group-hover:opacity-90 transition-opacity cursor-pointer">
-                                <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
+                                {item.thumbnail ? (
+                                    <img src={item.thumbnail} alt={item.title} className="w-full h-full object-cover" />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center bg-white/5 text-gray-500 text-xs">No Preview</div>
+                                )}
                                 <div className="absolute top-3 left-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded text-xs font-medium text-white uppercase">
                                     {item.type}
+                                </div>
+                                <div className={`absolute top-3 right-3 px-2 py-1 rounded text-xs font-medium uppercase
+                                    ${item.status === 'approved' ? 'bg-green-500 text-black' : ''}
+                                    ${item.status === 'rejected' ? 'bg-red-500 text-white' : ''}
+                                    ${item.status === 'pending' ? 'bg-yellow-500 text-black' : ''}
+                                    ${item.status === 'uploaded' ? 'bg-gray-500 text-white' : ''}
+                                `}>
+                                    {item.status}
                                 </div>
                             </div>
 
                             {/* Details */}
-                            <div className="p-5">
-                                <div className="flex justify-between items-start mb-4">
-                                    <div>
-                                        <h3 className="text-lg font-bold text-brand-white mb-1">{item.title}</h3>
-                                        <p className="text-xs text-gray-400 flex items-center gap-1">
-                                            <Clock size={12} /> Pending since {item.submitted_date}
-                                        </p>
-                                    </div>
+                            <div className="p-5 flex-1 flex flex-col">
+                                <div className="mb-4">
+                                    <h3 className="text-lg font-bold text-brand-white mb-1">{item.title}</h3>
+                                    <p className="text-xs text-gray-400 flex items-center gap-1">
+                                        <Clock size={12} /> {new Date(item.submitted_date || item.created_at).toLocaleDateString()}
+                                    </p>
+                                    {item.projects?.title && <p className="text-xs text-brand-primary mt-1">{item.projects.title}</p>}
                                 </div>
 
+                                {item.comments && (
+                                    <div className="mb-4 p-3 bg-white/5 rounded-lg text-sm text-gray-300 italic">
+                                        "{item.comments}"
+                                    </div>
+                                )}
+
                                 {/* Actions */}
-                                <div className="flex gap-3 pt-4 border-t border-white/5">
-                                    <button
-                                        onClick={() => handleAction(item.id, 'approve')}
-                                        className="flex-1 bg-brand-primary text-black font-bold py-2 rounded-lg hover:bg-brand-secondary transition-colors text-sm flex items-center justify-center gap-2"
-                                    >
-                                        <Check size={16} /> Approve
-                                    </button>
-                                    <button
-                                        onClick={() => handleAction(item.id, 'reject')}
-                                        className="flex-1 bg-white/5 text-white py-2 rounded-lg hover:bg-white/10 transition-colors text-sm flex items-center justify-center gap-2"
-                                    >
-                                        <X size={16} /> Changes
-                                    </button>
-                                </div>
-                                <div className="mt-3 text-center">
-                                    <button className="text-xs text-gray-500 hover:text-white flex items-center justify-center gap-1 mx-auto">
-                                        <MessageSquare size={12} /> Add Comment
-                                    </button>
-                                </div>
+                                {item.status === 'pending' && (
+                                    <div className="mt-auto pt-4 border-t border-white/5 flex flex-col gap-3">
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={() => handleActionClick(item.id, 'approve')}
+                                                className="flex-1 bg-brand-primary text-black font-bold py-2 rounded-lg hover:bg-brand-secondary transition-colors text-sm flex items-center justify-center gap-2"
+                                            >
+                                                <Check size={16} /> Approve
+                                            </button>
+                                            <button
+                                                onClick={() => handleActionClick(item.id, 'reject')}
+                                                className="flex-1 bg-white/5 text-white py-2 rounded-lg hover:bg-white/10 transition-colors text-sm flex items-center justify-center gap-2"
+                                            >
+                                                <X size={16} /> Reject
+                                            </button>
+                                        </div>
+                                        <button
+                                            onClick={() => handleActionClick(item.id, 'comment')}
+                                            className="w-full text-xs text-gray-500 hover:text-white flex items-center justify-center gap-1 p-1 hover:bg-white/5 rounded transition-colors"
+                                        >
+                                            <MessageSquare size={12} /> Add Comment (No Decision)
+                                        </button>
+                                    </div>
+                                )}
+                                {item.status !== 'pending' && (
+                                    <div className="mt-auto pt-4 border-t border-white/5 text-center text-xs text-gray-500">
+                                        Status updated on {new Date().toLocaleDateString()}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}
+                </div>
+            )}
+
+            {/* Comment Modal */}
+            {commentModalOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                    <div className="bg-brand-surface border border-white/10 rounded-xl w-full max-w-md p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+                        <h3 className="text-lg font-bold mb-4">
+                            {actionType === 'approve' ? 'Approve Asset' : actionType === 'reject' ? 'Request Changes' : 'Add Comment'}
+                        </h3>
+                        <p className="text-sm text-gray-400 mb-4">
+                            {actionType === 'approve'
+                                ? 'Is this asset looking good? Add any final notes (optional).'
+                                : actionType === 'reject'
+                                    ? 'Please describe what changes are needed.'
+                                    : 'Add a note for the team without changing the status.'}
+                        </p>
+                        <textarea
+                            className="w-full bg-brand-dark border border-white/10 rounded-lg p-3 text-sm outline-none focus:border-brand-primary min-h-[100px]"
+                            placeholder="Add your comments here..."
+                            value={commentText}
+                            onChange={(e) => setCommentText(e.target.value)}
+                        />
+                        <div className="flex justify-end gap-3 mt-6">
+                            <button
+                                onClick={() => setCommentModalOpen(false)}
+                                className="px-4 py-2 text-sm text-gray-400 hover:text-white"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={submitAction}
+                                className={`px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2
+                                    ${actionType === 'approve' ? 'bg-green-500 text-black hover:bg-green-400' : ''}
+                                    ${actionType === 'reject' ? 'bg-red-500 text-white hover:bg-red-400' : ''}
+                                    ${actionType === 'comment' ? 'bg-brand-surface border border-white/10 text-white hover:bg-white/5' : ''}
+                                `}
+                            >
+                                {actionType === 'approve' && <Check size={16} />}
+                                {actionType === 'reject' && <X size={16} />}
+                                {actionType === 'comment' && <MessageSquare size={16} />}
+
+                                {actionType === 'approve' ? 'Confirm Approval' : actionType === 'reject' ? 'Submit Rejection' : 'Post Comment'}
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>

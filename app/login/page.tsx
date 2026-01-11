@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ArrowRight, Mail, Loader2, Lock, KeyRound, Sparkles } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
@@ -17,8 +18,19 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+    const router = useRouter();
 
     const supabase = createClient();
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                router.replace('/dashboard');
+            }
+        };
+        checkUser();
+    }, []);
 
     const handleAuth = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -65,7 +77,7 @@ export default function LoginPage() {
                     // Successful login redirects automatically or updates session state
                     // We can redirect manually just in case, or let the router/auth state listener handle it.
                     // Usually app/layout.tsx or a listener handles redirect, but we can push.
-                    window.location.href = '/dashboard';
+                    router.replace('/dashboard');
                 }
             }
         } catch (error: any) {

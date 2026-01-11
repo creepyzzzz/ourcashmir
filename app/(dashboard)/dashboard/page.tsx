@@ -47,7 +47,7 @@ export default function DashboardPage() {
                 const statsArray: StatCardType[] = [
                     {
                         title: "Total Spent",
-                        value: `$${s.totalRevenue.toLocaleString()}`,
+                        value: s.totalRevenue.toLocaleString('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }),
                         change: "+12% from last month", // mock/calculated
                         icon: <Activity size={20} />
                     },
@@ -171,7 +171,7 @@ export default function DashboardPage() {
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
                                 <XAxis dataKey="name" stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} />
-                                <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `$${value}`} />
+                                <YAxis stroke="#6b7280" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `₹${value}`} />
                                 <Tooltip
                                     contentStyle={{ backgroundColor: '#0D2012', borderColor: 'rgba(0,200,83,0.2)', color: '#fff' }}
                                     itemStyle={{ color: '#00C853' }}

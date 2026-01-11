@@ -100,40 +100,111 @@ export async function fetchStats() {
     };
 }
 
+export async function fetchRevenueHistory() {
+    const { data: invoices, error } = await supabase
+        .from('invoices')
+        .select('amount, created_at')
+        .eq('status', 'paid')
+        .order('created_at', { ascending: true });
+
+    if (error) {
+        console.error('Error fetching revenue history:', error);
+        return [];
+    }
+
+    // Aggregate by month
+    const monthlyData: { [key: string]: number } = {};
+
+    invoices?.forEach((invoice) => {
+        const date = new Date(invoice.created_at);
+        const monthYear = date.toLocaleString('default', { month: 'short', year: 'numeric' }); // e.g., "Jan 2024"
+        const amount = Number(invoice.amount) || 0;
+
+        if (monthlyData[monthYear]) {
+            monthlyData[monthYear] += amount;
+        } else {
+            monthlyData[monthYear] = amount;
+        }
+    });
+
+    // Convert to array for Recharts
+    const chartData = Object.keys(monthlyData).map(key => ({
+        name: key,
+        revenue: monthlyData[key]
+    }));
+
+    return chartData;
+}
+
 export async function fetchClients() {
-    const { data, error } = await supabase
+    // Attempt to join with profiles to get user data if available
+    // Using loose join 'profiles' assuming user_id link
+    const { data: rawData, error } = await supabase
         .from('clients')
-        .select('*')
+        .select('*, profile:profiles(email, full_name, avatar_url)')
         .order('created_at', { ascending: false });
 
     if (error) {
-        console.error('Error fetching clients:', error);
-        return [];
+        // Fallback to simple select if join fails (e.g. FK issue)
+        console.warn('Error fetching clients with profile join, falling back to simple select:', error.message);
+        const { data, error: simpleError } = await supabase
+            .from('clients')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (simpleError) {
+            console.error('Error fetching clients:', simpleError);
+            return [];
+        }
+        return data as Client[];
     }
-    return data as Client[];
+
+    // Map profile data to client fields if client fields are empty
+    // PRIORITIZE profile data as it is user-managed source of truth
+    const clients = rawData.map((client: any) => ({
+        ...client,
+        name: client.profile?.full_name || client.name || 'Unnamed Client',
+        email: client.profile?.email || client.email,
+        avatar_url: client.profile?.avatar_url || client.avatar_url,
+    }));
+
+    return clients as Client[];
 }
 
 
 
 
 export async function fetchClientById(id: string) {
-    const { data, error } = await supabase
+    // Join with profiles to get avatar and other details
+    const { data: rawData, error } = await supabase
         .from('clients')
-        .select('*')
+        .select('*, profile:profiles(email, full_name, avatar_url)')
         .eq('id', id)
         .single();
 
     if (error) {
         console.error('Error fetching client:', error);
-        return null;
+        return null; // Handle error gracefully or via fallback if needed
     }
-    return data as Client;
+
+    // Cast rawData to any to access the joined profile property
+    const clientData = rawData as any;
+
+    // Merge logic: prefer profile data over client table data
+    const client: Client = {
+        ...clientData,
+        name: clientData.profile?.full_name || clientData.name || 'Unnamed Client',
+        email: clientData.profile?.email || clientData.email,
+        avatar_url: clientData.profile?.avatar_url || clientData.avatar_url,
+    };
+
+    return client;
 }
 
 export async function fetchPublicClients() {
     const { data, error } = await supabase
         .from('clients')
-        .select('name, avatar_url, instagram, website')
+        .select('id, name, avatar_url, instagram, website')
         .eq('status', 'active')
         .order('joined_date', { ascending: false });
 
@@ -195,10 +266,10 @@ export async function fetchLeads() {
 }
 
 export async function fetchTeamMembers() {
-    // Assuming profiles with role 'admin' or 'staff' are team members
+    // Fetch profiles and potentially linked client data for avatar fallback
     const { data, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('*, clients(avatar_url)')
         .in('role', ['admin', 'staff'])
         .order('created_at', { ascending: false });
 
@@ -206,10 +277,42 @@ export async function fetchTeamMembers() {
         console.error('Error fetching team:', error);
         return [];
     }
+
+    // Map to prioritize profile avatar, fallback to client avatar
+    return data.map((p: any) => ({
+        ...p,
+        avatar_url: p.avatar_url || (p.clients && p.clients[0]?.avatar_url) || null
+    }));
+}
+
+export async function updateProfile(id: string, updates: Partial<Profile>) {
+    const { data, error } = await supabase
+        .from('profiles')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+    if (error) throw error;
     return data;
 }
 
-// ... Additional helper functions for Create/Update can be added as needed by the components directly or here
+export async function searchProfiles(query: string) {
+    const { data, error } = await supabase
+        .from('profiles')
+        .select('*, clients(avatar_url)')
+        .or(`full_name.ilike.%${query}%,email.ilike.%${query}%`)
+        .limit(10);
+
+    if (error) {
+        console.error('Error searching profiles:', error);
+        return [];
+    }
+
+    return data.map((p: any) => ({
+        ...p,
+        avatar_url: p.avatar_url || (p.clients && p.clients[0]?.avatar_url) || null
+    })) as Profile[];
+}
 export async function addNewClient(clientData: Partial<Client>) {
     return await supabase.from('clients').insert(clientData).select().single();
 }
@@ -244,6 +347,29 @@ export async function createInvoice(invoiceData: Partial<Invoice>) {
     return await supabase.from('invoices').insert(invoiceData).select().single();
 }
 
+export async function updateInvoice(id: string, updates: Partial<Invoice>) {
+    const { data, error } = await supabase
+        .from('invoices')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+    if (error) {
+        console.error('Error updating invoice:', error);
+        throw error;
+    }
+    return data;
+}
+
+export async function deleteInvoice(id: string) {
+    const { error } = await supabase.from('invoices').delete().eq('id', id);
+    if (error) {
+        console.error('Error deleting invoice:', error);
+        throw error;
+    }
+}
+
 
 export async function updateClient(id: string, updates: Partial<Client>) {
     const { data, error } = await supabase
@@ -272,6 +398,57 @@ export async function createLead(leadData: Partial<Lead>) {
     return await supabase.from('leads').insert(leadData).select().single();
 }
 
+export async function updateLead(id: string, updates: Partial<Lead>) {
+    const { data, error } = await supabase
+        .from('leads')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+    if (error) {
+        console.error('Error updating lead:', error);
+        throw error;
+    }
+    return data;
+}
+
+export async function deleteLead(id: string) {
+    const { error } = await supabase
+        .from('leads')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        console.error('Error deleting lead:', error);
+        throw error;
+    }
+}
+
+export async function convertLeadToClient(lead: Lead) {
+    // 1. Create Client
+    const { data: client, error } = await supabase
+        .from('clients')
+        .insert({
+            name: lead.name,
+            company: lead.company,
+            email: lead.email,
+            phone: lead.phone,
+            status: 'active',
+            joined_date: new Date().toISOString().split('T')[0], // date format
+            total_spent: 0
+        })
+        .select()
+        .single();
+
+    if (error) throw error;
+
+    // 2. Update Lead status to closed
+    await updateLead(lead.id, { status: 'closed' });
+
+    return client;
+}
+
 
 export interface ApprovalItem {
     id: string;
@@ -286,6 +463,7 @@ export interface ApprovalItem {
     submitted_date: string;
     created_at: string;
     projects?: { title: string };
+    comments?: string;
 }
 
 export async function fetchApprovals(clientId?: string) {
@@ -325,8 +503,16 @@ export async function createAsset(assetData: Partial<ApprovalItem>) {
     return await supabase.from('approvals').insert(assetData).select().single();
 }
 
-export async function updateAssetStatus(id: string, status: 'pending' | 'approved' | 'rejected') {
-    return await supabase.from('approvals').update({ status }).eq('id', id).select().single();
+export async function updateAssetStatus(id: string, status: 'pending' | 'approved' | 'rejected', comment?: string) {
+    const updates: any = { status };
+    if (comment !== undefined) {
+        updates.comments = comment;
+    }
+    return await supabase.from('approvals').update(updates).eq('id', id).select().single();
+}
+
+export async function updateAssetComment(id: string, comment: string) {
+    return await supabase.from('approvals').update({ comments: comment }).eq('id', id).select().single();
 }
 
 export async function deleteAsset(id: string) {
@@ -392,22 +578,45 @@ export interface Task {
     assignee: string | null;
     due_date: string | null;
     status: 'todo' | 'in-progress' | 'done';
+    priority?: 'high' | 'medium' | 'low';
     created_at: string;
+    projects?: { title: string };
+}
+
+export interface Conversation {
+    id: string;
+    created_at: string;
+    updated_at: string;
+    last_message_at: string;
+    subject?: string;
+    status: 'active' | 'archived';
+    participants?: { user_id: string, user: Profile }[];
+    last_message?: string;
+    unread_count?: number;
+}
+
+export interface ConversationParticipant {
+    conversation_id: string;
+    user_id: string;
+    last_read_at: string;
+    user?: Profile;
 }
 
 export interface Message {
     id: string;
-    project_id: string | null;
+    conversation_id: string;
     sender_id: string;
     content: string;
+    attachments: { name: string, url: string, type: string, size: number }[] | null;
     created_at: string;
+    is_read: boolean;
     sender?: Profile;
 }
 
 // --- Tasks ---
 
 export async function fetchTasks(projectId?: string) {
-    let query = supabase.from('tasks').select('*').order('created_at', { ascending: false });
+    let query = supabase.from('tasks').select('*, projects(title)').order('created_at', { ascending: false });
 
     if (projectId) {
         query = query.eq('project_id', projectId);
@@ -423,36 +632,133 @@ export async function fetchTasks(projectId?: string) {
 }
 
 export async function createTask(task: Partial<Task>) {
-    return await supabase.from('tasks').insert(task).select().single();
+    const { data, error } = await supabase.from('tasks').insert(task).select().single();
+    if (error) throw error;
+    return data;
 }
 
+export async function updateTask(id: string, updates: Partial<Task>) {
+    const { data, error } = await supabase.from('tasks').update(updates).eq('id', id).select().single();
+    if (error) throw error;
+    return data;
+}
+
+export async function deleteTask(id: string) {
+    const { error } = await supabase.from('tasks').delete().eq('id', id);
+    if (error) throw error;
+    return true;
+}
+
+// Helper for status only (legacy support or specific use)
 export async function updateTaskStatus(taskId: string, status: 'todo' | 'in-progress' | 'done') {
-    return await supabase.from('tasks').update({ status }).eq('id', taskId).select().single();
+    const { data, error } = await supabase.from('tasks').update({ status }).eq('id', taskId).select().single();
+    if (error) throw error;
+    return data;
+}
+
+// --- Reports ---
+
+export async function createReport(reportData: Partial<Report>) {
+    const { data, error } = await supabase.from('reports').insert(reportData).select().single();
+    if (error) throw error;
+    return data;
+}
+
+export async function deleteReport(id: string) {
+    const { error } = await supabase.from('reports').delete().eq('id', id);
+    if (error) throw error;
+    return true;
 }
 
 // --- Messages ---
 
-export async function fetchMessages(projectId?: string) {
-    let query = supabase
+export async function fetchConversations() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return [];
+
+    const { data, error } = await supabase
+        .from('conversations')
+        .select(`
+            *,
+            participants:conversation_participants(
+                user_id,
+                last_read_at,
+                user:profiles(id, full_name, avatar_url, role)
+            )
+        `)
+        .order('last_message_at', { ascending: false });
+
+    if (error) {
+        console.error('Error fetching conversations:', error);
+        return [];
+    }
+    return data as Conversation[];
+}
+
+export async function createConversation(participantIds: string[], subject?: string) {
+    const { data: conv, error: convError } = await supabase
+        .from('conversations')
+        .insert({ subject })
+        .select()
+        .single();
+    if (convError) throw convError;
+
+    const participants = participantIds.map(uid => ({
+        conversation_id: conv.id,
+        user_id: uid
+    }));
+    const { error: partError } = await supabase
+        .from('conversation_participants')
+        .insert(participants);
+    if (partError) throw partError;
+    return conv;
+}
+
+export async function fetchMessages(conversationId: string) {
+    const { data, error } = await supabase
         .from('messages')
         .select('*, sender:profiles(id, full_name, avatar_url, role)')
+        .eq('conversation_id', conversationId)
         .order('created_at', { ascending: true });
-
-    if (projectId) {
-        query = query.eq('project_id', projectId);
-    }
-
-    const { data, error } = await query;
 
     if (error) {
         console.error('Error fetching messages:', error);
         return [];
     }
-    return data as unknown as Message[];
+    return data as Message[];
 }
 
-export async function sendMessage(message: { content: string, project_id?: string, sender_id: string }) {
-    return await supabase.from('messages').insert(message).select().single();
+export async function sendMessage(message: {
+    conversation_id: string,
+    sender_id: string,
+    content: string,
+    attachments?: any[]
+}) {
+    // 1. Insert message
+    const { data, error } = await supabase
+        .from('messages')
+        .insert(message)
+        .select()
+        .single();
+    if (error) throw error;
+
+    // 2. Update conversation last_message_at
+    await supabase
+        .from('conversations')
+        .update({ last_message_at: new Date().toISOString() })
+        .eq('id', message.conversation_id);
+    return data;
+}
+
+export async function markConversationRead(conversationId: string, userId: string) {
+    await supabase
+        .from('conversation_participants')
+        .update({ last_read_at: new Date().toISOString() })
+        .match({ conversation_id: conversationId, user_id: userId });
+}
+
+export async function uploadChatAttachment(file: File) {
+    return uploadFile(file, 'chat-attachments');
 }
 
 export async function fetchProjectById(id: string) {

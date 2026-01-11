@@ -1,147 +1,468 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Send, Users, Paperclip } from 'lucide-react';
-import { fetchUser, Profile, fetchMessages, sendMessage, Message } from '@/lib/data';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+    Send,
+    Paperclip,
+    Search,
+    Phone,
+    Video,
+    Info,
+    FileText,
+    Image as ImageIcon,
+    X,
+    MessageSquarePlus
+} from 'lucide-react';
+import {
+    supabase,
+    fetchConversations,
+    fetchMessages,
+    sendMessage,
+    markConversationRead,
+    uploadChatAttachment,
+    createConversation,
+    Conversation,
+    Message,
+    Profile
+} from '@/lib/data';
 
 export default function CommunicationPage() {
+    const [conversations, setConversations] = useState<Conversation[]>([]);
+    const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
     const [messages, setMessages] = useState<Message[]>([]);
     const [inputValue, setInputValue] = useState('');
-    const [user, setUser] = useState<Profile | null>(null);
-    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentUser, setCurrentUser] = useState<Profile | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [uploadedFiles, setUploadedFiles] = useState<{ name: string, url: string, type: string, size: number }[]>([]);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const loadConversations = async () => {
+        const data = await fetchConversations();
+        setConversations(data);
+        return data;
+    };
+
+    // Initial Load
+    useEffect(() => {
+        const init = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            let profile = null;
+            if (user) {
+                const { data } = await supabase.from('profiles').select('*').eq('id', user.id).single();
+                profile = data;
+                setCurrentUser(data);
+            }
+
+            const data = await fetchConversations();
+            setConversations(data);
+
+            if (data.length > 0) {
+                // Auto-select most recent
+                if (!activeConversation) setActiveConversation(data[0]);
+            } else if (data.length === 0 && profile) {
+                // No conversations, auto-start support chat
+                startSupportChat(profile);
+            }
+
+            setIsLoading(false);
+        };
+        init();
+
+        const convSubscription = supabase
+            .channel('public:conversations')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'conversations' }, () => {
+                loadConversations();
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(convSubscription);
+        };
+    }, []);
+
+    const startSupportChat = async (userProfile: Profile) => {
+        try {
+            const { data: admins } = await supabase.from('profiles').select('id, full_name, avatar_url, role').eq('role', 'admin').limit(1);
+            if (admins && admins.length > 0) {
+                const admin = admins[0];
+                const conv = await createConversation([userProfile.id, admin.id], 'Support Request');
+
+                // Manually construct the full object so we can use it immediately
+                const fullConv: any = {
+                    ...conv,
+                    participants: [
+                        { user_id: userProfile.id, user: userProfile },
+                        { user_id: admin.id, user: admin }
+                    ]
+                };
+
+                setActiveConversation(fullConv);
+
+                // Then refresh list in background
+                const refreshed = await fetchConversations();
+                setConversations(refreshed);
+            }
+        } catch (error) {
+            console.error('Failed to auto-start support chat', error);
+        }
     };
 
     useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
+        if (!activeConversation) return;
+
+        loadMessages(activeConversation.id);
+        markRead(activeConversation.id);
+
+        const msgSubscription = supabase
+            .channel(`chat:${activeConversation.id}`)
+            .on('postgres_changes', {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'messages',
+                filter: `conversation_id=eq.${activeConversation.id}`
+            }, (payload) => {
+                fetchMessages(activeConversation.id).then(setMessages);
+            })
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(msgSubscription);
+        };
+    }, [activeConversation]);
 
     useEffect(() => {
-        fetchUser().then(data => setUser(data as Profile));
-        loadMessages();
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
-        // Polling for new messages every 5 seconds (simple realtime)
-        const interval = setInterval(loadMessages, 5000);
-        return () => clearInterval(interval);
-    }, []);
+    const loadMessages = async (convId: string) => {
+        const data = await fetchMessages(convId);
+        setMessages(data);
+    };
 
-    const loadMessages = async () => {
-        const msgs = await fetchMessages();
-        setMessages(msgs);
+    const markRead = async (convId: string) => {
+        if (currentUser) {
+            await markConversationRead(convId, currentUser.id);
+        }
     };
 
     const handleSend = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!inputValue.trim() || !user) return;
+        if ((!inputValue.trim() && !uploadedFiles.length) || !activeConversation || !currentUser) return;
 
         const content = inputValue;
-        setInputValue(''); // Optimistic clear
+        setInputValue('');
+        const filesToSend = [...uploadedFiles];
+        setUploadedFiles([]);
 
         try {
             await sendMessage({
+                conversation_id: activeConversation.id,
+                sender_id: currentUser.id,
                 content,
-                sender_id: user.id,
-                // project_id: '...' // Optional if tied to specific project
+                attachments: filesToSend.length > 0 ? filesToSend : undefined
             });
-            loadMessages(); // Refresh
         } catch (error) {
-            console.error("Failed to send", error);
+            console.error('Failed to send:', error);
+            alert('Failed to send message');
         }
     };
 
-    if (!user) return <div className="p-10 text-center text-gray-500">Loading chat...</div>;
+    const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files?.length) return;
+        setIsUploading(true);
+        const file = e.target.files[0];
+
+        try {
+            const url = await uploadChatAttachment(file);
+            if (url) {
+                setUploadedFiles(prev => [...prev, {
+                    name: file.name,
+                    url,
+                    type: file.type,
+                    size: file.size
+                }]);
+            }
+        } catch (error) {
+            console.error('Upload failed:', error);
+            alert('Upload failed');
+        } finally {
+            setIsUploading(false);
+            if (fileInputRef.current) fileInputRef.current.value = '';
+        }
+    };
+
+    const handleContactSupport = async () => {
+        if (!currentUser) return;
+        try {
+            // Find an admin to chat with
+            const { data: admins } = await supabase.from('profiles').select('id').eq('role', 'admin').limit(1);
+            if (admins && admins.length > 0) {
+                const adminId = admins[0].id;
+                // Create conversation
+                const conv = await createConversation([currentUser.id, adminId], 'Support Request');
+                await loadConversations();
+                setActiveConversation(conv as unknown as Conversation);
+            } else {
+                alert('No support agents available currently.');
+            }
+        } catch (error) {
+            console.error('Failed to create support chat', error);
+        }
+    };
+
+    const getOtherParticipant = (conv: Conversation) => {
+        if (!currentUser || !conv.participants) return null;
+        return conv.participants.find(p => p.user_id !== currentUser.id)?.user;
+    };
+
+    const filteredConversations = conversations.filter(c => {
+        const other = getOtherParticipant(c);
+        if (!other) return false;
+        return other.full_name?.toLowerCase().includes(searchTerm.toLowerCase());
+    });
 
     return (
-        <div className="h-[calc(100vh-140px)] flex bg-brand-surface border border-brand-primary/10 rounded-xl overflow-hidden">
-            {/* Sidebar List (Threads) */}
-            <div className="w-80 border-r border-brand-primary/10 hidden md:flex flex-col">
-                <div className="p-4 border-b border-brand-primary/10">
-                    <h3 className="font-bold text-brand-white">Messages</h3>
-                </div>
-                <div className="flex-1 overflow-y-auto">
-                    <div className="p-3 bg-white/5 border-l-2 border-brand-primary cursor-pointer hover:bg-white/10 transition-colors">
-                        <div className="flex justify-between mb-1">
-                            <span className="font-medium text-brand-white text-sm">General Chat</span>
-                            <span className="text-xs text-brand-primary">Active</span>
+        <div className="h-[calc(100vh-140px)] flex gap-6">
+            {/* Sidebar List */}
+            <div className="w-80 flex flex-col gap-4">
+                <div className="bg-brand-surface border border-brand-primary/10 rounded-xl flex-1 flex flex-col overflow-hidden">
+                    <div className="p-4 border-b border-brand-primary/10 space-y-4">
+                        <div className="flex items-center justify-between">
+                            <h2 className="font-bold text-brand-white">Messages</h2>
+                            <button
+                                onClick={handleContactSupport}
+                                className="p-2 bg-brand-primary/10 text-brand-primary rounded-lg hover:bg-brand-primary hover:text-black transition-colors"
+                                title="Contact Support"
+                            >
+                                <MessageSquarePlus size={18} />
+                            </button>
                         </div>
-                        <p className="text-xs text-gray-400 truncate">Click to view conversation</p>
+                        <div className="relative">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={14} />
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-full bg-brand-dark/50 border-none rounded-lg pl-9 pr-3 py-2 text-xs text-brand-white placeholder:text-gray-600 focus:ring-1 focus:ring-brand-primary outline-none"
+                            />
+                        </div>
+                    </div>
+                    <div className="flex-1 overflow-y-auto">
+                        {isLoading ? (
+                            <div className="p-4 text-center text-xs text-gray-500">Loading...</div>
+                        ) : (
+                            <div className="divide-y divide-white/5">
+                                {filteredConversations.map(conv => {
+                                    const other = getOtherParticipant(conv);
+                                    const isActive = activeConversation?.id === conv.id;
+                                    return (
+                                        <div
+                                            key={conv.id}
+                                            onClick={() => setActiveConversation(conv)}
+                                            className={`p-3 hover:bg-white/5 cursor-pointer transition-colors ${isActive ? 'bg-white/5 border-l-2 border-brand-primary' : ''}`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden shrink-0">
+                                                    {other?.avatar_url ? (
+                                                        <img src={other.avatar_url} alt="" className="w-full h-full object-cover" />
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center text-[10px] text-white">
+                                                            {other?.full_name?.substring(0, 2).toUpperCase() || 'SU'}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex justify-between items-start mb-0.5">
+                                                        <h4 className="font-medium text-brand-white truncate text-sm">{other?.full_name || 'Support'}</h4>
+                                                        <span className="text-[10px] text-gray-500 whitespace-nowrap">
+                                                            {new Date(conv.last_message_at).toLocaleDateString()}
+                                                        </span>
+                                                    </div>
+                                                    <p className="text-xs text-gray-400 truncate">
+                                                        {conv.subject || 'Click to view'}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                                {filteredConversations.length === 0 && (
+                                    <div className="p-6 text-center text-gray-500 text-xs">
+                                        No messages yet.
+                                        <br />
+                                        <button onClick={handleContactSupport} className="text-brand-primary mt-2 hover:underline">
+                                            Contact Support
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
 
             {/* Chat Area */}
-            <div className="flex-1 flex flex-col bg-brand-dark/20">
-                {/* Chat Header */}
-                <div className="h-16 border-b border-brand-primary/10 flex items-center justify-between px-6 bg-brand-surface">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-600 rounded-lg flex items-center justify-center">
-                            <Users className="text-white" size={20} />
-                        </div>
-                        <div>
-                            <h3 className="font-bold text-brand-white">General Discussion</h3>
-                            <p className="text-xs text-green-500">Active Channel</p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Messages */}
-                <div className="flex-1 overflow-y-auto p-6 space-y-6">
-                    {messages.length === 0 && <div className="text-center text-gray-500 mt-10">No messages yet. Start the conversation!</div>}
-                    {messages.map((msg) => {
-                        const isMe = msg.sender_id === user.id;
-                        return (
-                            <div key={msg.id} className={`flex gap-3 ${isMe ? 'flex-row-reverse' : ''}`}>
-                                <div className="w-8 h-8 rounded-full bg-gray-700 shrink-0 overflow-hidden">
-                                    {msg.sender?.avatar_url ? (
-                                        <img src={msg.sender.avatar_url} className="w-full h-full object-cover" />
+            <div className="flex-1 bg-brand-surface border border-brand-primary/10 rounded-xl overflow-hidden flex flex-col">
+                {activeConversation ? (
+                    <>
+                        {/* Header */}
+                        <div className="h-16 border-b border-brand-primary/10 flex items-center justify-between px-6 bg-brand-surface">
+                            <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-full bg-gray-700 overflow-hidden">
+                                    {getOtherParticipant(activeConversation)?.avatar_url ? (
+                                        <img src={getOtherParticipant(activeConversation)?.avatar_url} className="w-full h-full object-cover" />
                                     ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-xs text-white uppercase">{msg.sender?.full_name?.substring(0, 2) || 'U'}</div>
+                                        <div className="w-full h-full flex items-center justify-center text-white text-xs">
+                                            {getOtherParticipant(activeConversation)?.full_name?.substring(0, 2).toUpperCase() || 'SU'}
+                                        </div>
                                     )}
                                 </div>
-                                <div className={`max-w-[70%] ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
-                                    <div className="text-xs text-gray-400 mb-1 px-1">{msg.sender?.full_name || 'Unknown'}</div>
-                                    <div className={`
-                                         p-3 rounded-2xl text-sm
-                                         ${isMe
-                                            ? 'bg-brand-primary text-black rounded-tr-none'
-                                            : 'bg-white/10 text-brand-white rounded-tl-none'}
-                                     `}>
-                                        {msg.content}
-                                    </div>
-                                    <span className="text-[10px] text-gray-500 mt-1">
-                                        {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                    </span>
+                                <div>
+                                    <h3 className="font-bold text-brand-white text-sm">
+                                        {getOtherParticipant(activeConversation)?.full_name || 'Support'}
+                                    </h3>
+                                    <p className="text-xs text-green-500 flex items-center gap-1">
+                                        Active
+                                    </p>
                                 </div>
                             </div>
-                        );
-                    })}
-                    <div ref={messagesEndRef} />
-                </div>
+                        </div>
 
-                {/* Input */}
-                <div className="p-4 bg-brand-surface border-t border-brand-primary/10">
-                    <form onSubmit={handleSend} className="flex items-center gap-2">
-                        <button type="button" className="p-2 text-gray-400 hover:text-white transition-colors">
-                            <Paperclip size={20} />
-                        </button>
-                        <input
-                            type="text"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            placeholder="Type a message..."
-                            className="flex-1 bg-brand-dark border-none rounded-lg py-2 px-4 focus:ring-1 focus:ring-brand-primary outline-none text-brand-white placeholder:text-gray-600"
-                        />
-                        <button
-                            type="submit"
-                            disabled={!inputValue.trim()}
-                            className="p-2 bg-brand-primary text-black rounded-lg hover:bg-brand-secondary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                        >
-                            <Send size={20} />
-                        </button>
-                    </form>
-                </div>
+                        {/* Messages */}
+                        <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-brand-dark/20">
+                            {messages.map((msg, idx) => {
+                                const isMe = msg.sender_id === currentUser?.id;
+                                const showAvatar = idx === 0 || messages[idx - 1].sender_id !== msg.sender_id;
+                                return (
+                                    <div key={msg.id} className={`flex gap-3 ${isMe ? 'flex-row-reverse' : ''}`}>
+                                        {showAvatar ? (
+                                            <div className="w-8 h-8 rounded-full bg-gray-700 shrink-0 overflow-hidden mt-1">
+                                                {msg.sender?.avatar_url ? (
+                                                    <img src={msg.sender.avatar_url} className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center text-[10px] text-white">
+                                                        {msg.sender?.full_name?.substring(0, 2).toUpperCase()}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div className="w-8 shrink-0" />
+                                        )}
+
+                                        <div className={`max-w-[75%] flex flex-col ${isMe ? 'items-end' : 'items-start'}`}>
+                                            <div className={`
+                                                px-3 py-2 text-sm rounded-2xl shadow-sm
+                                                ${isMe
+                                                    ? 'bg-brand-primary text-black rounded-tr-none'
+                                                    : 'bg-white/10 text-brand-white rounded-tl-none'}
+                                            `}>
+                                                {msg.content}
+                                            </div>
+                                            {/* Attachments */}
+                                            {msg.attachments && msg.attachments.length > 0 && (
+                                                <div className={`mt-2 space-y-1 ${isMe ? 'items-end' : 'items-start'} flex flex-col`}>
+                                                    {msg.attachments.map((file, i) => (
+                                                        <a
+                                                            key={i}
+                                                            href={file.url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className={`
+                                                                flex items-center gap-2 p-2 rounded-lg border border-white/10 hover:bg-white/5 transition-colors max-w-xs
+                                                                ${isMe ? 'bg-black/20' : 'bg-brand-dark'}
+                                                            `}
+                                                        >
+                                                            <div className="w-8 h-8 rounded bg-white/5 flex items-center justify-center text-brand-primary">
+                                                                {file.type.startsWith('image/') ? <ImageIcon size={16} /> : <FileText size={16} />}
+                                                            </div>
+                                                            <div className="flex-1 min-w-0">
+                                                                <p className="text-xs font-medium text-brand-white truncate">{file.name}</p>
+                                                            </div>
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                            )}
+                                            <span className="text-[10px] text-gray-600 mt-1 px-1">
+                                                {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                            <div ref={messagesEndRef} />
+                        </div>
+
+                        {/* Input */}
+                        <div className="p-4 bg-brand-surface border-t border-brand-primary/10">
+                            {/* File Preview */}
+                            {uploadedFiles.length > 0 && (
+                                <div className="flex gap-2 mb-2 overflow-x-auto pb-1">
+                                    {uploadedFiles.map((file, i) => (
+                                        <div key={i} className="relative group">
+                                            <div className="w-12 h-12 rounded bg-white/5 border border-white/10 flex items-center justify-center overflow-hidden">
+                                                {file.type.startsWith('image/') ? (
+                                                    <img src={file.url} className="w-full h-full object-cover opacity-70" />
+                                                ) : (
+                                                    <FileText className="text-gray-400" size={16} />
+                                                )}
+                                            </div>
+                                            <button
+                                                onClick={() => setUploadedFiles(prev => prev.filter((_, idx) => idx !== i))}
+                                                className="absolute -top-1 -right-1 p-0.5 bg-red-500 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                                            >
+                                                <X size={10} />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSend} className="flex items-end gap-2">
+                                <button
+                                    type="button"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="p-2 text-gray-400 hover:text-brand-white transition-colors"
+                                >
+                                    <Paperclip size={20} />
+                                </button>
+                                <input
+                                    type="file"
+                                    ref={fileInputRef}
+                                    className="hidden"
+                                    onChange={handleFileUpload}
+                                    disabled={isUploading}
+                                />
+                                <div className="flex-1 bg-brand-dark/50 border border-white/5 rounded-xl flex items-center p-1 focus-within:ring-1 focus-within:ring-brand-primary">
+                                    <input
+                                        type="text"
+                                        value={inputValue}
+                                        onChange={(e) => setInputValue(e.target.value)}
+                                        placeholder={isUploading ? "Uploading..." : "Type a message..."}
+                                        className="w-full bg-transparent border-none focus:ring-0 text-brand-white placeholder:text-gray-600 px-3 py-1.5 text-sm outline-none"
+                                        disabled={isUploading}
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={(!inputValue.trim() && !uploadedFiles.length) || isUploading}
+                                    className="p-2.5 bg-brand-primary text-black rounded-lg hover:bg-brand-secondary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    <Send size={18} />
+                                </button>
+                            </form>
+                        </div>
+                    </>
+                ) : (
+                    <div className="flex-1 flex flex-col items-center justify-center text-gray-500">
+                        <Info size={32} className="mb-2 opacity-50" />
+                        <p className="text-sm">Select a conversation or start a new one</p>
+                    </div>
+                )}
             </div>
         </div>
     );

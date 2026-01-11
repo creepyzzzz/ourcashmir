@@ -15,7 +15,8 @@ import {
     X,
     Save,
     Trash2,
-    ArrowRight
+    ArrowRight,
+    MessageSquare
 } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -43,9 +44,16 @@ export default function ProjectDetailsPage() {
     const [isEditing, setIsEditing] = useState(false);
     const [editForm, setEditForm] = useState<Partial<Project>>({});
 
-    // Task Create State
-    const [isAddingTask, setIsAddingTask] = useState(false);
-    const [newTaskTitle, setNewTaskTitle] = useState('');
+    // Task Management State
+    const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+    const [isEditingTask, setIsEditingTask] = useState(false);
+    const [currentTask, setCurrentTask] = useState<Partial<Task>>({
+        title: '',
+        assignee: '',
+        priority: 'medium',
+        status: 'todo',
+        due_date: ''
+    });
 
     const loadData = async () => {
         const id = params?.id as string;
@@ -88,7 +96,8 @@ export default function ProjectDetailsPage() {
                 description: editForm.description,
                 start_date: editForm.start_date,
                 end_date: editForm.end_date,
-                value: Number(editForm.value)
+                value: Number(editForm.value),
+                thumbnail: editForm.thumbnail
             });
             setIsEditing(false);
             loadData();
@@ -108,47 +117,95 @@ export default function ProjectDetailsPage() {
         }
     };
 
-    const handleAddTask = async () => {
-        if (!newTaskTitle.trim() || !project) return;
+    const openCreateTask = () => {
+        setIsEditingTask(false);
+        setCurrentTask({
+            title: '',
+            assignee: '',
+            priority: 'medium',
+            status: 'todo',
+            due_date: '',
+            project_id: project?.id
+        });
+        setIsTaskModalOpen(true);
+    };
+
+    const openEditTask = (task: Task) => {
+        setIsEditingTask(true);
+        setCurrentTask({ ...task });
+        setIsTaskModalOpen(true);
+    };
+
+    const handleSaveTask = async () => {
+        if (!currentTask.title || !project) return;
         try {
-            await createTask({
-                project_id: project.id,
-                title: newTaskTitle,
-                status: 'todo',
-                assignee: 'Unassigned', // Placeholder
-                due_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-            });
-            setNewTaskTitle('');
-            setIsAddingTask(false);
-            // Refresh tasks
+            const { updateTask } = await import('@/lib/data'); // Ensure import if not at top, but usually implies standard import
+
+            if (isEditingTask && currentTask.id) {
+                await updateTask(currentTask.id, {
+                    title: currentTask.title,
+                    assignee: currentTask.assignee,
+                    priority: currentTask.priority,
+                    status: currentTask.status,
+                    due_date: currentTask.due_date
+                });
+            } else {
+                await createTask({
+                    project_id: project.id,
+                    title: currentTask.title,
+                    assignee: currentTask.assignee || null,
+                    priority: currentTask.priority,
+                    status: currentTask.status || 'todo',
+                    due_date: currentTask.due_date || null
+                });
+            }
+            setIsTaskModalOpen(false);
             const tsk = await fetchTasks(project.id);
             setTasks(tsk);
         } catch (error) {
-            console.error(error);
+            console.error('Error saving task:', error);
+            alert('Failed to save task');
+        }
+    };
+
+    const handleDeleteTask = async (taskId: string) => {
+        if (!confirm('Delete this task?')) return;
+        try {
+            const { deleteTask } = await import('@/lib/data');
+            await deleteTask(taskId);
+            setTasks(prev => prev.filter(t => t.id !== taskId));
+        } catch (error) {
+            console.error('Error deleting task:', error);
         }
     };
 
     const toggleTaskStatus = async (task: Task) => {
-        const newStatus = task.status === 'done' ? 'todo' : 'done';
+        const nextStatus = task.status === 'todo' ? 'in-progress' : task.status === 'in-progress' ? 'done' : 'todo';
         try {
-            await updateTaskStatus(task.id, newStatus);
-            setTasks(prev => prev.map(t => t.id === task.id ? { ...t, status: newStatus } : t));
+            await updateTaskStatus(task.id, nextStatus);
+            setTasks(tasks.map(t => t.id === task.id ? { ...t, status: nextStatus } : t));
         } catch (error) {
-            console.error(error);
+            console.error('Error updating status:', error);
+        }
+    };
+
+    const getPriorityColor = (p?: string) => {
+        if (p === 'high') return 'text-red-400 bg-red-400/10 border-red-400/20';
+        if (p === 'medium') return 'text-yellow-400 bg-yellow-400/10 border-yellow-400/20';
+        return 'text-blue-400 bg-blue-400/10 border-blue-400/20';
+    };
+
+    const getStatusColor = (status: string) => {
+        switch (status) {
+            case 'done': return 'text-green-500 bg-green-500/10 border-green-500/20';
+            case 'in-progress': return 'text-blue-500 bg-blue-500/10 border-blue-500/20';
+            case 'todo': return 'text-gray-400 bg-white/5 border-white/10';
+            default: return 'text-gray-400';
         }
     };
 
     if (loading) return <div className="p-10 text-center text-gray-500">Loading project details...</div>;
     if (!project) return <div className="p-10 text-center text-gray-500">Project not found</div>;
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-            case 'done': return 'text-green-500 bg-green-500/10';
-            case 'in-progress': return 'text-blue-500 bg-blue-500/10';
-            case 'todo': return 'text-gray-400 bg-white/5';
-            default: return 'text-gray-400';
-        }
-    };
 
     return (
         <div className="space-y-6 relative">
@@ -218,55 +275,63 @@ export default function ProjectDetailsPage() {
                         <div className="p-4 border-b border-white/5 flex justify-between items-center bg-brand-dark/30">
                             <h3 className="font-bold text-sm">Tasks & Deliverables</h3>
                             <button
-                                onClick={() => setIsAddingTask(!isAddingTask)}
+                                onClick={openCreateTask}
                                 className="text-brand-primary text-xs font-medium hover:underline flex items-center gap-1"
                             >
                                 <Plus size={14} /> Add Task
                             </button>
                         </div>
 
-                        {isAddingTask && (
-                            <div className="p-4 bg-white/5 border-b border-white/5 flex gap-2">
-                                <input
-                                    autoFocus
-                                    className="flex-1 bg-brand-dark border border-white/10 rounded px-3 py-1 text-sm outline-none focus:border-brand-primary"
-                                    placeholder="Task title..."
-                                    value={newTaskTitle}
-                                    onChange={e => setNewTaskTitle(e.target.value)}
-                                    onKeyDown={e => e.key === 'Enter' && handleAddTask()}
-                                />
-                                <button onClick={handleAddTask} className="px-3 py-1 bg-brand-primary text-black text-xs font-bold rounded">Save</button>
-                            </div>
-                        )}
-
                         <div className="divide-y divide-white/5">
-                            {tasks.length === 0 && !isAddingTask && (
+                            {tasks.length === 0 && (
                                 <p className="p-8 text-center text-gray-500 text-sm">No tasks created yet.</p>
                             )}
                             {tasks.map(task => (
                                 <div
                                     key={task.id}
-                                    className="p-4 flex items-center justify-between group hover:bg-white/[0.02] cursor-pointer"
-                                    onClick={() => toggleTaskStatus(task)}
+                                    className="p-4 flex items-center justify-between hover:bg-white/[0.02] group transition-colors"
                                 >
-                                    <div className="flex items-center gap-3">
-                                        <div className={`p-1.5 rounded-full flex items-center justify-center transition-colors ${task.status === 'done' ? 'bg-green-500 text-black' : 'border border-gray-600 text-transparent hover:border-brand-primary'}`}>
-                                            <CheckCircle2 size={12} />
+                                    <div className="flex items-center gap-4 flex-1">
+                                        <button
+                                            onClick={() => toggleTaskStatus(task)}
+                                            className={`w-5 h-5 rounded border flex items-center justify-center transition-colors
+                                                ${task.status === 'done' ? 'bg-brand-primary border-brand-primary' :
+                                                    task.status === 'in-progress' ? 'border-brand-primary text-brand-primary' : 'border-gray-600 hover:border-brand-primary'}
+                                            `}
+                                        >
+                                            {task.status === 'done' && <div className="w-2.5 h-2.5 bg-black rounded-[1px]" />}
+                                            {task.status === 'in-progress' && <div className="w-1.5 h-1.5 bg-brand-primary rounded-full" />}
+                                        </button>
+                                        <div>
+                                            <p className={`text-sm ${task.status === 'done' ? 'text-gray-500 line-through' : 'text-gray-200'}`}>
+                                                {task.title}
+                                            </p>
                                         </div>
-                                        <p className={`text-sm ${task.status === 'done' ? 'text-gray-500 line-through' : 'text-gray-200'}`}>
-                                            {task.title}
-                                        </p>
                                     </div>
-                                    <div className="flex items-center gap-4">
-                                        <span className={`text-[10px] px-2 py-0.5 rounded-full uppercase font-medium ${getStatusColor(task.status)}`}>
-                                            {task.status}
+                                    <div className="flex items-center gap-6">
+                                        <span className={`text-[10px] px-2 py-0.5 rounded border uppercase font-bold tracking-wide ${getPriorityColor(task.priority)}`}>
+                                            {task.priority || 'medium'}
                                         </span>
-                                        <div className="flex items-center gap-2 text-xs text-gray-500 w-24 justify-end">
-                                            <Calendar size={12} />
-                                            {task.due_date ? new Date(task.due_date).toLocaleDateString() : '-'}
+
+                                        <div className="flex items-center gap-2 text-sm text-gray-400 w-24 justify-end">
+                                            <div className="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-[10px] font-bold uppercase">
+                                                {task.assignee ? task.assignee.charAt(0) : '?'}
+                                            </div>
+                                            <span className="truncate w-10 text-xs">{task.assignee || '—'}</span>
                                         </div>
-                                        <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center text-[10px] text-gray-400">
-                                            {task.assignee ? task.assignee.charAt(0) : '?'}
+
+                                        <div className="flex items-center gap-2 text-xs text-gray-500 w-20 justify-end">
+                                            <Calendar size={12} />
+                                            {task.due_date ? new Date(task.due_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : '-'}
+                                        </div>
+
+                                        <div className="flex items-center gap-1">
+                                            <button onClick={() => openEditTask(task)} className="p-1.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
+                                                <Edit size={14} />
+                                            </button>
+                                            <button onClick={() => handleDeleteTask(task.id)} className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors">
+                                                <Trash2 size={14} />
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -275,7 +340,8 @@ export default function ProjectDetailsPage() {
                     </div>
                 </div>
 
-                {/* Right: Meta Info */}
+                {/* Right Column ... (Kept as is) */}
+
                 <div className="space-y-6">
                     <div className="bg-brand-surface border border-white/5 rounded-xl p-6">
                         <h3 className="font-bold text-sm mb-4">Project Details</h3>
@@ -371,6 +437,27 @@ export default function ProjectDetailsPage() {
                             </div>
 
                             <div>
+                                <label className="block text-xs font-semibold text-gray-400 uppercase mb-1">Project Image (Thumbnail URL)</label>
+                                <input
+                                    type="text"
+                                    value={editForm.thumbnail || ''}
+                                    onChange={(e) => setEditForm({ ...editForm, thumbnail: e.target.value })}
+                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-brand-primary outline-none"
+                                    placeholder="https://example.com/image.jpg"
+                                />
+                                {editForm.thumbnail && (
+                                    <div className="mt-2 relative w-full h-32 bg-black/20 rounded-lg overflow-hidden border border-white/5">
+                                        <img
+                                            src={editForm.thumbnail}
+                                            alt="Preview"
+                                            className="w-full h-full object-cover"
+                                            onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+
+                            <div>
                                 <label className="block text-xs font-semibold text-gray-400 uppercase mb-1">Description</label>
                                 <textarea
                                     value={editForm.description || ''}
@@ -428,10 +515,98 @@ export default function ProjectDetailsPage() {
                     </div>
                 </div>
             )}
+
+            {/* Task Modal */}
+            {isTaskModalOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                    <div className="bg-brand-surface border border-white/10 rounded-xl w-full max-w-md p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+                        <div className="flex justify-between items-center mb-6">
+                            <h3 className="font-bold text-lg">{isEditingTask ? 'Edit Task' : 'New Task'}</h3>
+                            <button onClick={() => setIsTaskModalOpen(false)} className="text-gray-400 hover:text-white">
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
+                            <div>
+                                <label className="block text-xs font-medium text-gray-400 mb-1">Task Title</label>
+                                <input
+                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-primary"
+                                    value={currentTask.title}
+                                    onChange={e => setCurrentTask({ ...currentTask, title: e.target.value })}
+                                    placeholder="e.g. Design Homepage"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-400 mb-1">Assignee</label>
+                                    <input
+                                        className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-primary"
+                                        value={currentTask.assignee || ''}
+                                        onChange={e => setCurrentTask({ ...currentTask, assignee: e.target.value })}
+                                        placeholder="Name"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-400 mb-1">Due Date</label>
+                                    <input
+                                        type="date"
+                                        className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-primary text-gray-200"
+                                        value={currentTask.due_date ? new Date(currentTask.due_date).toISOString().split('T')[0] : ''}
+                                        onChange={e => setCurrentTask({ ...currentTask, due_date: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-400 mb-1">Priority</label>
+                                    <select
+                                        className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-primary text-gray-200"
+                                        value={currentTask.priority || 'medium'}
+                                        onChange={e => setCurrentTask({ ...currentTask, priority: e.target.value as any })}
+                                    >
+                                        <option value="low">Low</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-medium text-gray-400 mb-1">Status</label>
+                                    <select
+                                        className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm outline-none focus:border-brand-primary text-gray-200"
+                                        value={currentTask.status || 'todo'}
+                                        onChange={e => setCurrentTask({ ...currentTask, status: e.target.value as any })}
+                                    >
+                                        <option value="todo">To Do</option>
+                                        <option value="in-progress">In Progress</option>
+                                        <option value="done">Done</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex justify-end gap-3 mt-6">
+                            <button
+                                onClick={() => setIsTaskModalOpen(false)}
+                                className="px-4 py-2 text-sm text-gray-400 hover:text-white"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleSaveTask}
+                                className="px-4 py-2 bg-brand-primary text-black text-sm font-bold rounded-lg hover:bg-brand-secondary transition-colors"
+                            >
+                                {isEditingTask ? 'Save Changes' : 'Create Task'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
-
 
 function AssetsSection({ projectId, clientId }: { projectId: string, clientId: string }) {
     const [assets, setAssets] = useState<any[]>([]);
@@ -569,32 +744,40 @@ function AssetsSection({ projectId, clientId }: { projectId: string, clientId: s
             ) : (
                 <div className="space-y-3">
                     {assets.map(asset => (
-                        <div key={asset.id} className="flex items-center gap-3 p-2 bg-white/5 rounded-lg hover:bg-white/10 group transition-colors">
-                            <div className={`p-2 rounded ${asset.type === 'document' ? 'bg-blue-500/20 text-blue-500' : 'bg-purple-500/20 text-purple-500'}`}>
-                                <Paperclip size={16} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <p className="text-xs font-medium text-white truncate">{asset.title}</p>
-                                <div className="flex items-center gap-2">
-                                    <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded-sm 
-                                        ${asset.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' : ''}
-                                        ${asset.status === 'approved' ? 'bg-green-500/20 text-green-500' : ''}
-                                        ${asset.status === 'rejected' ? 'bg-red-500/20 text-red-500' : ''}
-                                        ${asset.status === 'uploaded' ? 'bg-gray-500/20 text-gray-400' : ''}
-                                    `}>
-                                        {asset.status === 'uploaded' ? 'Shared' : asset.status}
-                                    </span>
-                                    <span className="text-[10px] text-gray-500">{new Date(asset.created_at).toLocaleDateString()}</span>
+                        <div key={asset.id} className="flex flex-col gap-2 p-3 bg-white/5 rounded-lg hover:bg-white/10 group transition-colors">
+                            <div className="flex items-center gap-3">
+                                <div className={`p-2 rounded ${asset.type === 'document' ? 'bg-blue-500/20 text-blue-500' : 'bg-purple-500/20 text-purple-500'}`}>
+                                    <Paperclip size={16} />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-xs font-medium text-white truncate">{asset.title}</p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded-sm 
+                                            ${asset.status === 'pending' ? 'bg-yellow-500/20 text-yellow-500' : ''}
+                                            ${asset.status === 'approved' ? 'bg-green-500/20 text-green-500' : ''}
+                                            ${asset.status === 'rejected' ? 'bg-red-500/20 text-red-500' : ''}
+                                            ${asset.status === 'uploaded' ? 'bg-gray-500/20 text-gray-400' : ''}
+                                        `}>
+                                            {asset.status === 'uploaded' ? 'Shared' : asset.status}
+                                        </span>
+                                        <span className="text-[10px] text-gray-500">{new Date(asset.created_at).toLocaleDateString()}</span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <a href={asset.file_url} target="_blank" rel="noopener noreferrer" className="p-1 text-gray-400 hover:text-brand-primary hover:bg-white/10 rounded">
+                                        <ArrowRight size={12} className="-rotate-45" />
+                                    </a>
+                                    <button onClick={() => handleDelete(asset.id)} className="p-1 text-red-500 hover:bg-red-500/10 rounded">
+                                        <Trash2 size={12} />
+                                    </button>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <a href={asset.file_url} target="_blank" rel="noopener noreferrer" className="p-1 text-gray-400 hover:text-brand-primary hover:bg-white/10 rounded">
-                                    <ArrowRight size={12} className="-rotate-45" />
-                                </a>
-                                <button onClick={() => handleDelete(asset.id)} className="p-1 text-red-500 hover:bg-red-500/10 rounded">
-                                    <Trash2 size={12} />
-                                </button>
-                            </div>
+                            {asset.comments && (
+                                <div className="flex items-start gap-2 text-xs text-gray-400 bg-black/20 p-2 rounded border border-white/5 mt-1 ml-9">
+                                    <MessageSquare size={12} className="mt-0.5 shrink-0 text-brand-primary" />
+                                    <span className="italic">"{asset.comments}"</span>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

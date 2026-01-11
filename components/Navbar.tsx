@@ -86,10 +86,16 @@ export const Navbar: React.FC = () => {
           {/* Logo */}
           <OptimizedLink
             href="/"
-            className="relative z-10 text-xs sm:text-sm font-bold tracking-tight text-brand-white font-display flex items-center gap-1.5 sm:gap-2 flex-shrink-0"
+            className="relative z-10 flex items-center gap-2.5 flex-shrink-0 group"
           >
-            <div className="w-1.5 h-1.5 bg-brand-primary rounded-full animate-pulse" />
-            OURCASHMIR
+            <img
+              src="/favicon/logo.png"
+              alt="OurCashmir Logo"
+              className={`transition-all duration-700 object-contain ${isScrolled ? 'h-8 sm:h-9' : 'h-10 sm:h-12'}`}
+            />
+            <span className={`font-display font-bold tracking-tighter text-brand-white transition-all duration-700 ${isScrolled ? 'text-sm sm:text-base' : 'text-base sm:text-lg'}`}>
+              OUR<span className="text-brand-primary group-hover:text-brand-white transition-colors">CASHMIR</span>
+            </span>
           </OptimizedLink>
 
           {/* Center Links with Sliding Background - Desktop */}

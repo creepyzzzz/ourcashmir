@@ -23,11 +23,11 @@ const About: React.FC = () => {
         </div>
 
         <h2 className="text-4xl md:text-5xl font-bold text-brand-white leading-tight">
-          Grow with the digital marketing agency?
+          Helping Kashmiri Brands <span className="text-brand-primary">Spread Like Wildfire.</span>
         </h2>
 
         <p className="text-gray-400 text-sm leading-relaxed max-w-md">
-          Our digital marketing experts have put together thousands of successful digital marketing campaigns for businesses looking to increase leads.
+          At Our Cashmir, we turn your ideas into scroll-stopping content. Whether you're a local café or a rising personal brand, we shoot, edit, and grow your presence — without you touching a single editing tool.
         </p>
 
         <button className="flex items-center gap-2 text-xs font-bold tracking-widest text-brand-white group">
@@ -47,20 +47,22 @@ const About: React.FC = () => {
             <h4 className="text-sm font-bold text-brand-white mb-4">Recent activity</h4>
             <div className="space-y-4">
               {[
-                { name: 'Zen Richarlison', time: '3 hours ago', item: '1x Gymnocalycium loeanum', price: '$12.50' },
-                { name: 'Nikki Sukamuljo', time: '16 hours ago', item: '1x Gymnocalycium mihanovichii ..', price: '$26.75' },
+                { name: 'Gatoes Official', time: '3 hours ago', item: 'Influencer Campaign', price: 'Active' },
+                { name: 'Vintage House', time: '16 hours ago', item: 'Meta Ads Setup', price: 'Live' },
               ].map((activity, idx) => (
                 <div key={idx} className="flex items-start justify-between">
                   <div className="flex gap-3">
                     <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-primary text-xs">
-                      🌱
+                      {idx === 0 ? '📱' : '🚀'}
                     </div>
                     <div>
                       <p className="text-xs font-bold text-brand-white">{activity.name} <span className="text-[10px] text-gray-500 font-normal">{activity.time}</span></p>
-                      <p className="text-[10px] text-gray-500">Purchased <span className="font-semibold">{activity.item}</span></p>
+                      <p className="text-[10px] text-gray-500"><span className="font-semibold">{activity.item}</span> launched</p>
                     </div>
                   </div>
-                  <span className="text-xs font-bold">{activity.price}</span>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${idx === 0 ? 'bg-blue-500/20 text-blue-400' : 'bg-green-500/20 text-green-400'}`}>
+                    {activity.price}
+                  </span>
                 </div>
               ))}
             </div>
@@ -69,11 +71,11 @@ const About: React.FC = () => {
           {/* Card 2: Total Sales (Bottom Left Overlay) */}
           <div className="absolute -bottom-2 left-0 md:bottom-12 w-[65%] md:w-[55%] bg-brand-surface rounded-xl md:rounded-3xl p-3 md:p-5 shadow-xl z-20 border border-brand-primary/20 transform scale-75 md:scale-100 origin-bottom-left">
             <div className="flex justify-between items-start mb-6">
-              <h4 className="text-xs font-semibold text-gray-400">Total Sales</h4>
+              <h4 className="text-xs font-semibold text-gray-400">Total Reach</h4>
               <MoreVertical size={14} className="text-gray-500" />
             </div>
             <div className="mb-2">
-              <span className="text-3xl font-bold text-brand-white">258</span>
+              <span className="text-3xl font-bold text-brand-white">2.5M</span>
               <div className="inline-flex items-center gap-1 bg-brand-primary text-black px-1.5 py-0.5 rounded-full text-[8px] ml-2">
                 11% <ArrowUpRight size={8} />
               </div>
@@ -98,12 +100,12 @@ const About: React.FC = () => {
           {/* Card 3: Today's Order (Bottom Right Overlay) */}
           <div className="absolute -bottom-6 -right-2 md:bottom-24 md:right-4 w-[60%] md:w-[50%] bg-gray-800 rounded-xl md:rounded-3xl p-3 md:p-5 shadow-xl z-30 border border-white/10 backdrop-blur-md transform scale-75 md:scale-100 origin-bottom-right">
             <div className="flex justify-between items-center mb-4">
-              <h4 className="text-xs font-semibold text-gray-300">Today's order</h4>
+              <h4 className="text-xs font-semibold text-gray-300">Campaign ROI</h4>
               <MoreVertical size={14} className="text-gray-500" />
             </div>
             <div className="mb-4">
-              <span className="text-3xl font-bold text-brand-white">$150</span>
-              <p className="text-[10px] text-gray-400">10 products sold <span className="bg-brand-primary text-black px-1 py-0.5 rounded-full text-[8px] ml-1">+2% ↑</span></p>
+              <span className="text-3xl font-bold text-brand-white">12x</span>
+              <p className="text-[10px] text-gray-400">Average ROAS <span className="bg-brand-primary text-black px-1 py-0.5 rounded-full text-[8px] ml-1">+15% ↑</span></p>
             </div>
             <div className="flex gap-1 items-end h-8">
               {[40, 60, 30, 80, 50, 90, 40].map((h, i) => (

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, ArrowLeft } from 'lucide-react';
+import { ExternalLink, ArrowLeft, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -20,27 +20,24 @@ const itemVariants = {
     visible: { opacity: 1, y: 0 }
 };
 
-import { fetchPublicClients, Client } from '@/lib/data';
-import { useState, useEffect } from 'react';
+export const clientsList = [
+    { name: 'Gatoes', image: '/images/ourcashmir/People/image.png', link: 'https://www.instagram.com/gatoes.official/' },
+    { name: 'Just Zing', image: '/images/ourcashmir/People/logo-270.png', link: 'https://www.instagram.com/justzingofficial/' },
+    { name: 'Eye Care Centre', image: '/images/ourcashmir/People/EYE CARE.jpg', link: 'https://www.instagram.com/reel/DRrmz4niYuB/' },
+    { name: 'Khushwara Kahave', image: '/images/ourcashmir/People/ww.jpg', link: 'https://www.instagram.com/khushwara_kahave/' },
+    { name: 'IM95 Perfumes', image: '/images/ourcashmir/People/Ab.png', link: 'https://www.instagram.com/__im1995__/' },
+    { name: 'Vintage House', image: '/images/ourcashmir/People/vishal.png', link: 'https://www.instagram.com/vintagehousekupwara/' },
+    { name: 'Web Involve', image: '/images/ourcashmir/People/Web involve.jpeg', link: 'https://www.instagram.com/webinvolve/' },
+    { name: 'Quality Healthcare Hospital', image: '/images/ourcashmir/People/QHH.png', link: 'https://www.instagram.com/p/DKhTsMJTin-/' },
+    { name: 'Lovely Sweets', image: '/images/ourcashmir/People/Lovely sweets.jpg', link: 'https://www.instagram.com/p/DLt6msTR-gc/' },
+    { name: 'Power House', image: '/images/ourcashmir/People/Power House.png', link: 'https://www.instagram.com/p/DL7Z0RVoJam/' },
+    { name: 'Circus', image: '/images/ourcashmir/People/Circus.jpg', link: 'https://www.instagram.com/reel/DMF6AAQyL3h/' },
+    { name: 'Bachpan School', image: '/images/ourcashmir/People/BSK.jpg', link: 'https://www.instagram.com/p/DLt35-PzcE_/' },
+    { name: 'DeConcepts SGR', image: '/images/ourcashmir/People/deconcepts.jpg', link: 'https://www.instagram.com/reel/DPRXWvDiYaH/' },
+    { name: 'Print Box', image: '/images/ourcashmir/People/PB.jpg', link: 'https://www.instagram.com/p/DMXufP-PqMG/' },
+];
 
 export default function ClientsPage() {
-    const [clients, setClients] = useState<Client[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        async function loadClients() {
-            try {
-                const data = await fetchPublicClients();
-                setClients(data);
-            } catch (error) {
-                console.error("Failed to load clients", error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        loadClients();
-    }, []);
-
     return (
         <div className="min-h-screen w-full bg-black overflow-x-hidden selection:bg-brand-primary selection:text-black">
             <Navbar />
@@ -82,58 +79,49 @@ export default function ClientsPage() {
 
             {/* Clients Grid */}
             <section className="w-full px-4 md:px-12 lg:px-20 pb-24 max-w-screen-2xl mx-auto">
-                {loading ? (
-                    <div className="flex justify-center items-center h-40">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary" />
-                    </div>
-                ) : (
-                    <motion.div
-                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
-                    >
-                        {clients.map((client) => (
-                            <motion.a
-                                key={client.id}
-                                href={client.instagram || client.website || '#'}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                variants={itemVariants}
-                                className="group relative bg-gradient-to-br from-gray-900/80 to-gray-900/40 backdrop-blur-sm border border-gray-800/50 rounded-2xl p-6 transition-all duration-300 hover:border-brand-primary/50 hover:shadow-lg hover:-translate-y-1 block"
-                            >
-                                {/* Hover Glow */}
-                                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <motion.div
+                    className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6"
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
+                >
+                    {clientsList.map((client, index) => (
+                        <motion.a
+                            key={index}
+                            href={client.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            variants={itemVariants}
+                            className="group relative bg-gradient-to-br from-gray-900/80 to-gray-900/40 backdrop-blur-sm border border-gray-800/50 rounded-2xl p-6 transition-all duration-300 hover:border-brand-primary/50 hover:shadow-lg hover:-translate-y-1 block"
+                        >
+                            {/* Hover Glow */}
+                            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                                <div className="relative z-10 flex flex-col items-center text-center">
-                                    {/* Logo Container */}
-                                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden bg-white/5 border border-gray-700/50 mb-4 group-hover:border-brand-primary/30 transition-colors flex items-center justify-center">
-                                        {client.avatar_url ? (
-                                            <img
-                                                src={client.avatar_url}
-                                                alt={client.name}
-                                                className="w-full h-full object-cover"
-                                            />
-                                        ) : (
-                                            <span className="text-2xl font-bold text-gray-500">{client.name.charAt(0)}</span>
-                                        )}
-                                    </div>
-
-                                    {/* Name */}
-                                    <h3 className="text-white font-semibold text-sm md:text-base mb-2 group-hover:text-brand-primary transition-colors">
-                                        {client.name}
-                                    </h3>
-
-                                    {/* View Link */}
-                                    <div className="flex items-center gap-1.5 text-gray-500 text-xs group-hover:text-brand-primary transition-colors">
-                                        <span>View Profile</span>
-                                        <ExternalLink size={12} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                                    </div>
+                            <div className="relative z-10 flex flex-col items-center text-center">
+                                {/* Logo Container */}
+                                <div className="w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden bg-white/5 border border-gray-700/50 mb-4 group-hover:border-brand-primary/30 transition-colors flex items-center justify-center p-2">
+                                    <img
+                                        src={client.image}
+                                        alt={client.name}
+                                        className="w-full h-full object-contain"
+                                    />
                                 </div>
-                            </motion.a>
-                        ))}
-                    </motion.div>
-                )}
+
+                                {/* Name */}
+                                <h3 className="text-white font-semibold text-sm md:text-base mb-2 group-hover:text-brand-primary transition-colors">
+                                    {client.name}
+                                </h3>
+
+                                {/* View Link */}
+                                <div className="flex items-center gap-1.5 text-gray-500 text-xs group-hover:text-brand-primary transition-colors">
+                                    <Instagram size={12} />
+                                    <span>View Profile</span>
+                                    <ExternalLink size={12} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                                </div>
+                            </div>
+                        </motion.a>
+                    ))}
+                </motion.div>
             </section>
 
             {/* CTA Section */}

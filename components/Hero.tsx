@@ -18,13 +18,12 @@ const Hero: React.FC = () => {
         </div>
 
         <h1 className="text-3xl md:text-6xl lg:text-[76px] leading-[1.1] md:leading-[1.1] font-bold text-brand-white tracking-tight">
-          Grow <span className="italic text-brand-primary">faster</span> with our all-in-one marketing platform
+          Growing <span className="italic text-brand-primary">Brands</span> of Kashmir
         </h1>
 
         <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-md">
-          We aren't your average, run-of-the-mill website designer—
-          our services pack a serious punch. We are Digital agency
-          for websites that achieve goals.
+          Most businesses in Kashmir struggle to reach the right people.
+          <span className="text-brand-primary font-semibold"> Our Cashmir</span> bridges that gap with Meta ads that target buyers and collaborations that build trust fast.
         </p>
 
         <div className="flex items-center gap-6 pt-2">
@@ -48,25 +47,25 @@ const Hero: React.FC = () => {
           {/* Main Image Mask/Shape */}
           <div className="w-full h-full rounded-t-[160px] rounded-b-[40px] overflow-hidden bg-gray-800">
             <img
-              src="https://images.unsplash.com/photo-1548142813-c348350df52b?q=80&w=989&auto=format&fit=crop"
-              alt="Happy marketing professional"
+              src="/images/ourcashmir/People/heroimage.JPG"
+              alt="Our Cashmir Marketing"
               className="w-full h-full object-cover"
             />
           </div>
 
           {/* Floating Card */}
-          <div className="absolute top-6 -left-8 md:top-20 md:-left-24 bg-gradient-to-br from-gray-900 via-gray-900 to-brand-secondary/30 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl w-[160px] md:w-[220px] backdrop-blur-md border border-brand-primary/20 transform scale-90 md:scale-100">
+          <div className="absolute top-6 -left-12 md:top-20 md:-left-36 bg-gradient-to-br from-gray-900 via-gray-900 to-brand-secondary/30 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl w-[160px] md:w-[220px] backdrop-blur-md border border-brand-primary/20 transform scale-90 md:scale-100 transition-all hover:-translate-x-2">
             <div className="flex justify-between items-start mb-2">
-              <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-brand-primary text-xs font-bold">1</div>
+              <div className="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary text-[10px] font-bold">CEO</div>
               <div className="bg-white p-1 rounded-lg shadow-sm">
-                <Sprout size={24} className="text-brand-primary" />
+                <div className="w-6 h-6 flex items-center justify-center text-brand-primary font-bold text-lg">OC</div>
               </div>
             </div>
             <div className="space-y-1 mt-3">
-              <p className="text-xs font-bold text-gray-300">Congrats!</p>
-              <p className="text-2xl font-bold text-white">$12.5</p>
-              <p className="text-[8px] text-gray-400">16 hours ago</p>
-              <p className="text-[8px] text-gray-400 truncate">1x Gymnocalycium mihanovichii ..</p>
+              <p className="text-[10px] font-bold text-brand-primary uppercase tracking-widest">Our Visionary</p>
+              <p className="text-xl font-bold text-white">Founder & CEO</p>
+              <div className="h-px w-full bg-gray-800 my-2"></div>
+              <p className="text-[10px] text-gray-400 italic">"Helping brands reach their true potential in the valley."</p>
             </div>
           </div>
         </div>

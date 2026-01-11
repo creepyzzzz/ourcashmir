@@ -9,14 +9,13 @@ const Footer: React.FC = () => {
 
                 {/* Left Column */}
                 <div className="flex-1 space-y-8">
-                    <div className="flex items-center gap-2">
-                        <div className="text-brand-primary text-2xl">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-                            </svg>
-                        </div>
-                        <span className="text-xl font-bold tracking-tight text-brand-white">OurCashmir</span>
-                    </div>
+                    <Link href="/" className="flex items-center gap-2 group">
+                        <img
+                            src="/favicon/logo.png"
+                            alt="OurCashmir Logo"
+                            className="h-10 md:h-12 w-auto transition-transform group-hover:scale-105"
+                        />
+                    </Link>
 
                     <div className="space-y-4 max-w-sm">
                         <p className="text-xs text-gray-400 uppercase tracking-wider">Subscribe to our weekly newsletter</p>

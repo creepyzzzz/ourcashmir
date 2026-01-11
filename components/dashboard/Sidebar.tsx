@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 import {
     LayoutDashboard,
     Briefcase,
@@ -60,6 +61,12 @@ export default function Sidebar({ collapsed: controlledCollapsed, onToggle }: Si
         setIsCollapsed(newValue);
         localStorage.setItem('sidebar_collapsed', String(newValue));
         onToggle?.(newValue);
+    };
+
+    const handleLogout = async () => {
+        const supabase = createClient();
+        await supabase.auth.signOut();
+        window.location.replace('/');
     };
 
     return (
@@ -173,7 +180,11 @@ export default function Sidebar({ collapsed: controlledCollapsed, onToggle }: Si
                                 <p className="text-xs font-medium text-brand-white truncate">Client User</p>
                                 <p className="text-[10px] text-gray-500 truncate">Active Plan</p>
                             </div>
-                            <button className="text-gray-400 hover:text-brand-white">
+                            <button
+                                onClick={handleLogout}
+                                className="text-gray-400 hover:text-brand-white"
+                                title="Sign out"
+                            >
                                 <LogOut size={16} />
                             </button>
                         </>

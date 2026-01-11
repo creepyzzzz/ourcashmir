@@ -1,14 +1,15 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 import {
     LayoutDashboard,
     Users,
     Briefcase,
     CheckSquare,
+    MessageSquare,
     FileText,
     CreditCard,
     Shield,
@@ -21,6 +22,7 @@ import {
     ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { fetchUser, Profile } from '@/lib/data';
 
 const NAV_ITEMS = [
     { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
@@ -28,6 +30,7 @@ const NAV_ITEMS = [
     { label: 'Clients', href: '/admin/clients', icon: Users },
     { label: 'Projects', href: '/admin/projects', icon: Briefcase },
     { label: 'Tasks', href: '/admin/tasks', icon: CheckSquare },
+    { label: 'Messages', href: '/admin/messages', icon: MessageSquare },
     { label: 'Reports', href: '/admin/reports', icon: FileText },
     { label: 'Approvals', href: '/admin/approvals', icon: Shield },
     { label: 'Billing', href: '/admin/billing', icon: CreditCard },
@@ -47,6 +50,7 @@ interface AdminSidebarProps {
 export default function AdminSidebar({ collapsed: controlledCollapsed, onToggle }: AdminSidebarProps) {
     const pathname = usePathname();
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [user, setUser] = useState<Profile | null>(null);
 
     // Sync with controlled state if provided
     useEffect(() => {
@@ -63,11 +67,36 @@ export default function AdminSidebar({ collapsed: controlledCollapsed, onToggle 
         }
     }, []);
 
+    const loadUser = async () => {
+        const profile = await fetchUser();
+        if (profile) {
+            // @ts-ignore
+            setUser(profile);
+        }
+    };
+
+    useEffect(() => {
+        loadUser();
+
+        // Listen for updates from Settings page
+        const handleProfileUpdate = () => {
+            loadUser();
+        };
+        window.addEventListener('profile-updated', handleProfileUpdate);
+        return () => window.removeEventListener('profile-updated', handleProfileUpdate);
+    }, []);
+
     const toggleSidebar = () => {
         const newValue = !isCollapsed;
         setIsCollapsed(newValue);
         localStorage.setItem('admin_sidebar_collapsed', String(newValue));
         onToggle?.(newValue);
+    };
+
+    const handleLogout = async () => {
+        const supabase = createClient();
+        await supabase.auth.signOut();
+        window.location.replace('/');
     };
 
     return (
@@ -201,16 +230,24 @@ export default function AdminSidebar({ collapsed: controlledCollapsed, onToggle 
             {/* Admin User Section */}
             <div className="p-3 border-t border-brand-primary/5">
                 <div className={`bg-brand-dark/50 rounded-xl p-3 flex items-center gap-3 border border-white/5 ${isCollapsed ? 'justify-center' : ''}`}>
-                    <div className="w-8 h-8 rounded-full bg-brand-primary/20 flex items-center justify-center text-brand-primary font-bold shrink-0">
-                        A
+                    <div className="w-8 h-8 rounded-full bg-brand-primary/20 flex items-center justify-center text-brand-primary font-bold shrink-0 overflow-hidden">
+                        {user?.avatar_url ? (
+                            <img src={user.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                        ) : (
+                            <span className="text-xs">{user?.full_name?.substring(0, 1).toUpperCase() || 'A'}</span>
+                        )}
                     </div>
                     {!isCollapsed && (
                         <>
                             <div className="flex-1 min-w-0">
-                                <p className="text-xs font-medium text-brand-white truncate">Administrator</p>
-                                <p className="text-[10px] text-gray-500 truncate">Super Admin</p>
+                                <p className="text-xs font-medium text-brand-white truncate">{user?.full_name || 'Administrator'}</p>
+                                <p className="text-[10px] text-gray-500 truncate">{user?.role?.toUpperCase() || 'Super Admin'}</p>
                             </div>
-                            <button className="text-gray-400 hover:text-brand-white">
+                            <button
+                                onClick={handleLogout}
+                                className="text-gray-400 hover:text-brand-white"
+                                title="Sign out"
+                            >
                                 <LogOut size={16} />
                             </button>
                         </>

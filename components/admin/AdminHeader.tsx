@@ -1,8 +1,10 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Bell, Search, User as UserIcon, Menu } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { fetchUser, Profile } from '@/lib/data';
 
 interface AdminHeaderProps {
     sidebarCollapsed?: boolean;
@@ -10,6 +12,26 @@ interface AdminHeaderProps {
 
 export default function AdminHeader({ sidebarCollapsed = false }: AdminHeaderProps) {
     const pathname = usePathname();
+    const [user, setUser] = useState<Profile | null>(null);
+
+    const loadUser = async () => {
+        const profile = await fetchUser();
+        if (profile) {
+            // @ts-ignore
+            setUser(profile);
+        }
+    };
+
+    useEffect(() => {
+        loadUser();
+
+        // Listen for updates from Settings page
+        const handleProfileUpdate = () => {
+            loadUser();
+        };
+        window.addEventListener('profile-updated', handleProfileUpdate);
+        return () => window.removeEventListener('profile-updated', handleProfileUpdate);
+    }, []);
 
     const getTitle = () => {
         if (pathname === '/admin') return 'Dashboard';
@@ -54,11 +76,15 @@ export default function AdminHeader({ sidebarCollapsed = false }: AdminHeaderPro
 
                 <div className="flex items-center gap-3">
                     <div className="text-right hidden sm:block">
-                        <p className="text-sm font-medium text-brand-white leading-none">Admin User</p>
-                        <p className="text-xs text-gray-500 leading-none mt-1 uppercase">System Admin</p>
+                        <p className="text-sm font-medium text-brand-white leading-none">{user?.full_name || 'Admin User'}</p>
+                        <p className="text-xs text-gray-500 leading-none mt-1 uppercase">{user?.role?.replace('_', ' ') || 'System Admin'}</p>
                     </div>
                     <div className="w-9 h-9 rounded-full bg-brand-primary/20 border border-brand-primary/30 flex items-center justify-center overflow-hidden">
-                        <UserIcon className="w-5 h-5 text-brand-primary" />
+                        {user?.avatar_url ? (
+                            <img src={user.avatar_url} alt="Admin" className="w-full h-full object-cover" />
+                        ) : (
+                            <UserIcon className="w-5 h-5 text-brand-primary" />
+                        )}
                     </div>
                 </div>
             </div>
