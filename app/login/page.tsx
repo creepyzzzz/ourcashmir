@@ -103,7 +103,7 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="w-full h-screen flex overflow-hidden bg-brand-darker text-brand-white font-sans">
+        <div className="w-full min-h-screen lg:h-screen flex flex-col lg:flex-row overflow-auto lg:overflow-hidden bg-brand-darker text-brand-white font-sans">
 
             {/* Left Side - Branding (Hidden on mobile) */}
             <motion.div
@@ -149,11 +149,12 @@ export default function LoginPage() {
             </motion.div>
 
             {/* Right Side - Form */}
-            <div className="w-full lg:w-1/2 h-full flex items-center justify-center p-6 sm:p-12 relative">
-                <div className="absolute top-6 left-6 lg:hidden">
-                    <Link href="/" className="flex items-center gap-2 text-sm text-gray-400 hover:text-brand-white transition-colors">
+            <div className="w-full lg:w-1/2 flex-1 lg:h-full flex items-center justify-center p-4 sm:p-6 lg:p-12 relative">
+                {/* Mobile Logo */}
+                <div className="absolute top-4 left-4 lg:hidden">
+                    <Link href="/" className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-brand-white transition-colors">
                         <div className="w-1.5 h-1.5 bg-brand-primary rounded-full" />
-                        Back to Home
+                        <span className="font-bold">OURCASHMIR</span>
                     </Link>
                 </div>
 
@@ -161,14 +162,14 @@ export default function LoginPage() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="w-full max-w-md space-y-8"
+                    className="w-full max-w-md space-y-5 lg:space-y-8 pt-10 lg:pt-0"
                 >
 
-                    <div className="text-center space-y-2">
-                        <h2 className="text-3xl font-bold tracking-tight">
+                    <div className="text-center space-y-1 lg:space-y-2">
+                        <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">
                             {view === 'login' ? 'Welcome back' : view === 'signup' ? 'Create an account' : 'Reset Password'}
                         </h2>
-                        <p className="text-gray-400 text-sm">
+                        <p className="text-gray-400 text-xs lg:text-sm">
                             {view === 'login' ? 'Enter your details to sign in'
                                 : view === 'signup' ? 'Start your journey with us today'
                                     : 'Enter your email to receive recovery instructions'}
@@ -176,32 +177,32 @@ export default function LoginPage() {
                     </div>
 
                     {view !== 'forgot' && (
-                        <div className="flex bg-brand-dark p-1 rounded-lg border border-brand-primary/10">
+                        <div className="flex bg-brand-dark p-0.5 lg:p-1 rounded-lg border border-brand-primary/10">
                             <button
                                 onClick={() => setAuthMethod('password')}
-                                className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all ${authMethod === 'password' ? 'bg-brand-surface text-brand-white shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
+                                className={`flex-1 flex items-center justify-center gap-1.5 lg:gap-2 py-1.5 lg:py-2 text-xs lg:text-sm font-medium rounded-md transition-all ${authMethod === 'password' ? 'bg-brand-surface text-brand-white shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
                             >
                                 <Lock className="w-3 h-3" /> Password
                             </button>
                             <button
                                 onClick={() => setAuthMethod('magic')}
-                                className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-medium rounded-md transition-all ${authMethod === 'magic' ? 'bg-brand-surface text-brand-white shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
+                                className={`flex-1 flex items-center justify-center gap-1.5 lg:gap-2 py-1.5 lg:py-2 text-xs lg:text-sm font-medium rounded-md transition-all ${authMethod === 'magic' ? 'bg-brand-surface text-brand-white shadow-sm' : 'text-gray-400 hover:text-gray-200'}`}
                             >
                                 <Sparkles className="w-3 h-3" /> Magic Link
                             </button>
                         </div>
                     )}
 
-                    <div className="space-y-4">
+                    <div className="space-y-3 lg:space-y-4">
                         {/* Google Login - Only show for Login/Signup */}
                         {view !== 'forgot' && (
                             <>
                                 <button
                                     onClick={handleGoogleLogin}
-                                    className="w-full flex items-center justify-center gap-3 bg-brand-dark border border-brand-primary/20 hover:border-brand-primary/50 text-white p-3 rounded-lg transition-all duration-200 group relative overflow-hidden"
+                                    className="w-full flex items-center justify-center gap-2 lg:gap-3 bg-brand-dark border border-brand-primary/20 hover:border-brand-primary/50 text-white p-2.5 lg:p-3 rounded-lg transition-all duration-200 group relative overflow-hidden"
                                 >
                                     <div className="absolute inset-0 w-full h-full bg-brand-primary/5 group-hover:bg-brand-primary/10 transition-colors" />
-                                    <svg className="w-5 h-5 relative z-10" viewBox="0 0 24 24">
+                                    <svg className="w-4 h-4 lg:w-5 lg:h-5 relative z-10" viewBox="0 0 24 24">
                                         <path
                                             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                                             fill="#4285F4"
@@ -219,14 +220,14 @@ export default function LoginPage() {
                                             fill="#EA4335"
                                         />
                                     </svg>
-                                    <span className="relative z-10 font-medium">Continue with Google</span>
+                                    <span className="relative z-10 font-medium text-xs lg:text-sm">Continue with Google</span>
                                 </button>
 
                                 <div className="relative">
                                     <div className="absolute inset-0 flex items-center">
                                         <span className="w-full border-t border-gray-800" />
                                     </div>
-                                    <div className="relative flex justify-center text-xs uppercase">
+                                    <div className="relative flex justify-center text-[10px] lg:text-xs uppercase">
                                         <span className="bg-brand-darker px-2 text-gray-500">Or continue with {authMethod}</span>
                                     </div>
                                 </div>
@@ -234,17 +235,17 @@ export default function LoginPage() {
                         )}
 
                         {/* Auth Form */}
-                        <form onSubmit={handleAuth} className="space-y-4">
-                            <div className="space-y-2">
-                                <label className="text-xs font-medium text-gray-400 uppercase tracking-wider">Email Address</label>
+                        <form onSubmit={handleAuth} className="space-y-3 lg:space-y-4">
+                            <div className="space-y-1.5 lg:space-y-2">
+                                <label className="text-[10px] lg:text-xs font-medium text-gray-400 uppercase tracking-wider">Email Address</label>
                                 <div className="relative">
-                                    <Mail className="absolute left-3 top-3 w-5 h-5 text-gray-500" />
+                                    <Mail className="absolute left-2.5 lg:left-3 top-2.5 lg:top-3 w-4 h-4 lg:w-5 lg:h-5 text-gray-500" />
                                     <input
                                         type="email"
                                         placeholder="name@example.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full bg-brand-dark border border-gray-800 focus:border-brand-primary text-white pl-10 p-3 rounded-lg outline-none transition-colors placeholder:text-gray-600"
+                                        className="w-full bg-brand-dark border border-gray-800 focus:border-brand-primary text-white pl-9 lg:pl-10 p-2.5 lg:p-3 rounded-lg outline-none transition-colors placeholder:text-gray-600 text-sm lg:text-base"
                                         required
                                         disabled={loading}
                                     />
@@ -253,27 +254,27 @@ export default function LoginPage() {
 
                             {/* Password Field - Show only if Password Mode AND not in Forgot Password view */}
                             {authMethod === 'password' && view !== 'forgot' && (
-                                <div className="space-y-2">
+                                <div className="space-y-1.5 lg:space-y-2">
                                     <div className="flex items-center justify-between">
-                                        <label className="text-xs font-medium text-gray-400 uppercase tracking-wider">Password</label>
+                                        <label className="text-[10px] lg:text-xs font-medium text-gray-400 uppercase tracking-wider">Password</label>
                                         {view === 'login' && (
                                             <button
                                                 type="button"
                                                 onClick={() => toggleView('forgot')}
-                                                className="text-xs text-brand-primary hover:underline"
+                                                className="text-[10px] lg:text-xs text-brand-primary hover:underline"
                                             >
                                                 Forgot password?
                                             </button>
                                         )}
                                     </div>
                                     <div className="relative">
-                                        <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-500" />
+                                        <Lock className="absolute left-2.5 lg:left-3 top-2.5 lg:top-3 w-4 h-4 lg:w-5 lg:h-5 text-gray-500" />
                                         <input
                                             type="password"
                                             placeholder="••••••••"
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
-                                            className="w-full bg-brand-dark border border-gray-800 focus:border-brand-primary text-white pl-10 p-3 rounded-lg outline-none transition-colors placeholder:text-gray-600"
+                                            className="w-full bg-brand-dark border border-gray-800 focus:border-brand-primary text-white pl-9 lg:pl-10 p-2.5 lg:p-3 rounded-lg outline-none transition-colors placeholder:text-gray-600 text-sm lg:text-base"
                                             required
                                             disabled={loading}
                                         />
@@ -282,7 +283,7 @@ export default function LoginPage() {
                             )}
 
                             {message && (
-                                <div className={`text-sm p-3 rounded bg-brand-dark border ${message.type === 'error' ? 'border-red-500/50 text-red-200' : 'border-green-500/50 text-green-200'}`}>
+                                <div className={`text-xs lg:text-sm p-2.5 lg:p-3 rounded bg-brand-dark border ${message.type === 'error' ? 'border-red-500/50 text-red-200' : 'border-green-500/50 text-green-200'}`}>
                                     {message.text}
                                 </div>
                             )}
@@ -290,7 +291,7 @@ export default function LoginPage() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-brand-primary text-black font-bold p-3 rounded-lg hover:bg-brand-secondary transition-colors flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="w-full bg-brand-primary text-black font-bold p-2.5 lg:p-3 rounded-lg hover:bg-brand-secondary transition-colors flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
                             >
                                 {loading ? (
                                     <Loader2 className="w-4 h-4 animate-spin" />
@@ -305,7 +306,7 @@ export default function LoginPage() {
                     </div>
 
                     {/* Footer Toggle */}
-                    <div className="text-center text-sm">
+                    <div className="text-center text-xs lg:text-sm">
                         {view === 'forgot' ? (
                             <button
                                 onClick={() => toggleView('login')}
@@ -328,7 +329,7 @@ export default function LoginPage() {
                         )}
                     </div>
 
-                    <p className="text-center text-xs text-gray-600 mt-6">
+                    <p className="text-center text-[10px] lg:text-xs text-gray-600 mt-4 lg:mt-6">
                         By clicking continue, you agree to our{' '}
                         <Link href="/terms" className="underline hover:text-gray-400">Terms of Service</Link>
                         {' '}and{' '}

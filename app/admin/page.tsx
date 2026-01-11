@@ -42,7 +42,7 @@ export default function AdminDashboardPage() {
         loadStats();
     }, []);
 
-    if (!stats) return <div className="p-10 text-center text-gray-500">Loading dashboard...</div>;
+    if (!stats) return <div className="p-4 lg:p-10 text-center text-gray-500">Loading dashboard...</div>;
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('en-IN', {
@@ -88,34 +88,34 @@ export default function AdminDashboardPage() {
     ];
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-4 lg:space-y-8">
             {/* Header */}
             <div>
-                <h2 className="text-3xl font-bold tracking-tight">Dashboard Overview</h2>
-                <p className="text-gray-400 mt-1">Welcome back, here's what's happening at OurCashmir today.</p>
+                <h2 className="text-xl lg:text-3xl font-bold tracking-tight">Dashboard Overview</h2>
+                <p className="text-gray-400 mt-0.5 lg:mt-1 text-xs lg:text-base">Welcome back, here's what's happening at OurCashmir today.</p>
             </div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Stats Grid - 2 columns on mobile, 4 on desktop */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-6">
                 {cards.map((card, i) => (
                     <motion.div
                         key={card.label}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: i * 0.1 }}
-                        className="bg-brand-surface border border-white/5 p-6 rounded-xl hover:border-brand-primary/20 transition-colors group"
+                        className="bg-brand-surface border border-white/5 p-3 lg:p-6 rounded-lg lg:rounded-xl hover:border-brand-primary/20 transition-colors group"
                     >
-                        <div className="flex justify-between items-start mb-4">
-                            <div className={`p-3 rounded-lg ${card.bg} ${card.color}`}>
-                                <card.icon size={20} />
+                        <div className="flex justify-between items-start mb-2 lg:mb-4">
+                            <div className={`p-1.5 lg:p-3 rounded-md lg:rounded-lg ${card.bg} ${card.color}`}>
+                                <card.icon className="w-3.5 h-3.5 lg:w-5 lg:h-5" />
                             </div>
-                            <span className={`text-xs font-medium px-2 py-1 rounded-full ${card.color} bg-opacity-10 bg-white`}>
+                            <span className={`text-[8px] lg:text-xs font-medium px-1 lg:px-2 py-0.5 lg:py-1 rounded-full ${card.color} bg-opacity-10 bg-white hidden sm:inline`}>
                                 {card.change}
                             </span>
                         </div>
                         <div>
-                            <p className="text-gray-400 text-sm">{card.label}</p>
-                            <h3 className="text-2xl font-bold mt-1 text-white group-hover:text-brand-primary transition-colors">
+                            <p className="text-gray-400 text-[10px] lg:text-sm">{card.label}</p>
+                            <h3 className="text-sm lg:text-2xl font-bold mt-0.5 lg:mt-1 text-white group-hover:text-brand-primary transition-colors truncate">
                                 {card.value}
                             </h3>
                         </div>
@@ -124,39 +124,39 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Recent Activity / Quick Actions */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
                 {/* Main Chart Area */}
-                <div className="lg:col-span-2 bg-brand-surface border border-white/5 rounded-xl p-6 min-h-[400px] flex flex-col">
-                    <div className="mb-6">
-                        <h3 className="text-lg font-bold">Revenue & Growth</h3>
-                        <p className="text-sm text-gray-400">Monthly revenue overview</p>
+                <div className="lg:col-span-2 bg-brand-surface border border-white/5 rounded-lg lg:rounded-xl p-3 lg:p-6 min-h-[200px] lg:min-h-[400px] flex flex-col">
+                    <div className="mb-3 lg:mb-6">
+                        <h3 className="text-sm lg:text-lg font-bold">Revenue & Growth</h3>
+                        <p className="text-[10px] lg:text-sm text-gray-400">Monthly revenue overview</p>
                     </div>
 
-                    <div className="flex-1 w-full min-h-[300px]">
+                    <div className="flex-1 w-full min-h-[150px] lg:min-h-[300px]">
                         {/* Dynamic Import Recharts component wrapper to avoid SSR issues if any, though Recharts 2+ is usually fine with 'use client' */}
                         <RevenueChart data={revenueHistory} />
                     </div>
                 </div>
 
                 {/* Quick Actions List */}
-                <div className="bg-brand-surface border border-white/5 rounded-xl p-6">
-                    <h3 className="text-lg font-bold mb-4">Quick Actions</h3>
-                    <div className="space-y-3">
-                        <Link href="/admin/clients" className="flex items-center justify-between p-3 rounded-lg bg-white/5 hover:bg-brand-primary/10 hover:text-brand-primary transition-all group">
-                            <span className="text-sm font-medium">Add New Client</span>
-                            <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="bg-brand-surface border border-white/5 rounded-lg lg:rounded-xl p-3 lg:p-6">
+                    <h3 className="text-sm lg:text-lg font-bold mb-2 lg:mb-4">Quick Actions</h3>
+                    <div className="space-y-1.5 lg:space-y-3">
+                        <Link href="/admin/clients" className="flex items-center justify-between p-2 lg:p-3 rounded-md lg:rounded-lg bg-white/5 hover:bg-brand-primary/10 hover:text-brand-primary transition-all group">
+                            <span className="text-xs lg:text-sm font-medium">Add New Client</span>
+                            <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </Link>
-                        <Link href="/admin/projects" className="flex items-center justify-between p-3 rounded-lg bg-white/5 hover:bg-brand-primary/10 hover:text-brand-primary transition-all group">
-                            <span className="text-sm font-medium">Create Project</span>
-                            <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Link href="/admin/projects" className="flex items-center justify-between p-2 lg:p-3 rounded-md lg:rounded-lg bg-white/5 hover:bg-brand-primary/10 hover:text-brand-primary transition-all group">
+                            <span className="text-xs lg:text-sm font-medium">Create Project</span>
+                            <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </Link>
-                        <Link href="/admin/invoices" className="flex items-center justify-between p-3 rounded-lg bg-white/5 hover:bg-brand-primary/10 hover:text-brand-primary transition-all group">
-                            <span className="text-sm font-medium">Generate Invoice</span>
-                            <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Link href="/admin/invoices" className="flex items-center justify-between p-2 lg:p-3 rounded-md lg:rounded-lg bg-white/5 hover:bg-brand-primary/10 hover:text-brand-primary transition-all group">
+                            <span className="text-xs lg:text-sm font-medium">Generate Invoice</span>
+                            <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </Link>
-                        <Link href="/admin/reports" className="flex items-center justify-between p-3 rounded-lg bg-white/5 hover:bg-brand-primary/10 hover:text-brand-primary transition-all group">
-                            <span className="text-sm font-medium">Generate Report</span>
-                            <ArrowRight size={16} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <Link href="/admin/reports" className="flex items-center justify-between p-2 lg:p-3 rounded-md lg:rounded-lg bg-white/5 hover:bg-brand-primary/10 hover:text-brand-primary transition-all group">
+                            <span className="text-xs lg:text-sm font-medium">Generate Report</span>
+                            <ArrowRight className="w-3 h-3 lg:w-4 lg:h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </Link>
                     </div>
                 </div>
@@ -171,7 +171,7 @@ export default function AdminDashboardPage() {
 function RevenueChart({ data }: { data: any[] }) {
     if (!data || data.length === 0) {
         return (
-            <div className="h-full flex items-center justify-center text-gray-500">
+            <div className="h-full flex items-center justify-center text-gray-500 text-xs lg:text-base">
                 No revenue data available yet.
             </div>
         );
@@ -182,9 +182,9 @@ function RevenueChart({ data }: { data: any[] }) {
             <AreaChart
                 data={data}
                 margin={{
-                    top: 10,
-                    right: 30,
-                    left: 0,
+                    top: 5,
+                    right: 10,
+                    left: -20,
                     bottom: 0,
                 }}
             >
@@ -198,19 +198,21 @@ function RevenueChart({ data }: { data: any[] }) {
                 <XAxis
                     dataKey="name"
                     stroke="#9ca3af"
-                    fontSize={12}
+                    fontSize={10}
                     tickLine={false}
                     axisLine={false}
+                    interval="preserveStartEnd"
                 />
                 <YAxis
                     stroke="#9ca3af"
-                    fontSize={12}
+                    fontSize={9}
                     tickLine={false}
                     axisLine={false}
                     tickFormatter={(value) => `₹${value / 1000}k`}
+                    width={40}
                 />
                 <Tooltip
-                    contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px' }}
+                    contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #374151', borderRadius: '8px', fontSize: '12px' }}
                     itemStyle={{ color: '#e5e7eb' }}
                     formatter={(value: any) => [`₹${(Number(value) || 0).toLocaleString('en-IN')}`, 'Revenue']}
                 />

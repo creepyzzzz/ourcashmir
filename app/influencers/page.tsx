@@ -39,17 +39,17 @@ export default function InfluencersPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative w-full px-4 md:px-12 lg:px-20 pt-32 pb-16 max-w-screen-2xl mx-auto">
+            <section className="relative w-full px-4 md:px-12 lg:px-20 pt-24 sm:pt-28 md:pt-32 pb-10 sm:pb-12 md:pb-16 max-w-screen-2xl mx-auto">
                 {/* Background Elements */}
-                <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-brand-primary/8 rounded-full blur-[150px] pointer-events-none" />
-                <div className="absolute top-40 right-0 w-[400px] h-[400px] bg-brand-secondary/10 rounded-full blur-[120px] pointer-events-none" />
+                <div className="absolute top-0 left-1/4 w-[250px] sm:w-[400px] md:w-[500px] h-[250px] sm:h-[400px] md:h-[500px] bg-brand-primary/8 rounded-full blur-[100px] sm:blur-[120px] md:blur-[150px] pointer-events-none" />
+                <div className="absolute top-40 right-0 w-[200px] sm:w-[300px] md:w-[400px] h-[200px] sm:h-[300px] md:h-[400px] bg-brand-secondary/10 rounded-full blur-[80px] sm:blur-[100px] md:blur-[120px] pointer-events-none" />
 
                 <div className="relative z-10 text-center max-w-4xl mx-auto">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 text-gray-400 hover:text-brand-primary transition-colors mb-8 text-sm"
+                        className="inline-flex items-center gap-2 text-gray-400 hover:text-brand-primary transition-colors mb-6 sm:mb-8 text-xs sm:text-sm"
                     >
-                        <ArrowLeft size={16} />
+                        <ArrowLeft size={14} className="sm:w-4 sm:h-4" />
                         Back to Home
                     </Link>
 
@@ -58,16 +58,16 @@ export default function InfluencersPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className="inline-flex items-center gap-2 bg-brand-primary/10 border border-brand-primary/20 px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase text-brand-primary mb-6">
-                            <Users size={14} />
+                        <span className="inline-flex items-center gap-1.5 sm:gap-2 bg-brand-primary/10 border border-brand-primary/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-brand-primary mb-4 sm:mb-6">
+                            <Users size={12} className="sm:w-3.5 sm:h-3.5" />
                             Our Network
                         </span>
 
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                             Influencer <span className="text-brand-primary">Network</span>
                         </h1>
 
-                        <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-gray-400 text-sm sm:text-base md:text-xl max-w-2xl mx-auto leading-relaxed">
                             We collaborate with Kashmir&apos;s top content creators to bring authentic reach
                             and engagement to your brand.
                         </p>
@@ -160,18 +160,18 @@ export default function InfluencersPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="w-full px-4 md:px-12 lg:px-20 pb-24 max-w-screen-2xl mx-auto">
-                <div className="relative overflow-hidden bg-gradient-to-r from-brand-surface via-gray-900 to-brand-surface border border-gray-800 rounded-3xl p-8 md:p-12">
+            <section className="w-full px-4 md:px-12 lg:px-20 pb-16 sm:pb-20 md:pb-24 max-w-screen-2xl mx-auto">
+                <div className="relative overflow-hidden bg-gradient-to-r from-brand-surface via-gray-900 to-brand-surface border border-gray-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12">
                     <div className="absolute inset-0">
-                        <div className="absolute top-0 left-1/4 w-64 h-64 bg-brand-primary/15 rounded-full blur-3xl" />
-                        <div className="absolute bottom-0 right-1/4 w-48 h-48 bg-brand-secondary/15 rounded-full blur-3xl" />
+                        <div className="absolute top-0 left-1/4 w-48 sm:w-64 h-48 sm:h-64 bg-brand-primary/15 rounded-full blur-3xl" />
+                        <div className="absolute bottom-0 right-1/4 w-32 sm:w-48 h-32 sm:h-48 bg-brand-secondary/15 rounded-full blur-3xl" />
                     </div>
 
                     <div className="relative z-10 text-center max-w-2xl mx-auto">
-                        <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">
+                        <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
                             Want to leverage influencer marketing?
                         </h2>
-                        <p className="text-gray-400 mb-8">
+                        <p className="text-gray-400 text-sm sm:text-base mb-6 sm:mb-8">
                             Connect your brand with Kashmir&apos;s most trusted voices.
                             We handle everything from influencer selection to campaign management.
                         </p>
@@ -179,7 +179,7 @@ export default function InfluencersPage() {
                             href="https://wa.me/917889676481"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-3 bg-brand-primary text-black px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-green-400 transition-colors"
+                            className="inline-flex items-center gap-2 sm:gap-3 bg-brand-primary text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-xs sm:text-sm tracking-wide hover:bg-green-400 transition-colors"
                         >
                             Start Your Campaign
                         </a>

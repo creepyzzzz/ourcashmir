@@ -43,7 +43,7 @@ export default function UpdatePasswordPage() {
     };
 
     return (
-        <div className="w-full h-screen flex overflow-hidden bg-brand-darker text-brand-white font-sans">
+        <div className="w-full min-h-screen lg:h-screen flex flex-col lg:flex-row overflow-auto lg:overflow-hidden bg-brand-darker text-brand-white font-sans">
             {/* Left Side - Branding (Hidden on mobile) */}
             <motion.div
                 initial={{ x: -50, opacity: 0 }}
@@ -80,31 +80,39 @@ export default function UpdatePasswordPage() {
             </motion.div>
 
             {/* Right Side - Form */}
-            <div className="w-full lg:w-1/2 h-full flex items-center justify-center p-6 sm:p-12 relative">
+            <div className="w-full lg:w-1/2 flex-1 lg:h-full flex items-center justify-center p-4 sm:p-6 lg:p-12 relative">
+                {/* Mobile Logo */}
+                <div className="absolute top-4 left-4 lg:hidden">
+                    <Link href="/" className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-brand-white transition-colors">
+                        <div className="w-1.5 h-1.5 bg-brand-primary rounded-full" />
+                        <span className="font-bold">OURCASHMIR</span>
+                    </Link>
+                </div>
+
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
-                    className="w-full max-w-md space-y-8"
+                    className="w-full max-w-md space-y-5 lg:space-y-8 pt-10 lg:pt-0"
                 >
-                    <div className="text-center space-y-2">
-                        <h2 className="text-3xl font-bold tracking-tight">Set New Password</h2>
-                        <p className="text-gray-400 text-sm">
+                    <div className="text-center space-y-1 lg:space-y-2">
+                        <h2 className="text-2xl lg:text-3xl font-bold tracking-tight">Set New Password</h2>
+                        <p className="text-gray-400 text-xs lg:text-sm">
                             Enter your new password below.
                         </p>
                     </div>
 
-                    <form onSubmit={handleUpdatePassword} className="space-y-4">
-                        <div className="space-y-2">
-                            <label className="text-xs font-medium text-gray-400 uppercase tracking-wider">New Password</label>
+                    <form onSubmit={handleUpdatePassword} className="space-y-3 lg:space-y-4">
+                        <div className="space-y-1.5 lg:space-y-2">
+                            <label className="text-[10px] lg:text-xs font-medium text-gray-400 uppercase tracking-wider">New Password</label>
                             <div className="relative">
-                                <Lock className="absolute left-3 top-3 w-5 h-5 text-gray-500" />
+                                <Lock className="absolute left-2.5 lg:left-3 top-2.5 lg:top-3 w-4 h-4 lg:w-5 lg:h-5 text-gray-500" />
                                 <input
                                     type="password"
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full bg-brand-dark border border-gray-800 focus:border-brand-primary text-white pl-10 p-3 rounded-lg outline-none transition-colors placeholder:text-gray-600"
+                                    className="w-full bg-brand-dark border border-gray-800 focus:border-brand-primary text-white pl-9 lg:pl-10 p-2.5 lg:p-3 rounded-lg outline-none transition-colors placeholder:text-gray-600 text-sm lg:text-base"
                                     required
                                     disabled={loading}
                                 />
@@ -112,7 +120,7 @@ export default function UpdatePasswordPage() {
                         </div>
 
                         {message && (
-                            <div className={`text-sm p-3 rounded bg-brand-dark border ${message.includes('successfully') ? 'border-green-500/50 text-green-200' : 'border-red-500/50 text-red-200'}`}>
+                            <div className={`text-xs lg:text-sm p-2.5 lg:p-3 rounded bg-brand-dark border ${message.includes('successfully') ? 'border-green-500/50 text-green-200' : 'border-red-500/50 text-red-200'}`}>
                                 {message}
                             </div>
                         )}
@@ -120,7 +128,7 @@ export default function UpdatePasswordPage() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-brand-primary text-black font-bold p-3 rounded-lg hover:bg-brand-secondary transition-colors flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full bg-brand-primary text-black font-bold p-2.5 lg:p-3 rounded-lg hover:bg-brand-secondary transition-colors flex items-center justify-center gap-2 group disabled:opacity-50 disabled:cursor-not-allowed text-sm lg:text-base"
                         >
                             {loading ? (
                                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -132,6 +140,12 @@ export default function UpdatePasswordPage() {
                             )}
                         </button>
                     </form>
+
+                    <div className="text-center">
+                        <Link href="/login" className="text-xs lg:text-sm text-brand-primary hover:underline font-medium">
+                            Back to Login
+                        </Link>
+                    </div>
                 </motion.div>
             </div>
         </div>

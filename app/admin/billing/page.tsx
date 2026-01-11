@@ -117,16 +117,16 @@ export default function AdminBillingPage() {
         .reduce((sum, i) => sum + (Number(i.amount) || 0), 0);
 
     return (
-        <div className="space-y-6 relative">
-            <div className="flex justify-between items-center">
+        <div className="space-y-3 lg:space-y-6 relative">
+            <div className="flex flex-col gap-3 lg:flex-row lg:justify-between lg:items-center">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Billing & Invoices</h1>
-                    <p className="text-gray-400 text-sm mt-1">Manage payments, invoices, and financial overview.</p>
+                    <h1 className="text-lg lg:text-2xl font-bold tracking-tight">Billing & Invoices</h1>
+                    <p className="text-gray-400 text-xs lg:text-sm mt-0.5 lg:mt-1">Manage payments, invoices, and financial overview.</p>
                 </div>
                 {isCreating ? (
-                    <div className="flex items-center gap-2 bg-brand-surface p-2 rounded-lg border border-white/10">
+                    <div className="flex flex-wrap items-center gap-2 bg-brand-surface p-2 rounded-lg border border-white/10">
                         <select
-                            className="px-3 py-1 bg-brand-dark rounded text-sm outline-none w-32"
+                            className="px-2 lg:px-3 py-1 bg-brand-dark rounded text-xs lg:text-sm outline-none w-24 lg:w-32"
                             value={selectedClientId}
                             onChange={e => setSelectedClientId(e.target.value)}
                         >
@@ -135,64 +135,106 @@ export default function AdminBillingPage() {
                         </select>
                         <input
                             type="number"
-                            className="px-3 py-1 bg-brand-dark rounded text-sm outline-none w-24"
+                            className="px-2 lg:px-3 py-1 bg-brand-dark rounded text-xs lg:text-sm outline-none w-20 lg:w-24"
                             placeholder="Amount"
                             value={newInvoiceAmount}
                             onChange={e => setNewInvoiceAmount(e.target.value)}
                         />
-                        <button onClick={handleCreateInvoice} className="text-green-500 font-bold px-2">Save</button>
-                        <button onClick={() => setIsCreating(false)} className="text-red-500 px-2">X</button>
+                        <button onClick={handleCreateInvoice} className="text-green-500 font-bold text-xs px-2">Save</button>
+                        <button onClick={() => setIsCreating(false)} className="text-red-500 text-xs px-2">X</button>
                     </div>
                 ) : (
-                    <button onClick={() => setIsCreating(true)} className="flex items-center gap-2 px-4 py-2 bg-brand-primary text-black rounded-lg text-sm font-bold hover:bg-brand-secondary transition-colors">
-                        <Plus size={16} />
+                    <button onClick={() => setIsCreating(true)} className="flex items-center justify-center gap-1.5 lg:gap-2 px-3 lg:px-4 py-1.5 lg:py-2 bg-brand-primary text-black rounded-lg text-xs lg:text-sm font-bold hover:bg-brand-secondary transition-colors w-full sm:w-auto">
+                        <Plus className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                         Create Invoice
                     </button>
                 )}
             </div>
 
-            {/* Financial Overview Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-brand-surface border border-white/5 p-6 rounded-xl">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-green-500/10 text-green-500 rounded-lg">
-                            <DollarSign size={20} />
+            {/* Financial Overview Cards - 3 columns on all sizes but smaller on mobile */}
+            <div className="grid grid-cols-3 gap-2 lg:gap-6">
+                <div className="bg-brand-surface border border-white/5 p-3 lg:p-6 rounded-lg lg:rounded-xl">
+                    <div className="flex items-center justify-between mb-2 lg:mb-4">
+                        <div className="p-1.5 lg:p-3 bg-green-500/10 text-green-500 rounded-md lg:rounded-lg">
+                            <DollarSign className="w-3.5 h-3.5 lg:w-5 lg:h-5" />
                         </div>
-                        <span className="text-xs text-green-500 font-medium">+12%</span>
+                        <span className="text-[8px] lg:text-xs text-green-500 font-medium hidden sm:inline">+12%</span>
                     </div>
-                    <p className="text-gray-400 text-sm">Total Revenue (YTD)</p>
-                    <h3 className="text-2xl font-bold text-white mt-1">₹{totalRevenue.toLocaleString('en-IN')}</h3>
+                    <p className="text-gray-400 text-[9px] lg:text-sm">Total Revenue</p>
+                    <h3 className="text-sm lg:text-2xl font-bold text-white mt-0.5 lg:mt-1">₹{totalRevenue.toLocaleString('en-IN')}</h3>
                 </div>
-                <div className="bg-brand-surface border border-white/5 p-6 rounded-xl">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-blue-500/10 text-blue-500 rounded-lg">
-                            <CreditCard size={20} />
+                <div className="bg-brand-surface border border-white/5 p-3 lg:p-6 rounded-lg lg:rounded-xl">
+                    <div className="flex items-center justify-between mb-2 lg:mb-4">
+                        <div className="p-1.5 lg:p-3 bg-blue-500/10 text-blue-500 rounded-md lg:rounded-lg">
+                            <CreditCard className="w-3.5 h-3.5 lg:w-5 lg:h-5" />
                         </div>
                     </div>
-                    <p className="text-gray-400 text-sm">Pending Invoices</p>
-                    <h3 className="text-2xl font-bold text-white mt-1">₹{pendingAmount.toLocaleString('en-IN')}</h3>
+                    <p className="text-gray-400 text-[9px] lg:text-sm">Pending</p>
+                    <h3 className="text-sm lg:text-2xl font-bold text-white mt-0.5 lg:mt-1">₹{pendingAmount.toLocaleString('en-IN')}</h3>
                 </div>
-                <div className="bg-brand-surface border border-white/5 p-6 rounded-xl">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-3 bg-red-500/10 text-red-500 rounded-lg">
-                            <DollarSign size={20} />
+                <div className="bg-brand-surface border border-white/5 p-3 lg:p-6 rounded-lg lg:rounded-xl">
+                    <div className="flex items-center justify-between mb-2 lg:mb-4">
+                        <div className="p-1.5 lg:p-3 bg-red-500/10 text-red-500 rounded-md lg:rounded-lg">
+                            <DollarSign className="w-3.5 h-3.5 lg:w-5 lg:h-5" />
                         </div>
                     </div>
-                    <p className="text-gray-400 text-sm">Overdue</p>
-                    <h3 className="text-2xl font-bold text-white mt-1">₹{overdueAmount.toLocaleString('en-IN')}</h3>
+                    <p className="text-gray-400 text-[9px] lg:text-sm">Overdue</p>
+                    <h3 className="text-sm lg:text-2xl font-bold text-white mt-0.5 lg:mt-1">₹{overdueAmount.toLocaleString('en-IN')}</h3>
                 </div>
             </div>
 
             {/* Invoices List */}
-            <div className="bg-brand-surface border border-white/5 rounded-xl overflow-hidden min-h-[400px]">
-                <div className="p-4 border-b border-white/5 flex justify-between items-center">
-                    <h3 className="font-bold">Recent Invoices</h3>
-                    <div className="relative w-64">
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
-                        <input type="text" placeholder="Search invoices..." className="w-full bg-brand-dark border border-white/10 rounded-lg pl-10 h-9 text-sm outline-none" />
+            <div className="bg-brand-surface border border-white/5 rounded-lg lg:rounded-xl overflow-hidden">
+                <div className="p-2.5 lg:p-4 border-b border-white/5 flex flex-col sm:flex-row gap-2 justify-between items-stretch sm:items-center">
+                    <h3 className="font-bold text-sm lg:text-base">Recent Invoices</h3>
+                    <div className="relative w-full sm:w-48 lg:w-64">
+                        <Search className="absolute left-2.5 lg:left-3 top-1/2 -translate-y-1/2 text-gray-500 w-3 h-3 lg:w-4 lg:h-4" />
+                        <input type="text" placeholder="Search..." className="w-full bg-brand-dark border border-white/10 rounded-lg pl-7 lg:pl-10 h-7 lg:h-9 text-xs lg:text-sm outline-none" />
                     </div>
                 </div>
-                <div className="overflow-x-auto">
+
+                {/* Mobile Card View */}
+                <div className="lg:hidden divide-y divide-white/5">
+                    {loading ? (
+                        <div className="p-4 text-center text-xs text-gray-500">Loading invoices...</div>
+                    ) : invoices.length === 0 ? (
+                        <div className="p-4 text-center text-xs text-gray-500">No invoices found.</div>
+                    ) : (
+                        invoices.map(inv => (
+                            <div key={inv.id} className="p-3 flex items-center justify-between">
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2">
+                                        <p className="text-xs font-medium text-white truncate">{inv.clients?.name || 'Unknown'}</p>
+                                        <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[8px] font-medium capitalize
+                                            ${inv.status === 'paid' ? 'bg-green-500/10 text-green-500' : ''}
+                                            ${inv.status === 'pending' ? 'bg-blue-500/10 text-blue-500' : ''}
+                                            ${inv.status === 'overdue' ? 'bg-red-500/10 text-red-500' : ''}
+                                        `}>
+                                            {inv.status}
+                                        </span>
+                                    </div>
+                                    <p className="text-[10px] text-gray-500 mt-0.5">
+                                        ₹{Number(inv.amount).toLocaleString('en-IN')} • {new Date(inv.created_at).toLocaleDateString()}
+                                    </p>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    <button onClick={() => handlePreviewClick(inv)} className="p-1.5 text-gray-400 hover:text-blue-400">
+                                        <Eye className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button onClick={() => handleEditClick(inv)} className="p-1.5 text-gray-400 hover:text-brand-primary">
+                                        <Edit className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button onClick={() => handleDeleteInvoice(inv.id)} className="p-1.5 text-gray-400 hover:text-red-500">
+                                        <Trash2 className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-brand-dark/30 text-xs uppercase text-gray-500">
                             <tr>
@@ -261,22 +303,22 @@ export default function AdminBillingPage() {
 
             {/* Edit Invoice Modal */}
             {editingInvoice && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                    <div className="bg-brand-surface border border-white/10 rounded-xl w-full max-w-md p-6 shadow-2xl animate-in zoom-in-95 duration-200">
-                        <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-lg font-bold">Edit Invoice</h3>
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 lg:p-4">
+                    <div className="bg-brand-surface border border-white/10 rounded-xl w-full max-w-md p-4 lg:p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+                        <div className="flex justify-between items-center mb-4 lg:mb-6">
+                            <h3 className="text-base lg:text-lg font-bold">Edit Invoice</h3>
                             <button onClick={() => setEditingInvoice(null)} className="text-gray-400 hover:text-white">
-                                <X size={20} />
+                                <X className="w-4 h-4 lg:w-5 lg:h-5" />
                             </button>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-3 lg:space-y-4">
                             <div>
-                                <label className="block text-xs font-semibold text-gray-400 uppercase mb-1">Status</label>
+                                <label className="block text-[10px] lg:text-xs font-semibold text-gray-400 uppercase mb-1">Status</label>
                                 <select
                                     value={editForm.status}
                                     onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
-                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-brand-primary outline-none"
+                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-xs lg:text-sm focus:border-brand-primary outline-none"
                                 >
                                     <option value="pending">Pending</option>
                                     <option value="paid">Paid</option>
@@ -285,28 +327,28 @@ export default function AdminBillingPage() {
                             </div>
 
                             <div>
-                                <label className="block text-xs font-semibold text-gray-400 uppercase mb-1">Amount (₹)</label>
+                                <label className="block text-[10px] lg:text-xs font-semibold text-gray-400 uppercase mb-1">Amount (₹)</label>
                                 <input
                                     type="number"
                                     value={editForm.amount}
                                     onChange={(e) => setEditForm({ ...editForm, amount: Number(e.target.value) })}
-                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-brand-primary outline-none"
+                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-xs lg:text-sm focus:border-brand-primary outline-none"
                                 />
                             </div>
                         </div>
 
-                        <div className="flex justify-end gap-3 mt-8">
+                        <div className="flex justify-end gap-2 lg:gap-3 mt-6 lg:mt-8">
                             <button
                                 onClick={() => setEditingInvoice(null)}
-                                className="px-4 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5"
+                                className="px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg text-xs lg:text-sm text-gray-400 hover:text-white hover:bg-white/5"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleUpdateInvoice}
-                                className="px-4 py-2 bg-brand-primary text-black rounded-lg text-sm font-bold hover:bg-brand-secondary flex items-center gap-2"
+                                className="px-3 lg:px-4 py-1.5 lg:py-2 bg-brand-primary text-black rounded-lg text-xs lg:text-sm font-bold hover:bg-brand-secondary flex items-center gap-1.5 lg:gap-2"
                             >
-                                <Save size={16} /> Save Changes
+                                <Save className="w-3.5 h-3.5 lg:w-4 lg:h-4" /> Save
                             </button>
                         </div>
                     </div>

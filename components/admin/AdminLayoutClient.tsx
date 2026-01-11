@@ -11,6 +11,7 @@ export default function AdminLayoutClient({
 }) {
     const [mounted, setMounted] = useState(false);
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         // Load sidebar state
@@ -29,9 +30,14 @@ export default function AdminLayoutClient({
             <AdminSidebar
                 collapsed={sidebarCollapsed}
                 onToggle={setSidebarCollapsed}
+                mobileOpen={mobileMenuOpen}
+                onMobileClose={() => setMobileMenuOpen(false)}
             />
-            <AdminHeader sidebarCollapsed={sidebarCollapsed} />
-            <main className={`pt-16 min-h-screen p-6 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'
+            <AdminHeader
+                sidebarCollapsed={sidebarCollapsed}
+                onMobileMenuToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
+            />
+            <main className={`pt-14 lg:pt-16 min-h-screen p-3 lg:p-6 transition-all duration-300 ${sidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64'
                 }`}>
                 <div className="max-w-7xl mx-auto">
                     {children}
@@ -40,3 +46,4 @@ export default function AdminLayoutClient({
         </div>
     );
 }
+

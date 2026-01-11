@@ -30,53 +30,101 @@ export default function ClientBillingPage() {
         setIsInvoiceModalOpen(true);
     };
 
-    if (loading) return <div className="p-10 text-center text-gray-500">Loading billing info...</div>;
+    if (loading) return <div className="p-6 sm:p-10 text-center text-gray-500">Loading billing info...</div>;
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
             <div>
-                <h1 className="text-2xl font-bold tracking-tight">Billing & Invoices</h1>
-                <p className="text-gray-400 text-sm mt-1">View your invoices and payment history.</p>
+                <h1 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight">Billing & Invoices</h1>
+                <p className="text-gray-400 text-xs sm:text-sm mt-1">View your invoices and payment history.</p>
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="bg-brand-surface border border-white/5 p-6 rounded-xl">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="p-3 bg-green-500/10 text-green-500 rounded-lg">
-                            <CheckCircle size={20} />
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2 sm:gap-3 md:gap-6">
+                <div className="bg-brand-surface border border-white/5 p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-4">
+                        <div className="p-2 sm:p-3 bg-green-500/10 text-green-500 rounded-md sm:rounded-lg">
+                            <CheckCircle size={16} className="sm:w-5 sm:h-5" />
                         </div>
                     </div>
-                    <p className="text-gray-400 text-sm">Total Paid</p>
-                    <h3 className="text-2xl font-bold text-white mt-1">{formatCurrency(totalPaid)}</h3>
+                    <p className="text-gray-400 text-[10px] sm:text-xs md:text-sm">Total Paid</p>
+                    <h3 className="text-base sm:text-lg md:text-2xl font-bold text-white mt-0.5 sm:mt-1">{formatCurrency(totalPaid)}</h3>
                 </div>
-                <div className="bg-brand-surface border border-white/5 p-6 rounded-xl">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="p-3 bg-yellow-500/10 text-yellow-500 rounded-lg">
-                            <Clock size={20} />
+                <div className="bg-brand-surface border border-white/5 p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-4">
+                        <div className="p-2 sm:p-3 bg-yellow-500/10 text-yellow-500 rounded-md sm:rounded-lg">
+                            <Clock size={16} className="sm:w-5 sm:h-5" />
                         </div>
                     </div>
-                    <p className="text-gray-400 text-sm">Pending</p>
-                    <h3 className="text-2xl font-bold text-white mt-1">{formatCurrency(totalPending)}</h3>
+                    <p className="text-gray-400 text-[10px] sm:text-xs md:text-sm">Pending</p>
+                    <h3 className="text-base sm:text-lg md:text-2xl font-bold text-white mt-0.5 sm:mt-1">{formatCurrency(totalPending)}</h3>
                 </div>
-                <div className="bg-brand-surface border border-white/5 p-6 rounded-xl">
-                    <div className="flex items-center gap-3 mb-4">
-                        <div className="p-3 bg-brand-primary/10 text-brand-primary rounded-lg">
-                            <CreditCard size={20} />
+                <div className="bg-brand-surface border border-white/5 p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-xl col-span-2 md:col-span-1">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-4">
+                        <div className="p-2 sm:p-3 bg-brand-primary/10 text-brand-primary rounded-md sm:rounded-lg">
+                            <CreditCard size={16} className="sm:w-5 sm:h-5" />
                         </div>
                     </div>
-                    <p className="text-gray-400 text-sm">Payment Method</p>
-                    <h3 className="text-lg font-bold text-white mt-1">•••• 4242</h3>
-                    <p className="text-xs text-gray-500">Visa</p>
+                    <p className="text-gray-400 text-[10px] sm:text-xs md:text-sm">Payment Method</p>
+                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-white mt-0.5 sm:mt-1">•••• 4242</h3>
+                    <p className="text-[10px] sm:text-xs text-gray-500">Visa</p>
                 </div>
             </div>
 
-            {/* Invoice Table */}
-            <div className="bg-brand-surface border border-white/5 rounded-xl overflow-hidden">
-                <div className="p-4 border-b border-white/5">
-                    <h3 className="font-bold">Invoice History</h3>
+            {/* Invoice Section */}
+            <div className="bg-brand-surface border border-white/5 rounded-lg sm:rounded-xl overflow-hidden">
+                <div className="p-3 sm:p-4 border-b border-white/5">
+                    <h3 className="font-bold text-sm sm:text-base">Invoice History</h3>
                 </div>
-                <div className="overflow-x-auto">
+
+                {/* Mobile: Card View */}
+                <div className="md:hidden divide-y divide-white/5">
+                    {invoices.length === 0 ? (
+                        <div className="p-4 text-center text-gray-500 text-sm">No invoices found.</div>
+                    ) : invoices.map(inv => (
+                        <div key={inv.id} className="p-3 sm:p-4 hover:bg-white/[0.02]">
+                            <div className="flex items-start justify-between mb-2">
+                                <div>
+                                    <p className="font-medium text-white text-sm">#{inv.id.slice(0, 8)}</p>
+                                    <p className="text-[10px] sm:text-xs text-gray-400 mt-0.5">
+                                        {inv.description || 'General Invoice'}
+                                    </p>
+                                </div>
+                                <span className={`inline-flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-xs font-medium capitalize
+                                    ${inv.status === 'paid' ? 'bg-green-500/10 text-green-500' : 'bg-yellow-500/10 text-yellow-500'}
+                                `}>
+                                    {inv.status === 'paid' ? <CheckCircle size={10} /> : <Clock size={10} />}
+                                    {inv.status}
+                                </span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <p className="font-bold text-brand-primary text-sm sm:text-base">{formatCurrency(Number(inv.amount))}</p>
+                                    <p className="text-[10px] text-gray-500">{new Date(inv.created_at).toLocaleDateString()}</p>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => handleViewInvoice(inv)}
+                                        className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors bg-white/5 rounded-md"
+                                        title="View Invoice"
+                                    >
+                                        <Eye size={14} />
+                                    </button>
+                                    <button
+                                        onClick={() => handleViewInvoice(inv)}
+                                        className="p-1.5 sm:p-2 text-gray-400 hover:text-white transition-colors bg-white/5 rounded-md"
+                                        title="Download PDF"
+                                    >
+                                        <Download size={14} />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Desktop: Table View */}
+                <div className="hidden md:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-brand-dark/30 text-xs uppercase text-gray-500">
                             <tr>
@@ -117,7 +165,7 @@ export default function ClientBillingPage() {
                                                 title="View Invoice"
                                             >
                                                 <Eye size={14} />
-                                                <span className="text-xs hidden sm:inline">View</span>
+                                                <span className="text-xs">View</span>
                                             </button>
                                             <button
                                                 onClick={() => handleViewInvoice(inv)}
@@ -125,7 +173,7 @@ export default function ClientBillingPage() {
                                                 title="Download PDF"
                                             >
                                                 <Download size={14} />
-                                                <span className="text-xs hidden sm:inline">Download</span>
+                                                <span className="text-xs">Download</span>
                                             </button>
                                         </div>
                                     </td>

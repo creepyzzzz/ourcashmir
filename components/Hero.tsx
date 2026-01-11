@@ -54,18 +54,18 @@ const Hero: React.FC = () => {
           </div>
 
           {/* Floating Card */}
-          <div className="absolute top-6 -left-12 md:top-20 md:-left-36 bg-gradient-to-br from-gray-900 via-gray-900 to-brand-secondary/30 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl w-[160px] md:w-[220px] backdrop-blur-md border border-brand-primary/20 transform scale-90 md:scale-100 transition-all hover:-translate-x-2">
-            <div className="flex justify-between items-start mb-2">
-              <div className="w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary text-[10px] font-bold">CEO</div>
-              <div className="bg-white p-1 rounded-lg shadow-sm">
-                <div className="w-6 h-6 flex items-center justify-center text-brand-primary font-bold text-lg">OC</div>
+          <div className="absolute top-4 -right-4 md:top-20 md:-left-36 md:right-auto bg-gradient-to-br from-gray-900 via-gray-900 to-brand-secondary/30 p-2 md:p-4 rounded-lg md:rounded-2xl shadow-xl w-[130px] md:w-[220px] backdrop-blur-md border border-brand-primary/20 transform scale-85 md:scale-100 transition-all md:hover:-translate-x-2">
+            <div className="flex justify-between items-start mb-1 md:mb-2">
+              <div className="w-6 h-6 md:w-8 md:h-8 rounded-md md:rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary text-[8px] md:text-[10px] font-bold">CEO</div>
+              <div className="bg-white p-0.5 md:p-1 rounded-md md:rounded-lg shadow-sm">
+                <div className="w-4 h-4 md:w-6 md:h-6 flex items-center justify-center text-brand-primary font-bold text-sm md:text-lg">OC</div>
               </div>
             </div>
-            <div className="space-y-1 mt-3">
-              <p className="text-[10px] font-bold text-brand-primary uppercase tracking-widest">Our Visionary</p>
-              <p className="text-xl font-bold text-white">Founder & CEO</p>
-              <div className="h-px w-full bg-gray-800 my-2"></div>
-              <p className="text-[10px] text-gray-400 italic">"Helping brands reach their true potential in the valley."</p>
+            <div className="space-y-0.5 md:space-y-1 mt-2 md:mt-3">
+              <p className="text-[8px] md:text-[10px] font-bold text-brand-primary uppercase tracking-widest">Our Visionary</p>
+              <p className="text-sm md:text-xl font-bold text-white">Founder & CEO</p>
+              <div className="h-px w-full bg-gray-800 my-1 md:my-2"></div>
+              <p className="text-[8px] md:text-[10px] text-gray-400 italic leading-tight">"Helping brands reach their true potential in the valley."</p>
             </div>
           </div>
         </div>

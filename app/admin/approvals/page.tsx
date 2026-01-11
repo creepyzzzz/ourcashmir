@@ -19,19 +19,70 @@ export default function AdminApprovalsPage() {
         loadData();
     }, []);
 
-    if (loading) return <div className="p-10 text-center text-gray-500">Loading approvals...</div>;
+    if (loading) return <div className="p-4 lg:p-10 text-center text-gray-500 text-xs lg:text-base">Loading approvals...</div>;
 
     return (
-        <div className="space-y-6">
-            <div className="flex justify-between items-center">
+        <div className="space-y-3 lg:space-y-6">
+            <div className="flex flex-col gap-2 lg:flex-row lg:justify-between lg:items-center">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Approvals</h1>
-                    <p className="text-gray-400 text-sm mt-1">Review and manage client sign-offs.</p>
+                    <h1 className="text-lg lg:text-2xl font-bold tracking-tight">Approvals</h1>
+                    <p className="text-gray-400 text-xs lg:text-sm mt-0.5 lg:mt-1">Review and manage client sign-offs.</p>
                 </div>
             </div>
 
-            <div className="bg-brand-surface border border-white/5 rounded-xl overflow-hidden">
-                <div className="overflow-x-auto">
+            <div className="bg-brand-surface border border-white/5 rounded-lg lg:rounded-xl overflow-hidden">
+                {/* Mobile Card View */}
+                <div className="lg:hidden divide-y divide-white/5">
+                    {approvals.length === 0 ? (
+                        <div className="p-6 text-center text-gray-500 text-xs">No approval requests found.</div>
+                    ) : (
+                        approvals.map(item => (
+                            <div key={item.id} className="p-3 flex items-start gap-3">
+                                <div className="w-10 h-10 rounded bg-gray-800 overflow-hidden shrink-0">
+                                    {item.thumbnail ? (
+                                        <img src={item.thumbnail} className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="w-full h-full flex items-center justify-center bg-white/5 text-[9px] text-gray-500">N/A</div>
+                                    )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2">
+                                        <p className="font-medium text-white text-xs truncate">{item.title}</p>
+                                        <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[8px] font-medium uppercase
+                                            ${item.status === 'pending' ? 'bg-yellow-500/10 text-yellow-500' : ''}
+                                            ${item.status === 'approved' ? 'bg-green-500/10 text-green-500' : ''}
+                                            ${item.status === 'rejected' ? 'bg-red-500/10 text-red-500' : ''}
+                                            ${item.status === 'uploaded' ? 'bg-gray-500/10 text-gray-400' : ''}
+                                        `}>
+                                            {item.status === 'pending' && <Clock className="w-2 h-2" />}
+                                            {item.status === 'approved' && <CheckCircle className="w-2 h-2" />}
+                                            {item.status === 'rejected' && <XCircle className="w-2 h-2" />}
+                                            {item.status}
+                                        </span>
+                                    </div>
+                                    <p className="text-[10px] text-brand-primary truncate">{item.projects?.title}</p>
+                                    <div className="flex items-center gap-2 mt-1">
+                                        <span className="text-[9px] text-gray-500">
+                                            {new Date(item.submitted_date).toLocaleDateString()}
+                                        </span>
+                                        <span className="px-1.5 py-0.5 bg-white/5 rounded text-[9px] text-gray-400 capitalize">
+                                            {item.type}
+                                        </span>
+                                    </div>
+                                </div>
+                                <button
+                                    onClick={() => setSelectedItem(item)}
+                                    className="p-1.5 text-gray-400 hover:text-white shrink-0"
+                                >
+                                    <Eye className="w-4 h-4" />
+                                </button>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden lg:block overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-brand-dark/30">
                             <tr>
@@ -122,17 +173,17 @@ export default function AdminApprovalsPage() {
 
             {/* Detail Modal */}
             {selectedItem && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-3 lg:p-4">
                     <div className="bg-brand-surface border border-white/10 rounded-xl w-full max-w-2xl shadow-2xl animate-in zoom-in-95 duration-200 overflow-hidden flex flex-col max-h-[90vh]">
-                        <div className="flex justify-between items-center p-6 border-b border-white/5">
-                            <h3 className="text-xl font-bold">Asset Details</h3>
+                        <div className="flex justify-between items-center p-4 lg:p-6 border-b border-white/5">
+                            <h3 className="text-base lg:text-xl font-bold">Asset Details</h3>
                             <button onClick={() => setSelectedItem(null)} className="text-gray-400 hover:text-white transition-colors">
-                                <X size={20} />
+                                <X className="w-4 h-4 lg:w-5 lg:h-5" />
                             </button>
                         </div>
 
-                        <div className="p-6 overflow-y-auto flex-1">
-                            <div className="flex flex-col md:flex-row gap-6">
+                        <div className="p-4 lg:p-6 overflow-y-auto flex-1">
+                            <div className="flex flex-col md:flex-row gap-4 lg:gap-6">
                                 {/* Left Column: Preview */}
                                 <div className="w-full md:w-1/2">
                                     <div className="bg-black/40 rounded-lg overflow-hidden border border-white/5 aspect-video flex items-center justify-center">
@@ -140,18 +191,18 @@ export default function AdminApprovalsPage() {
                                             <img src={selectedItem.thumbnail} className="w-full h-full object-contain" />
                                         ) : (
                                             <div className="text-gray-500 flex flex-col items-center gap-2">
-                                                <FileText size={40} />
-                                                <span className="text-sm">No Preview Available</span>
+                                                <FileText className="w-8 h-8 lg:w-10 lg:h-10" />
+                                                <span className="text-xs lg:text-sm">No Preview Available</span>
                                             </div>
                                         )}
                                     </div>
-                                    <div className="mt-4 flex justify-center">
+                                    <div className="mt-3 lg:mt-4 flex justify-center">
                                         {selectedItem.file_url && (
                                             <a
                                                 href={selectedItem.file_url}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-sm text-brand-primary hover:underline font-medium"
+                                                className="text-xs lg:text-sm text-brand-primary hover:underline font-medium"
                                             >
                                                 Download / View Original
                                             </a>
@@ -160,32 +211,32 @@ export default function AdminApprovalsPage() {
                                 </div>
 
                                 {/* Right Column: Info */}
-                                <div className="w-full md:w-1/2 space-y-6">
+                                <div className="w-full md:w-1/2 space-y-4 lg:space-y-6">
                                     <div>
-                                        <h4 className="text-2xl font-bold text-white mb-1">{selectedItem.title}</h4>
-                                        <div className="flex items-center gap-2 text-sm text-gray-400">
-                                            <span className="bg-white/10 px-2 py-0.5 rounded text-xs uppercase tracking-wide">{selectedItem.type}</span>
+                                        <h4 className="text-lg lg:text-2xl font-bold text-white mb-1">{selectedItem.title}</h4>
+                                        <div className="flex items-center gap-2 text-xs lg:text-sm text-gray-400">
+                                            <span className="bg-white/10 px-2 py-0.5 rounded text-[10px] lg:text-xs uppercase tracking-wide">{selectedItem.type}</span>
                                             <span>•</span>
                                             <span>{selectedItem.projects?.title}</span>
                                         </div>
                                     </div>
 
-                                    <div className="space-y-4">
-                                        <div className="flex items-start gap-3">
-                                            <Calendar size={18} className="text-gray-500 mt-0.5" />
+                                    <div className="space-y-3 lg:space-y-4">
+                                        <div className="flex items-start gap-2 lg:gap-3">
+                                            <Calendar className="w-4 h-4 lg:w-[18px] lg:h-[18px] text-gray-500 mt-0.5" />
                                             <div>
-                                                <p className="text-sm text-gray-400">Submitted on</p>
-                                                <p className="text-white font-medium">{new Date(selectedItem.submitted_date).toLocaleDateString()}</p>
+                                                <p className="text-[10px] lg:text-sm text-gray-400">Submitted on</p>
+                                                <p className="text-white font-medium text-xs lg:text-base">{new Date(selectedItem.submitted_date).toLocaleDateString()}</p>
                                             </div>
                                         </div>
 
-                                        <div className="flex items-start gap-3">
-                                            {selectedItem.status === 'approved' && <CheckCircle size={18} className="text-green-500 mt-0.5" />}
-                                            {selectedItem.status === 'rejected' && <XCircle size={18} className="text-red-500 mt-0.5" />}
-                                            {(selectedItem.status === 'pending' || selectedItem.status === 'uploaded') && <Clock size={18} className="text-yellow-500 mt-0.5" />}
+                                        <div className="flex items-start gap-2 lg:gap-3">
+                                            {selectedItem.status === 'approved' && <CheckCircle className="w-4 h-4 lg:w-[18px] lg:h-[18px] text-green-500 mt-0.5" />}
+                                            {selectedItem.status === 'rejected' && <XCircle className="w-4 h-4 lg:w-[18px] lg:h-[18px] text-red-500 mt-0.5" />}
+                                            {(selectedItem.status === 'pending' || selectedItem.status === 'uploaded') && <Clock className="w-4 h-4 lg:w-[18px] lg:h-[18px] text-yellow-500 mt-0.5" />}
                                             <div>
-                                                <p className="text-sm text-gray-400">Status</p>
-                                                <p className={`font-bold capitalize
+                                                <p className="text-[10px] lg:text-sm text-gray-400">Status</p>
+                                                <p className={`font-bold capitalize text-xs lg:text-base
                                                     ${selectedItem.status === 'approved' ? 'text-green-500' : ''}
                                                     ${selectedItem.status === 'rejected' ? 'text-red-500' : ''}
                                                     ${selectedItem.status === 'pending' ? 'text-yellow-500' : 'text-gray-300'}
@@ -196,17 +247,17 @@ export default function AdminApprovalsPage() {
                                         </div>
                                     </div>
 
-                                    <div className="bg-white/5 rounded-xl p-4 border border-white/5">
-                                        <div className="flex items-center gap-2 mb-2 text-gray-300 font-medium">
-                                            <MessageSquare size={16} className="text-brand-primary" />
+                                    <div className="bg-white/5 rounded-lg lg:rounded-xl p-3 lg:p-4 border border-white/5">
+                                        <div className="flex items-center gap-2 mb-1.5 lg:mb-2 text-gray-300 font-medium text-xs lg:text-base">
+                                            <MessageSquare className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-brand-primary" />
                                             Client Feedback
                                         </div>
                                         {selectedItem.comments ? (
-                                            <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">
+                                            <p className="text-gray-300 text-xs lg:text-sm leading-relaxed whitespace-pre-wrap">
                                                 "{selectedItem.comments}"
                                             </p>
                                         ) : (
-                                            <p className="text-gray-500 text-sm italic">
+                                            <p className="text-gray-500 text-xs lg:text-sm italic">
                                                 No comments provided.
                                             </p>
                                         )}

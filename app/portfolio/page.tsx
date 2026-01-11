@@ -127,17 +127,17 @@ export default function PortfolioPage() {
             <Navbar />
 
             {/* Hero Section */}
-            <section className="relative w-full px-4 md:px-12 lg:px-20 pt-32 pb-16 max-w-screen-2xl mx-auto">
+            <section className="relative w-full px-4 md:px-12 lg:px-20 pt-24 sm:pt-28 md:pt-32 pb-10 sm:pb-12 md:pb-16 max-w-screen-2xl mx-auto">
                 {/* Background Glow */}
-                <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-brand-primary/5 rounded-full blur-[150px] pointer-events-none" />
-                <div className="absolute top-40 left-0 w-[400px] h-[400px] bg-brand-secondary/10 rounded-full blur-[100px] pointer-events-none" />
+                <div className="absolute top-20 right-0 w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-brand-primary/5 rounded-full blur-[100px] sm:blur-[120px] md:blur-[150px] pointer-events-none" />
+                <div className="absolute top-40 left-0 w-[200px] sm:w-[300px] md:w-[400px] h-[200px] sm:h-[300px] md:h-[400px] bg-brand-secondary/10 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none" />
 
                 <div className="relative z-10 text-center max-w-4xl mx-auto">
                     <Link
                         href="/"
-                        className="inline-flex items-center gap-2 text-gray-400 hover:text-brand-primary transition-colors mb-8 text-sm"
+                        className="inline-flex items-center gap-2 text-gray-400 hover:text-brand-primary transition-colors mb-6 sm:mb-8 text-xs sm:text-sm"
                     >
-                        <ArrowLeft size={16} />
+                        <ArrowLeft size={14} className="sm:w-4 sm:h-4" />
                         Back to Home
                     </Link>
 
@@ -146,18 +146,18 @@ export default function PortfolioPage() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                     >
-                        <span className="inline-block bg-brand-primary/10 border border-brand-primary/20 px-4 py-2 rounded-full text-xs font-semibold tracking-wider uppercase text-brand-primary mb-6">
-                            <Play size={12} className="inline mr-2" />
+                        <span className="inline-block bg-brand-primary/10 border border-brand-primary/20 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-brand-primary mb-4 sm:mb-6">
+                            <Play size={10} className="sm:w-3 sm:h-3 inline mr-1.5 sm:mr-2" />
                             Our Work
                         </span>
 
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                        <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                             Videos that make<br />
                             your brand spread<br />
                             <span className="text-brand-primary">like wildfire</span>
                         </h1>
 
-                        <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
+                        <p className="text-gray-400 text-sm sm:text-base md:text-xl max-w-2xl mx-auto leading-relaxed">
                             Watch some of our best work. These videos have generated millions of views
                             and helped our clients achieve remarkable growth.
                         </p>
@@ -180,8 +180,8 @@ export default function PortfolioPage() {
             </section>
 
             {/* Stats Section */}
-            <section className="w-full px-4 md:px-12 lg:px-20 pb-16 max-w-screen-2xl mx-auto">
-                <div className="grid grid-cols-3 gap-4 md:gap-8">
+            <section className="w-full px-4 md:px-12 lg:px-20 pb-12 sm:pb-16 max-w-screen-2xl mx-auto">
+                <div className="grid grid-cols-3 gap-2 sm:gap-4 md:gap-8">
                     {[
                         { value: '10M+', label: 'Views Generated' },
                         { value: '20M+', label: 'Accounts Reached' },
@@ -192,12 +192,12 @@ export default function PortfolioPage() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5 + index * 0.1 }}
-                            className="text-center p-4 md:p-8 rounded-2xl bg-gradient-to-br from-gray-900/50 to-transparent border border-gray-800/50"
+                            className="text-center p-3 sm:p-4 md:p-8 rounded-xl sm:rounded-2xl bg-gradient-to-br from-gray-900/50 to-transparent border border-gray-800/50"
                         >
-                            <p className="text-2xl md:text-4xl lg:text-5xl font-bold text-brand-primary mb-2">
+                            <p className="text-lg sm:text-2xl md:text-4xl lg:text-5xl font-bold text-brand-primary mb-1 sm:mb-2">
                                 {stat.value}
                             </p>
-                            <p className="text-gray-400 text-xs md:text-sm uppercase tracking-wider">
+                            <p className="text-gray-400 text-[9px] sm:text-xs md:text-sm uppercase tracking-wider">
                                 {stat.label}
                             </p>
                         </motion.div>
@@ -206,33 +206,33 @@ export default function PortfolioPage() {
             </section>
 
             {/* CTA Section */}
-            <section className="w-full px-4 md:px-12 lg:px-20 pb-24 max-w-screen-2xl mx-auto">
-                <div className="relative overflow-hidden bg-gradient-to-br from-brand-primary/10 via-brand-surface to-gray-900 border border-brand-primary/20 rounded-3xl p-8 md:p-16 text-center">
+            <section className="w-full px-4 md:px-12 lg:px-20 pb-16 sm:pb-20 md:pb-24 max-w-screen-2xl mx-auto">
+                <div className="relative overflow-hidden bg-gradient-to-br from-brand-primary/10 via-brand-surface to-gray-900 border border-brand-primary/20 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-16 text-center">
                     {/* Animated Background */}
                     <div className="absolute inset-0 opacity-50">
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-brand-primary/10 rounded-full blur-3xl animate-pulse" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-brand-primary/10 rounded-full blur-3xl animate-pulse" />
                     </div>
 
                     <div className="relative z-10">
-                        <h2 className="text-2xl md:text-4xl font-bold text-white mb-4">
+                        <h2 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-3 sm:mb-4">
                             Ready to create viral content?
                         </h2>
-                        <p className="text-gray-400 mb-8 max-w-xl mx-auto">
+                        <p className="text-gray-400 mb-6 sm:mb-8 max-w-xl mx-auto text-sm sm:text-base">
                             Let&apos;s make your brand the next success story. Our team is ready to
                             create scroll-stopping content that converts.
                         </p>
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                             <a
                                 href="https://wa.me/917889676481"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-3 bg-brand-primary text-black px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:bg-green-400 transition-colors"
+                                className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-brand-primary text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-xs sm:text-sm tracking-wide hover:bg-green-400 transition-colors"
                             >
                                 Get Started Today
                             </a>
                             <a
                                 href="mailto:teamourcashmir@gmail.com"
-                                className="inline-flex items-center justify-center gap-3 bg-transparent border border-gray-600 text-white px-8 py-4 rounded-full font-bold text-sm tracking-wide hover:border-brand-primary hover:text-brand-primary transition-colors"
+                                className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-transparent border border-gray-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-xs sm:text-sm tracking-wide hover:border-brand-primary hover:text-brand-primary transition-colors"
                             >
                                 Contact Us
                             </a>

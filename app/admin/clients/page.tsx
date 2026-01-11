@@ -137,26 +137,26 @@ export default function AdminClientsPage() {
     });
 
     return (
-        <div className="space-y-6 relative">
+        <div className="space-y-3 lg:space-y-6 relative">
             {/* Page Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex flex-col gap-3 lg:flex-row lg:justify-between lg:items-center">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Client Management</h1>
-                    <p className="text-gray-400 text-sm mt-1">Manage your client roster, contracts, and status.</p>
+                    <h1 className="text-lg lg:text-2xl font-bold tracking-tight">Client Management</h1>
+                    <p className="text-gray-400 text-xs lg:text-sm mt-0.5 lg:mt-1">Manage your client roster, contracts, and status.</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 lg:gap-3">
                     <button
                         onClick={handleExport}
-                        className="flex items-center gap-2 px-4 py-2 bg-brand-surface border border-white/10 rounded-lg text-sm font-medium hover:bg-white/5 transition-colors"
+                        className="flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-4 py-1.5 lg:py-2 bg-brand-surface border border-white/10 rounded-lg text-xs lg:text-sm font-medium hover:bg-white/5 transition-colors"
                     >
-                        <Download size={16} />
-                        Export
+                        <Download className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                        <span className="hidden sm:inline">Export</span>
                     </button>
                     <div className="flex items-center gap-2">
                         {isCreating ? (
                             <input
                                 autoFocus
-                                className="px-3 py-2 bg-brand-dark border border-brand-primary rounded-lg text-sm outline-none"
+                                className="px-2 lg:px-3 py-1.5 lg:py-2 bg-brand-dark border border-brand-primary rounded-lg text-xs lg:text-sm outline-none w-28 lg:w-auto"
                                 placeholder="Client Name..."
                                 value={newClientName}
                                 onClick={(e) => e.stopPropagation()}
@@ -167,10 +167,10 @@ export default function AdminClientsPage() {
                         ) : (
                             <button
                                 onClick={(e) => { e.stopPropagation(); setIsCreating(true); }}
-                                className="flex items-center gap-2 px-4 py-2 bg-brand-primary text-black rounded-lg text-sm font-bold hover:bg-brand-secondary transition-colors"
+                                className="flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-4 py-1.5 lg:py-2 bg-brand-primary text-black rounded-lg text-xs lg:text-sm font-bold hover:bg-brand-secondary transition-colors"
                             >
-                                <Plus size={16} />
-                                Add Client
+                                <Plus className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                                <span className="hidden sm:inline">Add</span> Client
                             </button>
                         )}
                     </div>
@@ -178,33 +178,81 @@ export default function AdminClientsPage() {
             </div>
 
             {/* Filters Bar */}
-            <div className="bg-brand-surface border border-white/5 rounded-xl p-4 flex flex-col sm:flex-row gap-4 justify-between items-center">
-                <div className="relative w-full sm:w-96">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
+            <div className="bg-brand-surface border border-white/5 rounded-lg lg:rounded-xl p-2.5 lg:p-4 flex flex-col sm:flex-row gap-2 lg:gap-4 justify-between items-stretch sm:items-center">
+                <div className="relative flex-1 sm:max-w-xs lg:max-w-sm">
+                    <Search className="absolute left-2.5 lg:left-3 top-1/2 -translate-y-1/2 text-gray-500 w-3.5 h-3.5 lg:w-4 lg:h-4" />
                     <input
                         type="text"
-                        placeholder="Search clients by name, company..."
-                        className="w-full bg-brand-dark border border-white/10 rounded-lg pl-10 pr-4 py-2 text-sm focus:border-brand-primary/50 outline-none transition-colors"
+                        placeholder="Search clients..."
+                        className="w-full bg-brand-dark border border-white/10 rounded-lg pl-8 lg:pl-10 pr-3 lg:pr-4 py-1.5 lg:py-2 text-xs lg:text-sm focus:border-brand-primary/50 outline-none transition-colors"
                         value={searchTerm}
                         onChange={e => setSearchTerm(e.target.value)}
                     />
                 </div>
-                <div className="flex items-center gap-3 w-full sm:w-auto">
-                    <button
-                        onClick={cycleFilter}
-                        className={`flex items-center gap-2 px-3 py-2 border rounded-lg text-xs font-medium transition-colors
-                            ${statusFilter === 'all' ? 'bg-brand-dark border-white/10' : 'bg-brand-primary/10 border-brand-primary text-brand-primary'}
-                        `}
-                    >
-                        <Filter size={14} />
-                        Filter: {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
-                    </button>
-                </div>
+                <button
+                    onClick={cycleFilter}
+                    className={`flex items-center justify-center gap-1.5 lg:gap-2 px-2.5 lg:px-3 py-1.5 lg:py-2 border rounded-lg text-[10px] lg:text-xs font-medium transition-colors
+                        ${statusFilter === 'all' ? 'bg-brand-dark border-white/10' : 'bg-brand-primary/10 border-brand-primary text-brand-primary'}
+                    `}
+                >
+                    <Filter className="w-3 h-3 lg:w-3.5 lg:h-3.5" />
+                    {statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
+                </button>
             </div>
 
-            {/* Clients Table */}
-            <div className="bg-brand-surface border border-white/5 rounded-xl min-h-[400px]">
-                <div className="overflow-x-auto pb-20">
+            {/* Clients - Mobile Cards / Desktop Table */}
+            <div className="bg-brand-surface border border-white/5 rounded-lg lg:rounded-xl">
+                {/* Mobile Card View */}
+                <div className="lg:hidden divide-y divide-white/5">
+                    {loading ? (
+                        <div className="p-4 text-center text-gray-500 text-xs">Loading clients...</div>
+                    ) : filteredClients.length === 0 ? (
+                        <div className="p-4 text-center text-gray-500 text-xs">No clients found.</div>
+                    ) : (
+                        filteredClients.map((client) => (
+                            <div key={client.id} className="p-3 flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-full bg-brand-primary/10 overflow-hidden flex items-center justify-center text-brand-primary font-bold text-xs shrink-0">
+                                    {client.avatar_url ? (
+                                        <img src={client.avatar_url} alt="" className="w-full h-full object-cover" />
+                                    ) : (
+                                        client.name.charAt(0)
+                                    )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <div className="flex items-center gap-2">
+                                        <p className="font-medium text-brand-white text-sm truncate">{client.name}</p>
+                                        <span className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-[9px] font-medium bg-opacity-10 
+                                            ${client.status === 'active' ? 'bg-green-500 text-green-500' : ''}
+                                            ${client.status === 'paused' ? 'bg-yellow-500 text-yellow-500' : ''}
+                                            ${client.status === 'lead' ? 'bg-blue-500 text-blue-500' : ''}
+                                        `}>
+                                            {client.status}
+                                        </span>
+                                    </div>
+                                    <p className="text-[10px] text-gray-500 truncate">{client.company || 'No Company'}</p>
+                                    <p className="text-[10px] text-brand-primary font-medium mt-0.5">₹{(client.total_spent || 0).toLocaleString('en-IN')}</p>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    <Link
+                                        href={`/admin/clients/${client.id}`}
+                                        className="p-1.5 text-xs text-gray-400 hover:text-brand-primary"
+                                    >
+                                        View
+                                    </Link>
+                                    <button
+                                        onClick={(e) => handleEditClick(client, e)}
+                                        className="p-1.5 text-gray-400 hover:text-white"
+                                    >
+                                        <Edit className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {/* Desktop Table View */}
+                <div className="hidden lg:block overflow-x-auto pb-20">
                     <table className="w-full text-left">
                         <thead>
                             <tr className="border-b border-white/5 bg-brand-dark/30">
@@ -312,32 +360,32 @@ export default function AdminClientsPage() {
 
             {/* Edit Client Modal */}
             {editingClient && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-                    <div className="bg-brand-surface border border-white/10 rounded-xl w-full max-w-md p-6 shadow-2xl animate-in zoom-in-95 duration-200">
-                        <div className="flex justify-between items-center mb-6">
-                            <h3 className="text-lg font-bold">Edit Client</h3>
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-3 lg:p-4">
+                    <div className="bg-brand-surface border border-white/10 rounded-xl w-full max-w-md p-4 lg:p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+                        <div className="flex justify-between items-center mb-4 lg:mb-6">
+                            <h3 className="text-base lg:text-lg font-bold">Edit Client</h3>
                             <button onClick={() => setEditingClient(null)} className="text-gray-400 hover:text-white">
-                                <X size={20} />
+                                <X className="w-4 h-4 lg:w-5 lg:h-5" />
                             </button>
                         </div>
 
-                        <div className="space-y-4">
+                        <div className="space-y-3 lg:space-y-4">
                             <div>
-                                <label className="block text-xs font-semibold text-gray-400 uppercase mb-1">Client Name</label>
+                                <label className="block text-[10px] lg:text-xs font-semibold text-gray-400 uppercase mb-1">Client Name</label>
                                 <input
                                     type="text"
                                     value={editingClient.name}
                                     disabled
-                                    className="w-full bg-brand-dark/50 border border-white/5 rounded-lg px-3 py-2 text-sm text-gray-500 cursor-not-allowed"
+                                    className="w-full bg-brand-dark/50 border border-white/5 rounded-lg px-3 py-2 text-xs lg:text-sm text-gray-500 cursor-not-allowed"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-xs font-semibold text-gray-400 uppercase mb-1">Status</label>
+                                <label className="block text-[10px] lg:text-xs font-semibold text-gray-400 uppercase mb-1">Status</label>
                                 <select
                                     value={editForm.status}
                                     onChange={(e) => setEditForm({ ...editForm, status: e.target.value })}
-                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-brand-primary outline-none"
+                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-xs lg:text-sm focus:border-brand-primary outline-none"
                                 >
                                     <option value="lead">Lead</option>
                                     <option value="active">Active</option>
@@ -346,39 +394,39 @@ export default function AdminClientsPage() {
                             </div>
 
                             <div>
-                                <label className="block text-xs font-semibold text-gray-400 uppercase mb-1">Account Manager</label>
+                                <label className="block text-[10px] lg:text-xs font-semibold text-gray-400 uppercase mb-1">Account Manager</label>
                                 <input
                                     type="text"
                                     value={editForm.account_manager}
                                     onChange={(e) => setEditForm({ ...editForm, account_manager: e.target.value })}
                                     placeholder="e.g. John Doe"
-                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-brand-primary outline-none"
+                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-xs lg:text-sm focus:border-brand-primary outline-none"
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-xs font-semibold text-gray-400 uppercase mb-1">Total Spent (₹)</label>
+                                <label className="block text-[10px] lg:text-xs font-semibold text-gray-400 uppercase mb-1">Total Spent (₹)</label>
                                 <input
                                     type="number"
                                     value={editForm.total_spent}
                                     onChange={(e) => setEditForm({ ...editForm, total_spent: Number(e.target.value) })}
-                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-sm focus:border-brand-primary outline-none"
+                                    className="w-full bg-brand-dark border border-white/10 rounded-lg px-3 py-2 text-xs lg:text-sm focus:border-brand-primary outline-none"
                                 />
                             </div>
                         </div>
 
-                        <div className="flex justify-end gap-3 mt-8">
+                        <div className="flex justify-end gap-2 lg:gap-3 mt-6 lg:mt-8">
                             <button
                                 onClick={() => setEditingClient(null)}
-                                className="px-4 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-white/5"
+                                className="px-3 lg:px-4 py-1.5 lg:py-2 rounded-lg text-xs lg:text-sm text-gray-400 hover:text-white hover:bg-white/5"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleUpdateClient}
-                                className="px-4 py-2 bg-brand-primary text-black rounded-lg text-sm font-bold hover:bg-brand-secondary flex items-center gap-2"
+                                className="px-3 lg:px-4 py-1.5 lg:py-2 bg-brand-primary text-black rounded-lg text-xs lg:text-sm font-bold hover:bg-brand-secondary flex items-center gap-1.5 lg:gap-2"
                             >
-                                <Save size={16} /> Save Changes
+                                <Save className="w-3.5 h-3.5 lg:w-4 lg:h-4" /> Save
                             </button>
                         </div>
                     </div>
