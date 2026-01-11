@@ -87,7 +87,7 @@ export default function ProjectsPage() {
                     <Link href={`/projects/${project.id}`} key={project.id} className="block group">
                         <div className="bg-brand-surface border border-brand-primary/10 rounded-xl overflow-hidden hover:border-brand-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-brand-primary/5 h-full flex flex-col">
                             <div className="h-40 bg-gray-800 relative overflow-hidden">
-                                <img src={project.thumbnail} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                <img src={project.thumbnail || ''} alt={project.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 <div className="absolute top-3 right-3">
                                     <span className={`
                                     px-2.5 py-1 rounded-full text-xs font-medium backdrop-blur-md border border-white/10 shadow-sm capitalize
