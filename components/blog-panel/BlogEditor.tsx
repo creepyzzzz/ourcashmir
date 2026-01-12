@@ -180,7 +180,7 @@ export default function BlogEditor({ initialData, isEditing = false, onClose, on
         content: content,
         editorProps: {
             attributes: {
-                class: 'prose prose-invert max-w-none focus:outline-none min-h-[400px] px-6 py-4 text-brand-white',
+                class: 'prose prose-invert max-w-none focus:outline-none min-h-[400px] px-4 py-4 lg:px-6 text-brand-white',
             },
         },
         onUpdate: ({ editor }) => {
@@ -348,54 +348,54 @@ export default function BlogEditor({ initialData, isEditing = false, onClose, on
     };
 
     return (
-        <div className="flex flex-col h-[calc(100vh-4rem)] bg-brand-darker text-brand-white -m-6 sm:-m-8">
+        <div className="flex flex-col h-[calc(100vh-4rem)] bg-brand-darker text-brand-white -m-3 sm:-m-4 md:-m-6 lg:-m-8">
 
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-brand-primary/10 bg-brand-surface">
-                <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-4 py-3 border-b border-brand-primary/10 bg-brand-surface shrink-0 z-10">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
                     <button
                         onClick={handleClose}
-                        className="p-2 -ml-2 rounded-lg hover:bg-brand-primary/10 text-gray-400 hover:text-brand-primary transition-colors"
+                        className="p-1.5 -ml-1.5 rounded-lg hover:bg-brand-primary/10 text-gray-400 hover:text-brand-primary transition-colors shrink-0"
                     >
                         <X className="w-5 h-5" />
                     </button>
-                    <div>
-                        <h2 className="text-xl font-bold text-brand-white font-display">
-                            {isEditing ? 'Edit Post' : 'Create New Post'}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 overflow-hidden">
+                        <h2 className="text-lg font-bold text-brand-white font-display truncate">
+                            {isEditing ? 'Edit Post' : 'New Post'}
                         </h2>
-                        <div className="flex items-center gap-2 mt-1">
+                        <div className="flex items-center gap-2">
                             <span className={cn(
-                                "w-2 h-2 rounded-full",
+                                "w-1.5 h-1.5 rounded-full shrink-0",
                                 status === 'published' ? "bg-brand-primary" : "bg-yellow-500"
                             )} />
-                            <p className="text-xs text-gray-400 uppercase tracking-wider font-medium">
+                            <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-wider font-medium whitespace-nowrap">
                                 {status === 'published' ? 'Published' : 'Draft'}
                             </p>
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center justify-end w-full sm:w-auto gap-2">
                     <Button
                         variant="ghost"
                         onClick={handleClose}
-                        className="text-gray-400 hover:text-brand-white hover:bg-white/5"
+                        className="hidden sm:inline-flex text-xs h-8 text-gray-400 hover:text-brand-white hover:bg-white/5"
                     >
                         Cancel
                     </Button>
                     <Button
                         onClick={handleSavePost}
                         disabled={saving}
-                        className="bg-brand-primary text-black hover:bg-brand-secondary hover:text-white transition-all font-bold"
+                        className="w-full sm:w-auto flex-1 sm:flex-none h-9 text-xs sm:text-sm bg-brand-primary text-black hover:bg-brand-secondary hover:text-white transition-all font-bold"
                     >
-                        {saving ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                        {isEditing ? 'Update Post' : 'Publish Post'}
+                        {saving ? <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 mr-2 animate-spin" /> : <Save className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />}
+                        {isEditing ? 'Update' : 'Publish'}
                     </Button>
                 </div>
             </div>
 
             {/* Body */}
             <div className="flex-1 overflow-y-auto overflow-x-hidden">
-                <div className="max-w-7xl mx-auto p-6 space-y-6">
+                <div className="max-w-7xl mx-auto p-4 lg:p-6 space-y-6">
 
                     {/* Main Metadata Grid */}
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -408,7 +408,7 @@ export default function BlogEditor({ initialData, isEditing = false, onClose, on
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     placeholder="Enter post title..."
-                                    className="w-full bg-transparent text-4xl font-bold text-brand-white placeholder:text-gray-600 focus:outline-none border-none p-0"
+                                    className="w-full bg-transparent text-2xl lg:text-4xl font-bold text-brand-white placeholder:text-gray-600 focus:outline-none border-none p-0"
                                 />
                                 <div className="flex items-center gap-2 text-sm text-gray-500">
                                     <span className="font-mono text-brand-primary">slug:</span>

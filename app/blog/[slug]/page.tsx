@@ -33,12 +33,12 @@ const HTMLContent = ({ content }: { content: string }) => {
 
     return (
         <div
-            className="prose prose-lg prose-invert max-w-none 
+            className="prose prose-invert lg:prose-lg max-w-none 
             prose-headings:font-display prose-headings:font-bold prose-headings:tracking-tight
             prose-p:leading-relaxed prose-p:text-gray-300
             prose-a:no-underline prose-a:border-b prose-a:border-brand-primary/50 prose-a:transition-all hover:prose-a:border-brand-primary
-            prose-img:rounded-2xl prose-img:border prose-img:border-white/10 prose-img:shadow-2xl
-            prose-blockquote:not-italic prose-blockquote:font-medium prose-blockquote:bg-brand-surface prose-blockquote:py-2 prose-blockquote:px-6 prose-blockquote:rounded-r-lg
+            prose-img:rounded-xl lg:prose-img:rounded-2xl prose-img:border prose-img:border-white/10 prose-img:shadow-2xl
+            prose-blockquote:not-italic prose-blockquote:font-medium prose-blockquote:bg-brand-surface prose-blockquote:py-2 prose-blockquote:px-4 lg:prose-blockquote:px-6 prose-blockquote:rounded-r-lg
             "
             dangerouslySetInnerHTML={{ __html: content }}
         />
@@ -80,7 +80,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <div className="fixed top-0 left-0 w-full h-[50vh] bg-brand-primary/5 blur-[120px] pointer-events-none z-0" />
 
             {/* Cinematic Hero Section */}
-            <div className="relative w-full h-[60vh] min-h-[500px] flex items-end justify-center pb-20">
+            <div className="relative w-full h-[45vh] lg:h-[60vh] min-h-[400px] flex items-end justify-center pb-12 lg:pb-20">
                 {/* Background Image with Overlay */}
                 {post.cover_image && (
                     <div className="absolute inset-0 z-0">
@@ -91,7 +91,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                 )}
 
                 {/* Hero Content */}
-                <div className="relative z-10 max-w-4xl mx-auto px-4 text-center space-y-8">
+                <div className="relative z-10 max-w-4xl mx-auto px-4 text-center space-y-6 lg:space-y-8">
                     {/* Category Chip */}
                     {post.blog_categories && (
                         <Link href={`/blog/category/${post.blog_categories.slug}`}
@@ -101,7 +101,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     )}
 
                     {/* Title */}
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold font-display leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 drop-shadow-2xl">
+                    <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold font-display leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 drop-shadow-2xl">
                         {post.title}
                     </h1>
 
@@ -154,19 +154,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
                     </div>
 
                     {/* Center Column: Content */}
-                    <main className="lg:col-span-8 bg-brand-dark/50 backdrop-blur-xl border border-white/5 rounded-3xl p-6 md:p-12 shadow-2xl relative overflow-hidden">
+                    <main className="lg:col-span-8 bg-brand-dark/50 backdrop-blur-xl border border-white/5 rounded-2xl lg:rounded-3xl p-5 md:p-12 shadow-2xl relative overflow-hidden">
 
                         {/* Featured Image (Clear) */}
                         {post.cover_image && (
-                            <div className="relative w-full aspect-video rounded-2xl overflow-hidden mb-12 shadow-2xl border border-white/5 group">
+                            <div className="relative w-full aspect-video rounded-xl lg:rounded-2xl overflow-hidden mb-8 lg:mb-12 shadow-2xl border border-white/5 group">
                                 <div className="absolute inset-0 bg-brand-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
                                 <img src={post.cover_image} alt={post.title} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" />
                             </div>
                         )}
 
                         {/* Excerpt */}
-                        <div className="mb-10 p-8 bg-brand-surface/50 border-l-4 border-brand-primary rounded-r-xl">
-                            <p className="text-xl md:text-2xl font-medium text-brand-white/90 leading-relaxed italic font-serif">
+                        <div className="mb-8 lg:mb-10 p-5 lg:p-8 bg-brand-surface/50 border-l-4 border-brand-primary rounded-r-xl">
+                            <p className="text-lg md:text-2xl font-medium text-brand-white/90 leading-relaxed italic font-serif">
                                 "{post.excerpt}"
                             </p>
                         </div>

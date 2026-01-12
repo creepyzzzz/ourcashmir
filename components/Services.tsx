@@ -18,7 +18,7 @@ const services: Service[] = [
     title: "Social Media Marketing",
     description: "Build communities and drive real engagement with data-driven strategies.",
     icon: Share2,
-    colSpan: "sm:col-span-2 md:col-span-2 md:row-span-2",
+    colSpan: "col-span-2 row-span-2 md:col-span-2 md:row-span-2",
     bgClass: "bg-brand-primary text-black",
     hoverImages: [
       "/images/ourcashmir/INFLUENCERS/ZACK.jpg",
@@ -30,7 +30,7 @@ const services: Service[] = [
     title: "Influencer Marketing",
     description: "Collaborate with Kashmir's top creators.",
     icon: MousePointer2,
-    colSpan: "md:col-span-1 md:row-span-1",
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
     hoverImages: [
       "/images/ourcashmir/INFLUENCERS/KASHUR BOI.jpg",
       "/images/ourcashmir/INFLUENCERS/CHEF OWAIS.jpg",
@@ -41,7 +41,7 @@ const services: Service[] = [
     title: "SEO & Ads",
     description: "Rank higher and reach more customers.",
     icon: Search,
-    colSpan: "md:col-span-1 md:row-span-1",
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
     hoverImages: [
       "/images/ourcashmir/People/logo-270.png",
       "/images/ourcashmir/People/Web involve.jpeg",
@@ -52,7 +52,7 @@ const services: Service[] = [
     title: "Content Production",
     description: "High-quality reels, shorts, and creatives.",
     icon: Video,
-    colSpan: "md:col-span-1 md:row-span-1",
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
     hoverImages: [
       "/images/ourcashmir/People/image.png",
       "/images/ourcashmir/People/vishal.png",
@@ -63,7 +63,7 @@ const services: Service[] = [
     title: "Web Development",
     description: "Fast, responsive, and SEO-optimized sites.",
     icon: Code,
-    colSpan: "md:col-span-1 md:row-span-1",
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
     hoverImages: [
       "/images/ourcashmir/People/QHH.png",
       "/images/ourcashmir/People/PB.jpg",
@@ -74,7 +74,7 @@ const services: Service[] = [
     title: "Brand Strategy",
     description: "A complete roadmap for success.",
     icon: Star,
-    colSpan: "md:col-span-1 md:row-span-1",
+    colSpan: "col-span-2 md:col-span-1 md:row-span-1",
     hoverImages: [
       "/images/ourcashmir/People/Lovely sweets.jpg",
       "/images/ourcashmir/People/Power House.png",
@@ -86,19 +86,20 @@ const services: Service[] = [
 const ServiceCard = ({ service }: { service: Service }) => {
   return (
     <motion.div
-      className={`group relative overflow-hidden rounded-3xl p-6 flex flex-col justify-between transition-all duration-300 ${service.bgClass
+      className={`group relative overflow-hidden rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col justify-between transition-all duration-300 ${service.bgClass
         ? service.bgClass
         : 'bg-gray-900/40 border border-gray-800 hover:border-white/20'
         } ${service.colSpan}`}
       initial="initial"
       whileHover="hover"
+      whileTap="hover"
     >
       {/* Hover Images Layer */}
-      <div className="absolute inset-0 z-0 pointer-events-none p-6">
+      <div className="absolute inset-0 z-0 pointer-events-none p-4 md:p-6">
         {service.hoverImages.map((img, index) => (
           <motion.div
             key={index}
-            className={`absolute w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden shadow-2xl border-2 ${service.bgClass ? 'border-white/20' : 'border-white/20'}`}
+            className={`absolute w-14 h-14 md:w-20 md:h-20 rounded-lg md:rounded-xl overflow-hidden shadow-2xl border-2 ${service.bgClass ? 'border-white/20' : 'border-white/20'}`}
             style={{
               top: '50%',
               left: '50%',
@@ -129,21 +130,20 @@ const ServiceCard = ({ service }: { service: Service }) => {
 
       {/* Content Layer with Backdrop Blur for readability */}
       <div className="relative z-10 flex flex-col h-full justify-between transition-all duration-300">
-        <div className="flex justify-between items-start mb-4">
-          <div className={`p-3 rounded-full ${service.bgClass ? 'bg-black/10' : 'bg-brand-primary/10'}`}>
-            <service.icon size={24} className={service.bgClass ? 'text-black' : 'text-brand-primary'} />
+        <div className="flex justify-between items-start mb-2 md:mb-4">
+          <div className={`p-2 md:p-3 rounded-full ${service.bgClass ? 'bg-black/10' : 'bg-brand-primary/10'}`}>
+            <service.icon className={`w-5 h-5 md:w-6 md:h-6 ${service.bgClass ? 'text-black' : 'text-brand-primary'}`} />
           </div>
           <ArrowUpRight
-            size={20}
-            className={`opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1 group-hover:-translate-y-1 ${service.bgClass ? 'text-black' : 'text-brand-primary'}`}
+            className={`w-4 h-4 md:w-5 md:h-5 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1 group-hover:-translate-y-1 ${service.bgClass ? 'text-black' : 'text-brand-primary'}`}
           />
         </div>
 
         <div>
-          <h3 className={`text-xl md:text-2xl font-bold mb-2 ${service.bgClass ? 'text-black' : 'text-white'}`}>
+          <h3 className={`text-base font-bold mb-1 md:mb-2 md:text-2xl ${service.bgClass ? 'text-black' : 'text-white'}`}>
             {service.title}
           </h3>
-          <p className={`text-sm leading-relaxed ${service.bgClass ? 'text-black/70 font-medium' : 'text-gray-400'}`}>
+          <p className={`text-xs md:text-sm leading-relaxed ${service.bgClass ? 'text-black/70 font-medium' : 'text-gray-400'} line-clamp-2 md:line-clamp-none`}>
             {service.description}
           </p>
         </div>
@@ -176,7 +176,7 @@ const Services: React.FC = () => {
       </div>
 
       {/* Perfect 3x3 Bento Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] md:auto-rows-[300px]">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 auto-rows-[180px] md:auto-rows-[300px]">
         {services.map((service, index) => (
           <ServiceCard key={index} service={service} />
         ))}

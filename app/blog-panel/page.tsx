@@ -48,31 +48,33 @@ export default async function BlogDashboard() {
     return (
         <div className="space-y-8">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
-                    <h1 className="text-2xl font-bold text-brand-white">Dashboard Overview</h1>
-                    <p className="text-gray-400 text-sm mt-1">Welcome back to the content engine.</p>
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h1 className="text-xl sm:text-2xl font-bold text-brand-white">Dashboard Overview</h1>
+                        <p className="text-gray-400 text-xs sm:text-sm mt-1">Welcome back to the content engine.</p>
+                    </div>
+                    <Link
+                        href="/blog-panel/posts/create"
+                        className="inline-flex items-center justify-center gap-2 bg-brand-primary text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-brand-primary/90 transition-colors w-full sm:w-auto"
+                    >
+                        <Plus size={18} />
+                        Create New Post
+                    </Link>
                 </div>
-                <Link
-                    href="/blog-panel/posts/create"
-                    className="inline-flex items-center justify-center gap-2 bg-brand-primary text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-brand-primary/90 transition-colors"
-                >
-                    <Plus size={18} />
-                    Create New Post
-                </Link>
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                 {stats.map((stat, i) => (
-                    <div key={i} className="bg-brand-surface border border-brand-primary/10 rounded-xl p-5 hover:border-brand-primary/30 transition-colors">
-                        <div className="flex items-center justify-between">
+                    <div key={i} className="bg-brand-surface border border-brand-primary/10 rounded-xl p-4 hover:border-brand-primary/30 transition-colors">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                             <div>
-                                <p className="text-gray-400 text-sm font-medium">{stat.label}</p>
-                                <p className="text-2xl font-bold text-brand-white mt-1">{stat.value}</p>
+                                <p className="text-gray-400 text-xs font-medium uppercase tracking-wider">{stat.label}</p>
+                                <p className="text-xl sm:text-2xl font-bold text-brand-white mt-1">{stat.value}</p>
                             </div>
-                            <div className={`p-3 rounded-lg ${stat.bg} ${stat.color}`}>
-                                <stat.icon size={20} />
+                            <div className={`p-2 sm:p-3 rounded-lg ${stat.bg} ${stat.color} self-end sm:self-center`}>
+                                <stat.icon size={16} className="sm:w-5 sm:h-5" />
                             </div>
                         </div>
                     </div>
@@ -82,37 +84,33 @@ export default async function BlogDashboard() {
             {/* Recent Posts & Quick Actions Placeholder */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Recent Posts */}
-                <div className="lg:col-span-2 bg-brand-surface border border-brand-primary/10 rounded-xl overflow-hidden p-6">
-                    <div className="flex items-center justify-between mb-6">
-                        <h2 className="text-lg font-bold text-brand-white">Recent Posts</h2>
-                        <Link href="/blog-panel/posts" className="text-sm text-brand-primary hover:text-brand-primary/80 flex items-center gap-1">
+                <div className="lg:col-span-2 bg-brand-surface border border-brand-primary/10 rounded-xl overflow-hidden p-4 sm:p-6">
+                    <div className="flex items-center justify-between mb-4 sm:mb-6">
+                        <h2 className="text-base sm:text-lg font-bold text-brand-white">Recent Posts</h2>
+                        <Link href="/blog-panel/posts" className="text-xs sm:text-sm text-brand-primary hover:text-brand-primary/80 flex items-center gap-1">
                             View All <ArrowRight size={14} />
                         </Link>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-3 sm:space-y-4">
                         {recentPosts && recentPosts.length > 0 ? (
                             recentPosts.map(post => (
-                                <div key={post.id} className="flex items-center justify-between p-4 rounded-lg bg-brand-dark/30 hover:bg-brand-dark/50 transition-colors border border-white/5">
-                                    <div className="min-w-0">
-                                        <h3 className="text-brand-white font-medium truncate">{post.title}</h3>
-                                        <div className="flex items-center gap-3 mt-1 text-xs text-gray-500">
-                                            <span className={`px-2 py-0.5 rounded-full capitalize ${post.status === 'published' ? 'bg-green-500/10 text-green-500' :
-                                                    post.status === 'draft' ? 'bg-yellow-500/10 text-yellow-500' :
-                                                        post.status === 'scheduled' ? 'bg-purple-500/10 text-purple-500' :
-                                                            'bg-gray-500/10 text-gray-500'
+                                <div key={post.id} className="flex items-center justify-between p-3 sm:p-4 rounded-lg bg-brand-dark/30 hover:bg-brand-dark/50 transition-colors border border-white/5">
+                                    <div className="min-w-0 pr-4">
+                                        <h3 className="text-sm sm:text-base font-medium text-brand-white truncate">{post.title}</h3>
+                                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 mt-1 text-[10px] sm:text-xs text-gray-500">
+                                            <span className={`px-1.5 py-0.5 rounded-full capitalize ${post.status === 'published' ? 'bg-green-500/10 text-green-500' :
+                                                post.status === 'draft' ? 'bg-yellow-500/10 text-yellow-500' :
+                                                    post.status === 'scheduled' ? 'bg-purple-500/10 text-purple-500' :
+                                                        'bg-gray-500/10 text-gray-500'
                                                 }`}>
                                                 {post.status}
                                             </span>
+                                            <span className="hidden sm:inline">•</span>
                                             <span>{new Date(post.created_at || '').toLocaleDateString()}</span>
-                                            {post.view_count !== null && (
-                                                <span className="flex items-center gap-1">
-                                                    {post.view_count} views
-                                                </span>
-                                            )}
                                         </div>
                                     </div>
-                                    <Link href={`/blog-panel/posts/${post.id}`} className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
+                                    <Link href={`/blog-panel/posts/create?id=${post.id}&edit=true`} className="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors shrink-0">
                                         <Edit3 size={16} />
                                     </Link>
                                 </div>
@@ -126,8 +124,8 @@ export default async function BlogDashboard() {
                 </div>
 
                 {/* Quick Tips / System Status */}
-                <div className="bg-brand-surface border border-brand-primary/10 rounded-xl p-6">
-                    <h2 className="text-lg font-bold text-brand-white mb-4">System Status</h2>
+                <div className="bg-brand-surface border border-brand-primary/10 rounded-xl p-4 sm:p-6 mb-8 lg:mb-0">
+                    <h2 className="text-base sm:text-lg font-bold text-brand-white mb-4">System Status</h2>
                     <div className="space-y-3">
                         <div className="flex items-center justify-between text-sm">
                             <span className="text-gray-400">Database</span>
@@ -139,7 +137,7 @@ export default async function BlogDashboard() {
                         </div>
                         <div className="p-4 mt-6 bg-brand-primary/5 rounded-lg border border-brand-primary/10">
                             <h3 className="text-brand-primary font-medium text-sm mb-1">Tip</h3>
-                            <p className="text-xs text-gray-400">
+                            <p className="text-xs text-gray-400 leading-relaxed">
                                 Use tags to organize your content for better SEO and user navigation.
                             </p>
                         </div>

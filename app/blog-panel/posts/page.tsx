@@ -94,13 +94,13 @@ export default async function PostsPage({
             {/* Posts List */}
             <div className="bg-brand-surface border border-brand-primary/10 rounded-xl overflow-hidden">
                 <div className="overflow-x-auto">
-                    <table className="w-full text-left border-collapse">
+                    <table className="w-full text-left border-collapse min-w-[600px] sm:min-w-0">
                         <thead>
                             <tr className="border-b border-brand-primary/10 bg-brand-dark/20 text-xs text-gray-400 uppercase tracking-wider">
-                                <th className="p-4 font-semibold">Title</th>
-                                <th className="p-4 font-semibold">Status</th>
-                                <th className="p-4 font-semibold">Category</th>
-                                <th className="p-4 font-semibold">Date</th>
+                                <th className="p-4 font-semibold w-1/2 sm:w-auto">Title</th>
+                                <th className="p-4 font-semibold hidden sm:table-cell">Status</th>
+                                <th className="p-4 font-semibold hidden md:table-cell">Category</th>
+                                <th className="p-4 font-semibold hidden lg:table-cell">Date</th>
                                 <th className="p-4 font-semibold text-right">Actions</th>
                             </tr>
                         </thead>
@@ -109,12 +109,21 @@ export default async function PostsPage({
                                 posts.map((post) => (
                                     <tr key={post.id} className="group hover:bg-brand-primary/5 transition-colors">
                                         <td className="p-4">
-                                            <div className="font-medium text-brand-white truncate max-w-xs sm:max-w-md">
+                                            <div className="font-medium text-brand-white truncate max-w-[200px] sm:max-w-md">
                                                 {post.title}
                                             </div>
-                                            <div className="text-xs text-gray-500 truncate max-w-xs">{post.slug}</div>
+                                            <div className="flex items-center gap-2 sm:hidden mt-2">
+                                                <span className={`inline-flex px-2 py-0.5 rounded-full text-[10px] font-medium capitalize ${post.status === 'published' ? 'bg-green-500/10 text-green-500' :
+                                                    post.status === 'draft' ? 'bg-yellow-500/10 text-yellow-500' :
+                                                        post.status === 'scheduled' ? 'bg-purple-500/10 text-purple-500' :
+                                                            'bg-gray-500/10 text-gray-500'
+                                                    }`}>
+                                                    {post.status}
+                                                </span>
+                                            </div>
+                                            <div className="text-xs text-gray-500 truncate max-w-xs mt-0.5 hidden sm:block">{post.slug}</div>
                                         </td>
-                                        <td className="p-4">
+                                        <td className="p-4 hidden sm:table-cell">
                                             <span className={`inline-flex px-2 py-0.5 rounded-full text-xs font-medium capitalize ${post.status === 'published' ? 'bg-green-500/10 text-green-500' :
                                                 post.status === 'draft' ? 'bg-yellow-500/10 text-yellow-500' :
                                                     post.status === 'scheduled' ? 'bg-purple-500/10 text-purple-500' :
@@ -123,18 +132,18 @@ export default async function PostsPage({
                                                 {post.status}
                                             </span>
                                         </td>
-                                        <td className="p-4 text-gray-400">
+                                        <td className="p-4 text-gray-400 hidden md:table-cell">
                                             {post.blog_categories?.name || 'Uncategorized'}
                                         </td>
-                                        <td className="p-4 text-gray-500">
+                                        <td className="p-4 text-gray-500 hidden lg:table-cell">
                                             {post.published_at
                                                 ? new Date(post.published_at).toLocaleDateString()
                                                 : <span className="text-gray-600">--</span>
                                             }
                                         </td>
                                         <td className="p-4 text-right">
-                                            <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <Link href={`/blog-panel/posts/${post.id}`} className="p-1.5 text-blue-400 hover:bg-blue-400/10 rounded-lg">
+                                            <div className="flex items-center justify-end gap-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                                                <Link href={`/blog-panel/posts/create?id=${post.id}&edit=true`} className="p-1.5 text-blue-400 hover:bg-blue-400/10 rounded-lg">
                                                     <Edit3 size={16} />
                                                 </Link>
                                                 <DeletePostButton postId={post.id} />

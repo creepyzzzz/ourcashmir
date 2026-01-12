@@ -36,12 +36,12 @@ export default async function BlogPage({ searchParams }: { searchParams: { page?
     return (
         <div className="min-h-screen bg-brand-darker text-brand-white">
             {/* Header / Hero */}
-            <div className="bg-brand-surface border-b border-brand-primary/10 pt-24 pb-12 lg:pt-32 lg:pb-16">
+            <div className="bg-brand-surface border-b border-brand-primary/10 pt-20 pb-8 lg:pt-32 lg:pb-16">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-display tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-brand-white to-gray-400">
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold font-display tracking-tight mb-4 text-transparent bg-clip-text bg-gradient-to-r from-brand-white to-gray-400">
                         Our Blog
                     </h1>
-                    <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+                    <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto px-4">
                         Latest news, industry insights, and marketing strategies to supercharge your brand.
                     </p>
                 </div>
@@ -50,10 +50,10 @@ export default async function BlogPage({ searchParams }: { searchParams: { page?
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
                 {/* Featured Post */}
                 {page === 1 && featuredPost && (
-                    <div className="mb-16">
-                        <h2 className="text-sm font-bold text-brand-primary uppercase tracking-widest mb-6">Featured Story</h2>
-                        <Link href={`/blog/${featuredPost.slug}`} className="group grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-                            <div className="aspect-video relative rounded-2xl overflow-hidden border border-white/5 group-hover:border-brand-primary/20 transition-all bg-brand-dark">
+                    <div className="mb-10 lg:mb-16">
+                        <h2 className="text-xs lg:text-sm font-bold text-brand-primary uppercase tracking-widest mb-4 lg:mb-6">Featured Story</h2>
+                        <Link href={`/blog/${featuredPost.slug}`} className="group grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 items-center">
+                            <div className="aspect-video relative rounded-xl lg:rounded-2xl overflow-hidden border border-white/5 group-hover:border-brand-primary/20 transition-all bg-brand-dark">
                                 {featuredPost.cover_image && (
                                     <img src={featuredPost.cover_image} alt={featuredPost.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                 )}
@@ -82,7 +82,7 @@ export default async function BlogPage({ searchParams }: { searchParams: { page?
 
                 {/* Grid */}
                 {regularPosts.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-10">
                         {regularPosts.map((post) => (
                             <Link key={post.id} href={`/blog/${post.slug}`} className="group flex flex-col h-full bg-brand-surface/30 border border-white/5 rounded-xl overflow-hidden hover:border-brand-primary/20 hover:bg-brand-surface/50 transition-all duration-300">
                                 <div className="aspect-[16/10] bg-brand-dark overflow-hidden relative">
@@ -129,8 +129,8 @@ export default async function BlogPage({ searchParams }: { searchParams: { page?
                                 key={p}
                                 href={`/blog?page=${p}`}
                                 className={`w-10 h-10 flex items-center justify-center rounded-lg font-medium transition-colors ${p === page
-                                        ? 'bg-brand-primary text-white'
-                                        : 'bg-brand-surface border border-brand-primary/10 text-gray-400 hover:text-white hover:border-brand-primary/30'
+                                    ? 'bg-brand-primary text-white'
+                                    : 'bg-brand-surface border border-brand-primary/10 text-gray-400 hover:text-white hover:border-brand-primary/30'
                                     }`}
                             >
                                 {p}
