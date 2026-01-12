@@ -85,7 +85,7 @@ export default function CategoryManager() {
 
     return (
         <div className="space-y-6">
-            <div className="bg-brand-surface border border-brand-primary/10 rounded-xl p-6">
+            <div className="bg-brand-surface border border-brand-primary/10 rounded-xl p-4 sm:p-6">
                 <h3 className="text-lg font-bold text-brand-white mb-4">Add New Category</h3>
                 <form onSubmit={handleCreate} className="flex flex-col md:flex-row gap-4 items-start">
                     <div className="flex-1 w-full space-y-2">
@@ -113,7 +113,7 @@ export default function CategoryManager() {
                     <button
                         type="submit"
                         disabled={creating || !newName}
-                        className="mt-6 h-10 px-6 bg-brand-primary text-white text-sm font-medium rounded-lg hover:bg-brand-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                        className="w-full md:w-auto mt-2 md:mt-6 h-10 px-6 bg-brand-primary text-white text-sm font-medium rounded-lg hover:bg-brand-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                         {creating ? <Loader2 className="animate-spin" size={18} /> : <Plus size={18} />}
                         Add
