@@ -7,8 +7,70 @@ const config: Config = {
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
     ],
+    plugins: [
+        require('@tailwindcss/typography'),
+    ],
     theme: {
         extend: {
+            typography: (theme: any) => ({
+                DEFAULT: {
+                    css: {
+                        color: theme('colors.gray.300'),
+                        '[class~="lead"]': {
+                            color: theme('colors.gray.300'),
+                        },
+                        a: {
+                            color: theme('colors.brand.primary'),
+                            '&:hover': {
+                                color: theme('colors.brand.secondary'),
+                            },
+                        },
+                        strong: {
+                            color: theme('colors.brand.white'),
+                        },
+                        'ol > li::marker': {
+                            color: theme('colors.brand.primary'),
+                        },
+                        'ul > li::marker': {
+                            color: theme('colors.brand.primary'),
+                        },
+                        hr: {
+                            borderColor: theme('colors.brand.primary'),
+                            opacity: 0.1,
+                        },
+                        blockquote: {
+                            borderLeftColor: theme('colors.brand.primary'),
+                            color: theme('colors.gray.200'),
+                        },
+                        h1: {
+                            color: theme('colors.brand.white'),
+                        },
+                        h2: {
+                            color: theme('colors.brand.white'),
+                        },
+                        h3: {
+                            color: theme('colors.brand.white'),
+                        },
+                        h4: {
+                            color: theme('colors.brand.white'),
+                        },
+                        code: {
+                            color: theme('colors.brand.primary'),
+                        },
+                        'pre code': {
+                            color: (_connection: any) => 'inherit',
+                        },
+                        thead: {
+                            color: theme('colors.brand.white'),
+                            borderBottomColor: theme('colors.brand.primary'),
+                        },
+                        'tbody tr': {
+                            borderBottomColor: theme('colors.white'),
+                            opacity: 0.1,
+                        },
+                    },
+                },
+            }),
             fontFamily: {
                 sans: ['"DM Sans"', 'sans-serif'],
             },
@@ -33,6 +95,5 @@ const config: Config = {
             }
         },
     },
-    plugins: [],
 };
 export default config;

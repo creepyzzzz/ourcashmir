@@ -25,8 +25,18 @@ export default function LoginPage() {
     useEffect(() => {
         const checkUser = async () => {
             const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                router.replace('/dashboard');
+            if (session?.user) {
+                const { data: profile } = await supabase
+                    .from('profiles')
+                    .select('role')
+                    .eq('id', session.user.id)
+                    .single();
+
+                if (profile?.role === 'blog_poster') {
+                    router.replace('/blog-panel');
+                } else {
+                    router.replace('/dashboard');
+                }
             }
         };
         checkUser();
@@ -69,15 +79,27 @@ export default function LoginPage() {
                     setMessage({ type: 'success', text: 'Account created! Please check your email to verify.' });
                 } else {
                     // Login
-                    const { error } = await supabase.auth.signInWithPassword({
+                    const { data: { user }, error } = await supabase.auth.signInWithPassword({
                         email,
                         password,
                     });
                     if (error) throw error;
-                    // Successful login redirects automatically or updates session state
-                    // We can redirect manually just in case, or let the router/auth state listener handle it.
-                    // Usually app/layout.tsx or a listener handles redirect, but we can push.
-                    router.replace('/dashboard');
+
+                    if (user) {
+                        const { data: profile } = await supabase
+                            .from('profiles')
+                            .select('role')
+                            .eq('id', user.id)
+                            .single();
+
+                        if (profile?.role === 'blog_poster') {
+                            router.replace('/blog-panel');
+                        } else {
+                            router.replace('/dashboard');
+                        }
+                    } else {
+                        router.replace('/dashboard');
+                    }
                 }
             }
         } catch (error: any) {
