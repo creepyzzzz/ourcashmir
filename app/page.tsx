@@ -11,6 +11,8 @@ import InfluencerPreview from '@/components/InfluencerPreview';
 import ClientsPreview from '@/components/ClientsPreview';
 import TestimonialSection from '@/components/TestimonialSection';
 
+import CreatorManagement from '@/components/CreatorManagement';
+import CreatorApplication from '@/components/CreatorApplication';
 import CTA from '@/components/CTA';
 import Footer from '@/components/Footer';
 
@@ -25,8 +27,10 @@ export default function Home() {
                 <Services />
                 <PortfolioPreview />
                 <InfluencerPreview />
+                <CreatorManagement />
                 <ClientsPreview />
                 <TestimonialSection />
+                <CreatorApplication />
 
                 <CTA />
             </main>

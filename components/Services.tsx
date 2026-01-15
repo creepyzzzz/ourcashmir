@@ -11,6 +11,7 @@ interface Service {
   colSpan: string;
   bgClass?: string;
   hoverImages: string[];
+  link?: string;
 }
 
 const services: Service[] = [
@@ -68,7 +69,8 @@ const services: Service[] = [
       "/images/ourcashmir/People/QHH.png",
       "/images/ourcashmir/People/PB.jpg",
       "/images/ourcashmir/People/deconcepts.jpg"
-    ]
+    ],
+    link: "/web-development"
   },
   {
     title: "Brand Strategy",
@@ -83,19 +85,14 @@ const services: Service[] = [
   }
 ];
 
+import Link from 'next/link';
+import { ExternalLink } from 'lucide-react';
+
 const ServiceCard = ({ service }: { service: Service }) => {
-  return (
-    <motion.div
-      className={`group relative overflow-hidden rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col justify-between transition-all duration-300 ${service.bgClass
-        ? service.bgClass
-        : 'bg-gray-900/40 border border-gray-800 hover:border-white/20'
-        } ${service.colSpan}`}
-      initial="initial"
-      whileHover="hover"
-      whileTap="hover"
-    >
+  const CardContent = () => (
+    <>
       {/* Hover Images Layer */}
-      <div className="absolute inset-0 z-0 pointer-events-none p-4 md:p-6">
+      <div className="absolute inset-0 z-0 pointer-events-none p-4 md:p-6 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
         {service.hoverImages.map((img, index) => (
           <motion.div
             key={index}
@@ -128,8 +125,8 @@ const ServiceCard = ({ service }: { service: Service }) => {
         ))}
       </div>
 
-      {/* Content Layer with Backdrop Blur for readability */}
-      <div className="relative z-10 flex flex-col h-full justify-between transition-all duration-300">
+      {/* Content Layer */}
+      <div className="relative z-10 flex flex-col h-full justify-between transition-all duration-300 group-hover:translate-y-[-10px]">
         <div className="flex justify-between items-start mb-2 md:mb-4">
           <div className={`p-2 md:p-3 rounded-full ${service.bgClass ? 'bg-black/10' : 'bg-brand-primary/10'}`}>
             <service.icon className={`w-5 h-5 md:w-6 md:h-6 ${service.bgClass ? 'text-black' : 'text-brand-primary'}`} />
@@ -148,6 +145,45 @@ const ServiceCard = ({ service }: { service: Service }) => {
           </p>
         </div>
       </div>
+
+      {/* Overlay "Click to see more" */}
+      <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-end bg-gradient-to-t from-black/80 to-transparent h-1/2 z-20">
+        <span className="text-white text-xs font-bold tracking-widest uppercase border-b border-brand-primary pb-0.5">
+          Click to see more
+        </span>
+      </div>
+    </>
+  );
+
+  if (service.link) {
+    return (
+      <Link href={service.link} legacyBehavior>
+        <motion.a
+          className={`group relative overflow-hidden rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer ${service.bgClass
+            ? service.bgClass
+            : 'bg-gray-900/40 border border-gray-800 hover:border-white/20'
+            } ${service.colSpan}`}
+          initial="initial"
+          whileHover="hover"
+          whileTap="hover"
+        >
+          <CardContent />
+        </motion.a>
+      </Link>
+    );
+  }
+
+  return (
+    <motion.div
+      className={`group relative overflow-hidden rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer ${service.bgClass
+        ? service.bgClass
+        : 'bg-gray-900/40 border border-gray-800 hover:border-white/20'
+        } ${service.colSpan}`}
+      initial="initial"
+      whileHover="hover"
+      whileTap="hover"
+    >
+      <CardContent />
     </motion.div>
   );
 };

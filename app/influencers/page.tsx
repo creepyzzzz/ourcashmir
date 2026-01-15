@@ -159,7 +159,50 @@ export default function InfluencersPage() {
                 </motion.div>
             </section>
 
-            {/* CTA Section */}
+            {/* Managed Creator Section */}
+            <section className="w-full px-4 md:px-12 lg:px-20 py-16 md:py-24 max-w-screen-2xl mx-auto border-t border-gray-800">
+                <div className="relative rounded-3xl overflow-hidden bg-brand-surface p-8 md:p-16">
+                    {/* Background Gradient */}
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none" />
+
+                    <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+                        <div className="max-w-2xl">
+                            <span className="inline-block px-4 py-2 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-brand-primary font-bold tracking-wider uppercase text-xs mb-6">
+                                For Creators
+                            </span>
+                            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
+                                Build your Personal brand with us, <br />
+                                <span className="text-brand-primary">we will manage you</span>
+                            </h2>
+                            <p className="text-gray-400 text-lg mb-8 leading-relaxed max-w-lg">
+                                Join our exclusive roster of managed creators. We provide 360° management,
+                                content strategy, and brand deal negotiations to help you focus on creating.
+                            </p>
+                            
+                            <a 
+                                href="mailto:contact@ourcashmir.com?subject=Apply to become a managed creator"
+                                className="inline-flex items-center gap-2 bg-brand-white text-black px-8 py-4 rounded-full font-bold text-base md:text-lg hover:bg-brand-primary transition-all hover:scale-105 active:scale-95"
+                            >
+                                Apply to become a managed creator
+                                <TrendingUp size={20} />
+                            </a>
+                        </div>
+
+                        {/* Visual Element */}
+                        <div className="relative w-full md:w-1/3 aspect-square md:aspect-auto md:h-[300px] flex items-center justify-center">
+                            <div className="relative w-full h-full border border-gray-800 rounded-2xl bg-black/40 backdrop-blur-sm p-6 flex flex-col justify-center items-center gap-4 group hover:border-brand-primary/30 transition-colors">
+                                <div className="w-16 h-16 rounded-full bg-brand-primary/20 flex items-center justify-center text-brand-primary mb-2 group-hover:scale-110 transition-transform">
+                                    <Users size={32} />
+                                </div>
+                                <h3 className="text-white font-bold text-xl text-center">Join the Network</h3>
+                                <p className="text-gray-500 text-center text-sm">Access exclusive opportunities and professional management</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* Brand CTA Section */}
             <section className="w-full px-4 md:px-12 lg:px-20 pb-16 sm:pb-20 md:pb-24 max-w-screen-2xl mx-auto">
                 <div className="relative overflow-hidden bg-gradient-to-r from-brand-surface via-gray-900 to-brand-surface border border-gray-800 rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12">
                     <div className="absolute inset-0">
