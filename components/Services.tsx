@@ -10,7 +10,6 @@ interface Service {
   icon: React.ElementType;
   colSpan: string;
   bgClass?: string;
-  hoverImages: string[];
   link?: string;
 }
 
@@ -20,111 +19,46 @@ const services: Service[] = [
     description: "Build communities and drive real engagement with data-driven strategies.",
     icon: Share2,
     colSpan: "col-span-2 row-span-2 md:col-span-2 md:row-span-2",
-    bgClass: "bg-brand-primary text-black",
-    hoverImages: [
-      "/images/ourcashmir/INFLUENCERS/ZACK.jpg",
-      "/images/ourcashmir/INFLUENCERS/VAGABOND.jpg",
-      "/images/ourcashmir/INFLUENCERS/AATIF WANI.jpg"
-    ]
+    bgClass: "bg-brand-primary text-black"
   },
   {
     title: "Influencer Marketing",
     description: "Collaborate with Kashmir's top creators.",
     icon: MousePointer2,
-    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
-    hoverImages: [
-      "/images/ourcashmir/INFLUENCERS/KASHUR BOI.jpg",
-      "/images/ourcashmir/INFLUENCERS/CHEF OWAIS.jpg",
-      "/images/ourcashmir/INFLUENCERS/WITH SOHAIL.jpg"
-    ]
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1"
   },
   {
     title: "SEO & Ads",
     description: "Rank higher and reach more customers.",
     icon: Search,
-    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
-    hoverImages: [
-      "/images/ourcashmir/People/logo-270.png",
-      "/images/ourcashmir/People/Web involve.jpeg",
-      "/images/ourcashmir/People/EYE CARE.jpg"
-    ]
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1"
   },
   {
     title: "Content Production",
     description: "High-quality reels, shorts, and creatives.",
     icon: Video,
-    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
-    hoverImages: [
-      "/images/ourcashmir/People/image.png",
-      "/images/ourcashmir/People/vishal.png",
-      "/images/ourcashmir/People/Ab.png"
-    ]
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1"
   },
   {
     title: "Web Development",
     description: "Fast, responsive, and SEO-optimized sites.",
     icon: Code,
     colSpan: "col-span-1 md:col-span-1 md:row-span-1",
-    hoverImages: [
-      "/images/ourcashmir/People/QHH.png",
-      "/images/ourcashmir/People/PB.jpg",
-      "/images/ourcashmir/People/deconcepts.jpg"
-    ],
     link: "/web-development"
   },
   {
     title: "Brand Strategy",
     description: "A complete roadmap for success.",
     icon: Star,
-    colSpan: "col-span-2 md:col-span-1 md:row-span-1",
-    hoverImages: [
-      "/images/ourcashmir/People/Lovely sweets.jpg",
-      "/images/ourcashmir/People/Power House.png",
-      "/images/ourcashmir/People/Circus.jpg"
-    ]
+    colSpan: "col-span-2 md:col-span-1 md:row-span-1"
   }
 ];
 
 import Link from 'next/link';
-import { ExternalLink } from 'lucide-react';
 
 const ServiceCard = ({ service }: { service: Service }) => {
   const CardContent = () => (
     <>
-      {/* Hover Images Layer */}
-      <div className="absolute inset-0 z-0 pointer-events-none p-4 md:p-6 opacity-40 group-hover:opacity-100 transition-opacity duration-500">
-        {service.hoverImages.map((img, index) => (
-          <motion.div
-            key={index}
-            className={`absolute w-14 h-14 md:w-20 md:h-20 rounded-lg md:rounded-xl overflow-hidden shadow-2xl border-2 ${service.bgClass ? 'border-white/20' : 'border-white/20'}`}
-            style={{
-              top: '50%',
-              left: '50%',
-              zIndex: 10 + index,
-            }}
-            variants={{
-              initial: { opacity: 0, scale: 0.5, rotate: 0, x: "-50%", y: "-50%" },
-              hover: {
-                opacity: 1,
-                scale: 1,
-                rotate: index === 0 ? -12 : index === 1 ? 12 : -5,
-                x: index === 0 ? "-75%" : index === 1 ? "-25%" : "-50%", // Fanned out horizontally
-                y: index === 0 ? "-45%" : index === 1 ? "-55%" : "-30%", // Slight vertical scatter
-                transition: {
-                  duration: 0.4,
-                  delay: index * 0.1,
-                  type: "spring",
-                  stiffness: 200,
-                  damping: 15
-                }
-              }
-            }}
-          >
-            <img src={img} alt="" className="w-full h-full object-cover" />
-          </motion.div>
-        ))}
-      </div>
-
       {/* Content Layer */}
       <div className="relative z-10 flex flex-col h-full justify-between transition-all duration-300 group-hover:translate-y-[-10px]">
         <div className="flex justify-between items-start mb-2 md:mb-4">

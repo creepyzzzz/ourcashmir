@@ -33,9 +33,9 @@ const Footer: React.FC = () => {
 
                     <div className="pt-4 space-y-2">
                         <p className="text-xs text-gray-400">Kashmir&apos;s premier marketing agency for brand growth.</p>
-                        <a href="mailto:teamourcashmir@gmail.com" className="flex items-center gap-2 text-xl font-bold text-brand-white hover:text-brand-primary transition-colors">
+                        <a href="mailto:info@ourcashmir.com" className="flex items-center gap-2 text-xl font-bold text-brand-white hover:text-brand-primary transition-colors">
                             <Mail size={20} />
-                            teamourcashmir@gmail.com
+                            info@ourcashmir.com
                         </a>
                     </div>
                 </div>

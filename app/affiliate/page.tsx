@@ -71,7 +71,7 @@ export default function AffiliatePage() {
 
                             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
                                 <a
-                                    href="https://chat.whatsapp.com/Gd9PhmHFisv2iuEH4IoPQh"
+                                    href="https://chat.whatsapp.com/JwIhHXGlSYBI3Vu4fV9fU9"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-brand-primary text-black px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-xs sm:text-sm tracking-wide hover:bg-green-400 transition-colors"
@@ -121,7 +121,7 @@ export default function AffiliatePage() {
                             </div>
 
                             <a
-                                href="https://chat.whatsapp.com/Gd9PhmHFisv2iuEH4IoPQh"
+                                href="https://chat.whatsapp.com/JwIhHXGlSYBI3Vu4fV9fU9"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="block w-full mt-4 sm:mt-6 bg-brand-primary text-black text-center px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-bold text-sm hover:bg-green-400 transition-colors"
@@ -242,7 +242,7 @@ export default function AffiliatePage() {
                         </div>
                         <div className="flex gap-3 sm:gap-4 shrink-0">
                             <a
-                                href="https://chat.whatsapp.com/Gd9PhmHFisv2iuEH4IoPQh"
+                                href="https://chat.whatsapp.com/JwIhHXGlSYBI3Vu4fV9fU9"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 bg-brand-primary text-black px-5 sm:px-6 py-3 sm:py-4 rounded-full font-bold text-xs sm:text-sm hover:bg-green-400 transition-colors whitespace-nowrap"

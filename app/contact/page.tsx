@@ -8,7 +8,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 const contactInfo = [
-    { icon: Mail, label: 'Email', value: 'teamourcashmir@gmail.com', href: 'mailto:teamourcashmir@gmail.com' },
+    { icon: Mail, label: 'Email', value: 'info@ourcashmir.com', href: 'mailto:info@ourcashmir.com' },
     { icon: Phone, label: 'Phone', value: '+91 788-967-6481', href: 'tel:+917889676481' },
     { icon: MapPin, label: 'Address', value: 'Kupwara, Jammu & Kashmir, India', href: null },
     { icon: Clock, label: 'Working Hours', value: 'Mon-Sat: 9AM-6PM (24/7 Online)', href: null },
@@ -123,7 +123,7 @@ export default function ContactPage() {
                                 Chat on WhatsApp
                             </a>
                             <a
-                                href="mailto:teamourcashmir@gmail.com"
+                                href="mailto:info@ourcashmir.com"
                                 className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-transparent border border-gray-600 text-white px-5 sm:px-6 md:px-8 py-3 sm:py-4 rounded-full font-bold text-xs sm:text-sm tracking-wide hover:border-brand-primary hover:text-brand-primary transition-colors"
                             >
                                 <Mail size={16} className="sm:w-[18px] sm:h-[18px]" />

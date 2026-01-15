@@ -13,6 +13,7 @@ import TestimonialSection from '@/components/TestimonialSection';
 
 import CreatorManagement from '@/components/CreatorManagement';
 import CreatorApplication from '@/components/CreatorApplication';
+import { WebDevPortfolio } from '@/components/WebDevPortfolio';
 import CTA from '@/components/CTA';
 import Footer from '@/components/Footer';
 
@@ -26,6 +27,7 @@ export default function Home() {
                 <About />
                 <Services />
                 <PortfolioPreview />
+                <WebDevPortfolio hideDescription={true} />
                 <InfluencerPreview />
                 <CreatorManagement />
                 <ClientsPreview />

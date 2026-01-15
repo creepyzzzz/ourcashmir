@@ -231,7 +231,7 @@ export default function PortfolioPage() {
                                 Get Started Today
                             </a>
                             <a
-                                href="mailto:teamourcashmir@gmail.com"
+                                href="mailto:info@ourcashmir.com"
                                 className="inline-flex items-center justify-center gap-2 sm:gap-3 bg-transparent border border-gray-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-xs sm:text-sm tracking-wide hover:border-brand-primary hover:text-brand-primary transition-colors"
                             >
                                 Contact Us

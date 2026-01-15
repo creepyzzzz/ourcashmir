@@ -178,9 +178,11 @@ export default function InfluencersPage() {
                                 Join our exclusive roster of managed creators. We provide 360° management,
                                 content strategy, and brand deal negotiations to help you focus on creating.
                             </p>
-                            
-                            <a 
-                                href="mailto:contact@ourcashmir.com?subject=Apply to become a managed creator"
+
+                            <a
+                                href="https://docs.google.com/forms/d/e/1FAIpQLSf9sgwNp-Y-NcUGepaU3yEdaDZzMcgyF_5Z66Ajhtz7gfMrPQ/viewform?usp=send_form&pli=1&authuser=0"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 bg-brand-white text-black px-8 py-4 rounded-full font-bold text-base md:text-lg hover:bg-brand-primary transition-all hover:scale-105 active:scale-95"
                             >
                                 Apply to become a managed creator

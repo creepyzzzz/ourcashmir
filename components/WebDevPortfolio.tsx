@@ -69,29 +69,44 @@ const projects: ProjectItem[] = [
     }
 ];
 
-export const WebDevPortfolio: React.FC = () => {
+interface WebDevPortfolioProps {
+    hideDescription?: boolean;
+}
+
+export const WebDevPortfolio: React.FC<WebDevPortfolioProps> = ({ hideDescription = false }) => {
     return (
-        <section id="work" className="pt-8 pb-4 sm:pt-12 sm:pb-8 md:pt-8 md:pb-12 bg-zinc-50 dark:bg-black transition-colors duration-500 min-h-screen">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4 sm:gap-6">
-                    <div className="max-w-xl">
-                        <Reveal>
-                            <h2 className="text-2xl sm:text-3xl md:text-5xl font-display font-bold text-zinc-900 dark:text-white mb-3 sm:mb-4 tracking-tight">
-                                Our Work
-                            </h2>
-                        </Reveal>
-                        <Reveal delay={0.1}>
-                            <p className="text-zinc-500 dark:text-zinc-400 text-base sm:text-lg font-light leading-relaxed">
-                                Crafting digital experiences that merge functionality with aesthetic excellence.
-                            </p>
-                        </Reveal>
-                    </div>
-                    {/* View All Projects button removed as per request */}
+        <section id="web-dev-work" className={`pt-6 pb-2 sm:pt-12 sm:pb-8 md:pt-8 md:pb-12 bg-zinc-50 dark:bg-black transition-colors duration-500 ${!hideDescription ? 'min-h-screen' : ''}`}>
+            {hideDescription && (
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-8 flex justify-center text-center">
+                    <Reveal>
+                        <h2 className="text-3xl md:text-5xl font-bold text-white">
+                            Web Development <span className="text-brand-primary">Projects</span>
+                        </h2>
+                    </Reveal>
                 </div>
+            )}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                {!hideDescription && (
+                    <div className="flex flex-col md:flex-row md:items-end justify-between mb-4 sm:mb-12 gap-3 sm:gap-6">
+                        <div className="max-w-xl">
+                            <Reveal>
+                                <h2 className="text-xl sm:text-3xl md:text-5xl font-display font-bold text-zinc-900 dark:text-white mb-2 sm:mb-4 tracking-tight">
+                                    Our Work
+                                </h2>
+                            </Reveal>
+                            <Reveal delay={0.1}>
+                                <p className="text-zinc-500 dark:text-zinc-400 text-sm sm:text-lg font-light leading-relaxed">
+                                    Crafting digital experiences that merge functionality with aesthetic excellence.
+                                </p>
+                            </Reveal>
+                        </div>
+                        {/* View All Projects button removed as per request */}
+                    </div>
+                )}
             </div>
 
-            <div className="mt-8 sm:mt-16 w-full max-w-[1920px] mx-auto">
-                <ThreeDCarousel items={projects} />
+            <div className={`${hideDescription ? 'mt-0' : 'mt-4 sm:mt-16'} w-full max-w-[1920px] mx-auto`}>
+                <ThreeDCarousel items={projects} hideDescription={hideDescription} />
             </div>
         </section>
     );
