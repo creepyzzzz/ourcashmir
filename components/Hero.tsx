@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { ArrowRight, Sprout } from 'lucide-react';
 
 const Hero: React.FC = () => {
@@ -27,16 +28,20 @@ const Hero: React.FC = () => {
         </p>
 
         <div className="flex items-center gap-6 pt-2">
-          <button className="flex items-center gap-2 md:gap-3 bg-brand-primary text-black px-6 py-3 md:px-6 md:py-4 rounded-full text-xs font-bold tracking-widest hover:bg-brand-primary/90 transition-colors">
-            GET STARTED
-            <div className="border border-black/30 rounded-full p-0.5">
-              <ArrowRight size={12} />
-            </div>
-          </button>
+          <Link href="/login">
+            <button className="flex items-center gap-2 md:gap-3 bg-brand-primary text-black px-6 py-3 md:px-6 md:py-4 rounded-full text-xs font-bold tracking-widest hover:bg-brand-primary/90 transition-colors">
+              GET STARTED
+              <div className="border border-black/30 rounded-full p-0.5">
+                <ArrowRight size={12} />
+              </div>
+            </button>
+          </Link>
 
-          <button className="text-xs font-bold tracking-widest text-brand-white hover:opacity-70 border-b border-transparent hover:border-white transition-all">
-            LEARN MORE
-          </button>
+          <Link href="/portfolio">
+            <button className="text-xs font-bold tracking-widest text-brand-white hover:opacity-70 border-b border-transparent hover:border-white transition-all uppercase">
+              VIEW PORTFOLIO
+            </button>
+          </Link>
         </div>
       </div>
 
@@ -47,7 +52,7 @@ const Hero: React.FC = () => {
           {/* Main Image Mask/Shape */}
           <div className="w-full h-full rounded-t-[160px] rounded-b-[40px] overflow-hidden bg-gray-800">
             <img
-              src="/images/ourcashmir/People/heroimage.JPG"
+              src="/images/ourcashmir/People/heroimage.webp"
               alt="Our Cashmir Marketing"
               className="w-full h-full object-cover"
             />
@@ -56,10 +61,11 @@ const Hero: React.FC = () => {
           {/* Floating Card */}
           <div className="absolute top-4 -right-4 md:top-20 md:-left-36 md:right-auto bg-gradient-to-br from-gray-900 via-gray-900 to-brand-secondary/30 p-2 md:p-4 rounded-lg md:rounded-2xl shadow-xl w-[130px] md:w-[220px] backdrop-blur-md border border-brand-primary/20 transform scale-85 md:scale-100 transition-all md:hover:-translate-x-2">
             <div className="flex justify-between items-start mb-1 md:mb-2">
-              <div className="w-6 h-6 md:w-8 md:h-8 rounded-md md:rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary text-[8px] md:text-[10px] font-bold">CEO</div>
-              <div className="bg-white p-0.5 md:p-1 rounded-md md:rounded-lg shadow-sm">
-                <div className="w-4 h-4 md:w-6 md:h-6 flex items-center justify-center text-brand-primary font-bold text-sm md:text-lg">OC</div>
-              </div>
+              <img
+                src="/favicon/logo.png"
+                alt="Logo"
+                className="w-6 h-6 md:w-8 md:h-8 object-contain"
+              />
             </div>
             <div className="space-y-0.5 md:space-y-1 mt-2 md:mt-3">
               <p className="text-[8px] md:text-[10px] font-bold text-brand-primary uppercase tracking-widest">Our Visionary</p>

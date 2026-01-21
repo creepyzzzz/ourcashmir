@@ -21,20 +21,20 @@ const itemVariants = {
 };
 
 export const clientsList = [
-    { name: 'Gatoes', image: '/images/ourcashmir/People/image.png', link: 'https://www.instagram.com/gatoes.official/' },
-    { name: 'Just Zing', image: '/images/ourcashmir/People/logo-270.png', link: 'https://www.instagram.com/justzingofficial/' },
-    { name: 'Eye Care Centre', image: '/images/ourcashmir/People/EYE CARE.jpg', link: 'https://www.instagram.com/reel/DRrmz4niYuB/' },
-    { name: 'Khushwara Kahave', image: '/images/ourcashmir/People/ww.jpg', link: 'https://www.instagram.com/khushwara_kahave/' },
-    { name: 'IM95 Perfumes', image: '/images/ourcashmir/People/Ab.png', link: 'https://www.instagram.com/__im1995__/' },
-    { name: 'Vintage House', image: '/images/ourcashmir/People/vishal.png', link: 'https://www.instagram.com/vintagehousekupwara/' },
-    { name: 'Web Involve', image: '/images/ourcashmir/People/Web involve.jpeg', link: 'https://www.instagram.com/webinvolve/' },
-    { name: 'Quality Healthcare Hospital', image: '/images/ourcashmir/People/QHH.png', link: 'https://www.instagram.com/p/DKhTsMJTin-/' },
-    { name: 'Lovely Sweets', image: '/images/ourcashmir/People/Lovely sweets.jpg', link: 'https://www.instagram.com/p/DLt6msTR-gc/' },
-    { name: 'Power House', image: '/images/ourcashmir/People/Power House.png', link: 'https://www.instagram.com/p/DL7Z0RVoJam/' },
-    { name: 'Circus', image: '/images/ourcashmir/People/Circus.jpg', link: 'https://www.instagram.com/reel/DMF6AAQyL3h/' },
-    { name: 'Bachpan School', image: '/images/ourcashmir/People/BSK.jpg', link: 'https://www.instagram.com/p/DLt35-PzcE_/' },
-    { name: 'DeConcepts SGR', image: '/images/ourcashmir/People/deconcepts.jpg', link: 'https://www.instagram.com/reel/DPRXWvDiYaH/' },
-    { name: 'Print Box', image: '/images/ourcashmir/People/PB.jpg', link: 'https://www.instagram.com/p/DMXufP-PqMG/' },
+    { name: 'Gatoes', image: '/images/ourcashmir/People/image.webp', link: 'https://www.instagram.com/gatoes.official/' },
+    { name: 'Just Zing', image: '/images/ourcashmir/People/logo-270.webp', link: 'https://www.instagram.com/justzingofficial/' },
+    { name: 'Eye Care Centre', image: '/images/ourcashmir/People/EYE CARE.webp', link: 'https://www.instagram.com/reel/DRrmz4niYuB/' },
+    { name: 'Khushwara Kahave', image: '/images/ourcashmir/People/ww.webp', link: 'https://www.instagram.com/khushwara_kahave/' },
+    { name: 'IM95 Perfumes', image: '/images/ourcashmir/People/Ab.webp', link: 'https://www.instagram.com/__im1995__/' },
+    { name: 'Vintage House', image: '/images/ourcashmir/People/vishal.webp', link: 'https://www.instagram.com/vintagehousekupwara/' },
+    { name: 'Web Involve', image: '/images/ourcashmir/People/Web involve.webp', link: 'https://www.instagram.com/webinvolve/' },
+    { name: 'Quality Healthcare Hospital', image: '/images/ourcashmir/People/QHH.webp', link: 'https://www.instagram.com/p/DKhTsMJTin-/' },
+    { name: 'Lovely Sweets', image: '/images/ourcashmir/People/Lovely sweets.webp', link: 'https://www.instagram.com/p/DLt6msTR-gc/' },
+    { name: 'Power House', image: '/images/ourcashmir/People/Power House.webp', link: 'https://www.instagram.com/p/DL7Z0RVoJam/' },
+    { name: 'Circus', image: '/images/ourcashmir/People/Circus.webp', link: 'https://www.instagram.com/reel/DMF6AAQyL3h/' },
+    { name: 'Bachpan School', image: '/images/ourcashmir/People/BSK.webp', link: 'https://www.instagram.com/p/DLt35-PzcE_/' },
+    { name: 'DeConcepts SGR', image: '/images/ourcashmir/People/deconcepts.webp', link: 'https://www.instagram.com/reel/DPRXWvDiYaH/' },
+    { name: 'Print Box', image: '/images/ourcashmir/People/PB.webp', link: 'https://www.instagram.com/p/DMXufP-PqMG/' },
 ];
 
 export default function ClientsPage() {

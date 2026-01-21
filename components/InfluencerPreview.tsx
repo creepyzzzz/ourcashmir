@@ -6,10 +6,10 @@ import { Users, ArrowRight, Instagram } from 'lucide-react';
 import Link from 'next/link';
 
 const influencers = [
-    { name: 'Sufiyan Wani', image: '/images/ourcashmir/INFLUENCERS/ZACK.jpg', instagram: 'https://instagram.com/sufiyanwani', followers: '11.8K' },
-    { name: 'Kashmiri Vagabond', image: '/images/ourcashmir/INFLUENCERS/VAGABOND.jpg', instagram: 'https://instagram.com/kashmiri_vagabond', followers: '21K' },
-    { name: 'Aatif Wani', image: '/images/ourcashmir/INFLUENCERS/AATIF WANI.jpg', instagram: 'https://instagram.com/aatif_wani21', followers: '5.2K' },
-    { name: 'Kashur Boi', image: '/images/ourcashmir/INFLUENCERS/KASHUR BOI.jpg', instagram: 'https://instagram.com/kashurboi00', followers: '25K' },
+    { name: 'Sufiyan Wani', image: '/images/ourcashmir/INFLUENCERS/ZACK.webp', instagram: 'https://instagram.com/sufiyanwani', followers: '11.8K' },
+    { name: 'Kashmiri Vagabond', image: '/images/ourcashmir/INFLUENCERS/VAGABOND.webp', instagram: 'https://instagram.com/kashmiri_vagabond', followers: '21K' },
+    { name: 'Aatif Wani', image: '/images/ourcashmir/INFLUENCERS/AATIF WANI.webp', instagram: 'https://instagram.com/aatif_wani21', followers: '5.2K' },
+    { name: 'Kashur Boi', image: '/images/ourcashmir/INFLUENCERS/KASHUR BOI.webp', instagram: 'https://instagram.com/kashurboi00', followers: '25K' },
 ];
 
 export default function InfluencerPreview() {

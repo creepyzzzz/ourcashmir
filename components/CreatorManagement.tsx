@@ -1,4 +1,4 @@
-import React from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight, Star, TrendingUp, Video } from 'lucide-react';
 
 const CreatorManagement: React.FC = () => {
@@ -47,18 +47,33 @@ const CreatorManagement: React.FC = () => {
                         <span className="text-gray-500">we will manage you.</span>
                     </h2>
                     <p className="text-gray-400 text-sm md:text-lg mb-6 md:mb-8 leading-relaxed">
-                        Focus on what you do best—creating content. Let us handle the negotiations, strategy, and production. We turn creators into household names.
+                        Ready to take the next step? Focus on what you do best—creating content. Let us handle the negotiations, strategy, and production. We turn creators into household names.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-                        <div className="flex items-center gap-2 text-white">
-                            <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-brand-primary" />
-                            <span className="text-sm md:text-base">Professional Management</span>
+                    <div className="flex flex-col gap-8">
+                        <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
+                            <div className="flex items-center gap-2 text-white">
+                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-brand-primary" />
+                                <span className="text-sm md:text-base">Professional Management</span>
+                            </div>
+                            <div className="flex items-center gap-2 text-white">
+                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-brand-primary" />
+                                <span className="text-sm md:text-base">Revenue Optimization</span>
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2 text-white">
-                            <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-brand-primary" />
-                            <span className="text-sm md:text-base">Revenue Optimization</span>
-                        </div>
+
+                        <motion.a
+                            href="https://docs.google.com/forms/d/e/1FAIpQLSf9sgwNp-Y-NcUGepaU3yEdaDZzMcgyF_5Z66Ajhtz7gfMrPQ/viewform?usp=send_form&pli=1&authuser=0"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group inline-flex items-center justify-center gap-3 border border-brand-primary/30 text-brand-primary hover:bg-brand-primary/10 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold text-xs md:text-sm tracking-widest uppercase w-fit transition-colors"
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                        >
+                            Apply to become a managed creator
+                            <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                        </motion.a>
                     </div>
                 </div>
             </div>

@@ -6,14 +6,14 @@ import { ExternalLink, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 const clients = [
-    { name: 'Gatoes', image: '/images/ourcashmir/People/image.png', link: 'https://www.instagram.com/gatoes.official/' },
-    { name: 'Just Zing', image: '/images/ourcashmir/People/logo-270.png', link: 'https://www.instagram.com/justzingofficial/' },
-    { name: 'Eye Care Centre', image: '/images/ourcashmir/People/EYE CARE.jpg', link: 'https://www.instagram.com/reel/DRrmz4niYuB/' },
-    { name: 'Khushwara Kahave', image: '/images/ourcashmir/People/ww.jpg', link: 'https://www.instagram.com/khushwara_kahave/' },
-    { name: 'IM95 Perfumes', image: '/images/ourcashmir/People/Ab.png', link: 'https://www.instagram.com/__im1995__/' },
-    { name: 'Vintage House', image: '/images/ourcashmir/People/vishal.png', link: 'https://www.instagram.com/vintagehousekupwara/' },
-    { name: 'Web Involve', image: '/images/ourcashmir/People/Web involve.jpeg', link: 'https://www.instagram.com/webinvolve/' },
-    { name: 'Quality Healthcare Hospital', image: '/images/ourcashmir/People/QHH.png', link: 'https://www.instagram.com/p/DKhTsMJTin-/' },
+    { name: 'Gatoes', image: '/images/ourcashmir/People/image.webp', link: 'https://www.instagram.com/gatoes.official/' },
+    { name: 'Just Zing', image: '/images/ourcashmir/People/logo-270.webp', link: 'https://www.instagram.com/justzingofficial/' },
+    { name: 'Eye Care Centre', image: '/images/ourcashmir/People/EYE CARE.webp', link: 'https://www.instagram.com/reel/DRrmz4niYuB/' },
+    { name: 'Khushwara Kahave', image: '/images/ourcashmir/People/ww.webp', link: 'https://www.instagram.com/khushwara_kahave/' },
+    { name: 'IM95 Perfumes', image: '/images/ourcashmir/People/Ab.webp', link: 'https://www.instagram.com/__im1995__/' },
+    { name: 'Vintage House', image: '/images/ourcashmir/People/vishal.webp', link: 'https://www.instagram.com/vintagehousekupwara/' },
+    { name: 'Web Involve', image: '/images/ourcashmir/People/Web involve.webp', link: 'https://www.instagram.com/webinvolve/' },
+    { name: 'Quality Healthcare Hospital', image: '/images/ourcashmir/People/QHH.webp', link: 'https://www.instagram.com/p/DKhTsMJTin-/' },
 ];
 
 export default function ClientsPreview() {

@@ -90,7 +90,7 @@ export default function DashboardPage() {
 
                 setStats(statsArray);
                 setProjects(p);
-                setApprovals(a);
+                setApprovals(a.filter((item: ApprovalItem) => item.status === 'pending'));
             } catch (error) {
                 console.error("Failed to fetch dashboard data:", error);
             } finally {

@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 
 const CTA: React.FC = () => {
@@ -14,12 +15,14 @@ const CTA: React.FC = () => {
           <p className="text-xs text-gray-400 leading-relaxed max-w-xs">
             The essential to combine empathy, creativity and rationality to meet user needs and business success
           </p>
-          <button className="flex items-center gap-3 bg-brand-primary text-black px-6 py-4 rounded-full text-xs font-bold tracking-widest hover:bg-brand-primary/90 transition-colors mt-4">
-            GET STARTED
-            <div className="border border-black/30 rounded-full p-0.5">
-              <ArrowRight size={14} />
-            </div>
-          </button>
+          <Link href="/login">
+            <button className="flex items-center gap-3 bg-brand-primary text-black px-6 py-4 rounded-full text-xs font-bold tracking-widest hover:bg-brand-primary/90 transition-colors mt-4">
+              GET STARTED
+              <div className="border border-black/30 rounded-full p-0.5">
+                <ArrowRight size={14} />
+              </div>
+            </button>
+          </Link>
         </div>
 
         {/* Right Abstract Art */}

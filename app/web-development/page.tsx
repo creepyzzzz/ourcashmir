@@ -10,7 +10,7 @@ export default function WebDevelopmentPage() {
         <div className="min-h-screen w-full bg-black overflow-x-hidden selection:bg-brand-primary selection:text-black">
             <Navbar />
             <main className="pt-20">
-                <WebDevPortfolio />
+                <WebDevPortfolio layout="grid" />
             </main>
             <Footer />
         </div>

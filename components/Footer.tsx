@@ -48,6 +48,7 @@ const Footer: React.FC = () => {
                             <li><Link href="/faq" className="hover:text-brand-white transition-colors">FAQ</Link></li>
                             <li><Link href="/clients" className="hover:text-brand-white transition-colors">OUR CLIENTS</Link></li>
                             <li><Link href="/influencers" className="hover:text-brand-white transition-colors">INFLUENCERS</Link></li>
+                            <li><Link href="/blog" className="hover:text-brand-white transition-colors">BLOG</Link></li>
                             <li><Link href="/affiliate" className="hover:text-brand-white transition-colors">AFFILIATE PROGRAM</Link></li>
                             <li><Link href="/contact" className="hover:text-brand-white transition-colors">CONTACT US</Link></li>
                             <li><Link href="/terms" className="hover:text-brand-white transition-colors">TERMS OF SERVICE</Link></li>
@@ -67,7 +68,7 @@ const Footer: React.FC = () => {
             </div>
 
             <div className="flex flex-col md:flex-row justify-between items-center pt-10 gap-4">
-                <p className="text-xs text-gray-500">© 2025 OurCashmir. All rights reserved</p>
+                <p className="text-xs text-gray-500">© 2026 OurCashmir. All rights reserved</p>
                 <p className="text-xs text-gray-500">Growing Brands of Kashmir</p>
             </div>
         </footer>

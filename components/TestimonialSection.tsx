@@ -10,21 +10,21 @@ const testimonials = [
         author: "Abdul Majid Wani",
         role: "Doctor, Entrepreneur",
         rating: 5,
-        image: "/images/ourcashmir/People/DR UNCLE.JPG"
+        image: "/images/ourcashmir/People/DR UNCLE.webp"
     },
     {
         quote: "I have worked with Sufiyan. He is soft spoken responsive and skilled at his age. I would recommend work with Our Cashmir.",
         author: "Irfan Nazir",
         role: "Social Activist, Author",
         rating: 5,
-        image: "/images/ourcashmir/People/IRFAN NAZIR.PNG"
+        image: "/images/ourcashmir/People/IRFAN NAZIR.webp"
     },
     {
         quote: "Sufiyan and his team has been quite adaptive to our requirements. One thing I liked about them is they take feedback positively and work on them. Their quality of work is good, we would recommend that you to take their services.",
         author: "Uzair Hameed",
         role: "Entrepreneur",
         rating: 5,
-        image: "/images/ourcashmir/People/UZAIR HAMEED.jpg"
+        image: "/images/ourcashmir/People/UZAIR HAMEED.webp"
     }
 ];
 

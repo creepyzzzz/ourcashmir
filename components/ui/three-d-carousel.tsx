@@ -72,7 +72,7 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
         const isPrev = distance === -1;
 
         // Constants for animation
-        const xOffset = "35%"; // Percentage of container width
+        const xOffset = "38%"; // Slightly reduced for a tighter look
         const scaleActive = 1;
         const scaleSide = 0.8;
         const opacityActive = 1;
@@ -85,7 +85,7 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
                 scale: scaleActive,
                 opacity: opacityActive,
                 display: "block",
-                filter: "blur(0px) brightness(1)",
+                filter: "blur(0px)",
             };
         } else if (isNext) {
             return {
@@ -94,7 +94,7 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
                 scale: scaleSide,
                 opacity: opacitySide,
                 display: "block",
-                filter: "blur(2px) brightness(0.7)",
+                filter: "blur(2px)",
             };
         } else if (isPrev) {
             return {
@@ -103,30 +103,32 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
                 scale: scaleSide,
                 opacity: opacitySide,
                 display: "block",
-                filter: "blur(2px) brightness(0.7)",
+                filter: "blur(2px)",
             };
         } else {
-            // Hidden items
-            // We animate them to the "center" but behind, so they can slide out nicely
+            // Smart Hidden Handling:
+            // Items on the right (distance > 1) go to the far right
+            // Items on the left (distance < -1) go to the far left
+            // This prevents "crossing" the center visually
+            const isRight = distance > 0;
             return {
                 zIndex: 10,
-                x: "0%",
-                scale: 0.2,
+                x: isRight ? "60%" : "-60%",
+                scale: 0.6,
                 opacity: 0,
-                display: "block", // Keep in DOM for smooth transition
-                filter: "blur(10px)",
+                display: "block",
             };
         }
     };
 
     return (
         <div
-            className={`relative w-full ${hideDescription ? 'h-[320px]' : 'h-[500px]'} md:h-[600px] flex flex-col items-center justify-center overflow-hidden`}
+            className={`relative w-full ${hideDescription ? 'h-[320px] md:h-[680px]' : 'h-[500px] md:h-[740px]'} flex flex-col items-center justify-center overflow-hidden`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* Carousel Container */}
-            <div className={`relative w-full max-w-7xl ${hideDescription ? 'h-[280px]' : 'h-[380px]'} md:h-[450px] flex items-center justify-center perspective-1000`}>
+            <div className={`relative w-full max-w-screen-2xl ${hideDescription ? 'h-[280px] md:h-[600px]' : 'h-[380px] md:h-[680px]'} flex items-center justify-center perspective-1000`}>
                 {items.map((item, index) => {
                     const style = getCardStyle(index);
                     const isInteractive = style.zIndex === 30 || style.zIndex === 20;
@@ -137,10 +139,12 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
                             initial={false}
                             animate={style}
                             transition={{
-                                duration: 0.6,
-                                ease: [0.22, 1, 0.36, 1], // Custom bouncy ease or smooth spline
+                                type: "spring",
+                                stiffness: 260,
+                                damping: 30, // Apple-like snap: snappy but no overshoot
+                                mass: 1,
                             }}
-                            className={`absolute top-0 w-[85%] md:w-[45%] lg:w-[40%] bg-zinc-900 rounded-2xl overflow-hidden shadow-2xl border border-white/10 origin-center ${isInteractive ? 'cursor-pointer' : 'pointer-events-none'}`}
+                            className={`absolute top-0 w-[85%] md:w-[55%] lg:w-[50%] bg-brand-surface rounded-3xl overflow-hidden shadow-2xl border border-brand-primary/10 origin-center ${isInteractive ? 'cursor-pointer' : 'pointer-events-none'}`}
                             onClick={() => {
                                 if (style.x.includes("-")) handlePrev();
                                 else if (!style.x.includes("0%")) handleNext();
@@ -156,7 +160,7 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
                                 />
                             </div>
 
-                            <div className={`p-4 md:p-6 bg-zinc-900/95 backdrop-blur-sm ${hideDescription ? 'h-[100px]' : 'h-[160px] md:h-[200px]'} flex flex-col`}>
+                            <div className={`p-4 md:p-6 bg-brand-surface/90 backdrop-blur-md ${hideDescription ? 'h-[120px] md:h-[140px]' : 'h-[160px] md:h-[200px]'} flex flex-col border-t border-white/5`}>
                                 <div className="flex justify-between items-start mb-2">
                                     <div className="flex-1 pr-4">
                                         <span className="text-brand-primary text-[10px] md:text-xs font-bold uppercase tracking-wider mb-0.5 md:mb-1 block">
@@ -187,7 +191,7 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
 
                                 <div className="flex flex-wrap gap-2 mt-auto">
                                     {item.tags.slice(0, 3).map((tag, i) => (
-                                        <span key={i} className="px-2.5 py-1 bg-white/5 rounded-md text-[10px] md:text-xs text-gray-300 border border-white/5">
+                                        <span key={i} className="px-2.5 py-1 bg-brand-primary/5 rounded-md text-[10px] md:text-xs text-brand-primary/80 border border-brand-primary/10 font-medium">
                                             {tag}
                                         </span>
                                     ))}
@@ -218,7 +222,7 @@ export const ThreeDCarousel: React.FC<ThreeDCarouselProps> = ({
                     <button
                         key={index}
                         onClick={() => setCurrentIndex(index)}
-                        className={`transition-all duration-500 rounded-full h-1.5 ${index === currentIndex ? "w-8 bg-brand-primary shadow-[0_0_10px_rgba(0,200,83,0.5)]" : "w-1.5 bg-zinc-800 hover:bg-zinc-600"
+                        className={`transition-all duration-500 rounded-full h-1.5 ${index === currentIndex ? "w-8 bg-brand-primary shadow-[0_0_10px_rgba(0,200,83,0.5)]" : "w-1.5 bg-brand-surface hover:bg-zinc-700"
                             }`}
                         aria-label={`Go to slide ${index + 1}`}
                     />

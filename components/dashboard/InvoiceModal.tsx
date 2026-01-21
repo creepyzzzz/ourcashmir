@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { X, Download, Printer } from 'lucide-react';
+import { X, Download } from 'lucide-react';
 import { Invoice } from '@/lib/data';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -15,14 +15,32 @@ export default function InvoiceModal({ invoice, isOpen, onClose }: InvoiceModalP
 
     if (!isOpen || !invoice) return null;
 
+    // Custom Invoice ID Formatter: OCR-DDMMYYYY-XXX
+    const formatInvoiceId = (inv: Invoice) => {
+        const date = new Date(inv.created_at);
+        const dd = date.getDate().toString().padStart(2, '0');
+        const mm = (date.getMonth() + 1).toString().padStart(2, '0');
+        const yyyy = date.getFullYear();
+
+        // Generate a deterministic 3-digit sequence based on the UUID for display consistency
+        // In a real app, this should be a DB sequence field
+        const hash = inv.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const sequence = (hash % 900) + 100; // Guaranteed 3 digits (100-999)
+
+        return `OCR-${dd}${mm}${yyyy}-${sequence}`;
+    };
+
+    const formattedId = formatInvoiceId(invoice);
+
     const handleDownload = async () => {
         if (!invoiceRef.current) return;
 
         try {
             const canvas = await html2canvas(invoiceRef.current, {
-                scale: 2, // Higher resolution
+                scale: 3, // High resolution for crisp text
                 logging: false,
-                useCORS: true
+                useCORS: true,
+                backgroundColor: '#ffffff'
             } as any);
 
             const imgData = canvas.toDataURL('image/png');
@@ -32,11 +50,11 @@ export default function InvoiceModal({ invoice, isOpen, onClose }: InvoiceModalP
                 format: 'a4'
             });
 
-            const imgWidth = 210; // A4 width in mm
+            const imgWidth = 210;
             const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
             pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-            pdf.save(`invoice-${invoice.id}.pdf`);
+            pdf.save(`${formattedId}.pdf`);
         } catch (error) {
             console.error('Error generating PDF:', error);
             alert('Failed to generate PDF. Please try again.');
@@ -44,22 +62,25 @@ export default function InvoiceModal({ invoice, isOpen, onClose }: InvoiceModalP
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <div className="bg-white text-gray-900 rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto overflow-x-hidden flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+            <div className="bg-white text-black rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto overflow-x-hidden flex flex-col animate-in fade-in zoom-in-95 duration-200">
                 {/* Header Actions */}
-                <div className="flex items-center justify-between p-4 border-b border-amber-100 bg-gradient-to-r from-amber-50 to-orange-50 rounded-t-xl sticky top-0 z-10">
-                    <h2 className="font-semibold text-amber-900">Invoice Details</h2>
+                <div className="flex items-center justify-between p-4 border-b border-gray-100 bg-white sticky top-0 z-10">
+                    <h2 className="font-bold text-gray-900 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-brand-primary"></span>
+                        Invoice Details
+                    </h2>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={handleDownload}
-                            className="flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-amber-600 to-orange-600 text-white text-sm font-medium rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all shadow-md"
+                            className="flex items-center gap-2 px-4 py-2 bg-black text-white text-xs font-bold uppercase tracking-wider rounded-lg hover:bg-brand-primary hover:text-black transition-all"
                         >
                             <Download size={16} />
                             Download PDF
                         </button>
                         <button
                             onClick={onClose}
-                            className="p-2 text-amber-600 hover:text-amber-800 hover:bg-amber-100 rounded-lg transition-colors"
+                            className="p-2 text-gray-400 hover:text-black hover:bg-gray-100 rounded-lg transition-colors"
                         >
                             <X size={20} />
                         </button>
@@ -67,108 +88,116 @@ export default function InvoiceModal({ invoice, isOpen, onClose }: InvoiceModalP
                 </div>
 
                 {/* Invoice Content (Ref for PDF) */}
-                <div className="p-8 md:p-12 bg-gradient-to-br from-white via-white to-amber-50/30" ref={invoiceRef}>
-                    {/* Invoice Header */}
-                    <div className="flex justify-between items-start mb-12">
-                        <div>
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="w-12 h-12 bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
-                                    <span className="text-white font-bold text-2xl" style={{ fontFamily: 'serif' }}>C</span>
+                <div className="p-12 md:p-16 bg-white min-h-[800px] flex flex-col justify-between" ref={invoiceRef}>
+                    <div>
+                        {/* Top Branding Section */}
+                        <div className="flex justify-between items-start mb-20">
+                            <div className="flex flex-col gap-6">
+                                <img
+                                    src="/favicon/logo.png"
+                                    alt="Logo"
+                                    className="h-10 w-auto object-contain"
+                                />
+                                <div className="space-y-1 text-xs text-gray-500 font-medium tracking-wide">
+                                    <p className="text-gray-900 font-bold text-sm">OurCashmir Marketing</p>
+                                    <p>Srinagar, Jammu & Kashmir</p>
+                                    <p>India - 190001</p>
+                                    <p className="text-brand-primary">info@ourcashmir.com</p>
+                                </div>
+                            </div>
+
+                            <div className="text-right">
+                                <p className="text-gray-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-2">INVOICE NO.</p>
+                                <h1 className="text-2xl font-bold text-gray-900 tracking-tight font-mono">{formattedId}</h1>
+
+                                <div className="mt-4 flex justify-end gap-2">
+                                    <div className={`px-3 py-1 rounded border text-[10px] font-bold uppercase tracking-widest
+                                        ${invoice.status === 'paid' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-amber-50 text-amber-600 border-amber-100'}
+                                    `}>
+                                        {invoice.status === 'paid' ? 'PAID' : 'PENDING'}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Bill To & Details */}
+                        <div className="flex justify-between gap-12 mb-20 border-t border-gray-100 pt-8">
+                            <div className="flex-1">
+                                <p className="text-[10px] bg-gray-50 px-2 py-1 rounded inline-block uppercase tracking-widest text-gray-500 font-bold mb-4">Billed To</p>
+                                <h3 className="font-bold text-gray-900 text-xl">{invoice.clients?.name || 'Valued Client'}</h3>
+                                {invoice.clients?.company && (
+                                    <p className="text-gray-500 font-medium mt-1">{invoice.clients.company}</p>
+                                )}
+                                <p className="text-gray-400 text-xs font-mono mt-2">{invoice.client_id}</p>
+                            </div>
+                            <div className="flex gap-12 text-right">
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2">Issue Date</p>
+                                    <p className="font-bold text-gray-900">{new Date(invoice.created_at).toLocaleDateString('en-GB')}</p>
                                 </div>
                                 <div>
-                                    <span className="font-bold text-2xl tracking-tight bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent" style={{ fontFamily: 'Georgia, serif' }}>OurCashmir</span>
-                                    <p className="text-xs text-amber-600 tracking-widest uppercase">Premium Cashmere</p>
+                                    <p className="text-[10px] uppercase tracking-widest text-gray-400 font-bold mb-2">Due Date</p>
+                                    <p className="font-bold text-gray-900">{new Date(invoice.due_date).toLocaleDateString('en-GB')}</p>
                                 </div>
                             </div>
-                            <div className="text-sm text-gray-500 space-y-1 pl-1">
-                                <p className="text-amber-800">Srinagar, Jammu & Kashmir</p>
-                                <p className="text-amber-800">India - 190001</p>
-                                <p className="text-amber-700 font-medium">hello@ourcashmir.com</p>
-                            </div>
                         </div>
-                        <div className="text-right">
-                            <h1 className="text-4xl font-light text-amber-900 mb-2 tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>INVOICE</h1>
-                            <p className="text-amber-700 font-medium font-mono">#{invoice.id.toUpperCase()}</p>
-                            <div className={`mt-4 inline-flex px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide border shadow-sm
-                                ${invoice.status === 'paid' ? 'bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-700 border-emerald-200' : 'bg-gradient-to-r from-amber-50 to-yellow-50 text-amber-700 border-amber-200'}
-                            `}>
-                                {invoice.status === 'paid' ? '✓ Paid' : '◐ Pending'}
-                            </div>
-                        </div>
-                    </div>
 
-                    {/* Client & Date Info */}
-                    <div className="grid grid-cols-2 gap-8 mb-12 p-6 bg-gradient-to-r from-amber-50/50 to-orange-50/50 rounded-xl border border-amber-100">
-                        <div>
-                            <p className="text-xs uppercase tracking-wider text-amber-600 font-semibold mb-2">Bill To</p>
-                            <h3 className="font-bold text-gray-900 text-lg">{invoice.clients?.name || 'Valued Client'}</h3>
-                            {invoice.clients?.company && (
-                                <p className="text-gray-600">{invoice.clients.company}</p>
-                            )}
-                            <p className="text-amber-700 text-sm mt-1 font-mono">{invoice.client_id}</p>
+                        {/* Line Items Table */}
+                        <div className="mb-12">
+                            <table className="w-full text-left border-collapse">
+                                <thead>
+                                    <tr className="border-b-2 border-black">
+                                        <th className="py-4 text-xs uppercase tracking-widest text-black font-bold">Item Description</th>
+                                        <th className="py-4 text-right text-xs uppercase tracking-widest text-black font-bold">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr className="border-b border-gray-100">
+                                        <td className="py-8 text-gray-900">
+                                            <p className="font-bold text-lg mb-2">{invoice.description || 'Marketing Services'}</p>
+                                            <p className="text-sm text-gray-500 max-w-md leading-relaxed">Professional services rendered as per the agreed contract terms and conditions.</p>
+                                        </td>
+                                        <td className="py-8 text-right font-bold text-gray-900 text-lg align-top">
+                                            {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(invoice.amount))}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <p className="text-xs uppercase tracking-wider text-amber-600 font-semibold mb-1">Issue Date</p>
-                                <p className="font-medium text-gray-900">{new Date(invoice.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                            </div>
-                            <div>
-                                <p className="text-xs uppercase tracking-wider text-amber-600 font-semibold mb-1">Due Date</p>
-                                <p className="font-medium text-gray-900">{new Date(invoice.due_date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
-                            </div>
-                        </div>
-                    </div>
 
-                    {/* Line Items */}
-                    <div className="mb-10">
-                        <table className="w-full text-left">
-                            <thead>
-                                <tr className="border-b-2 border-amber-200">
-                                    <th className="py-3 text-xs uppercase tracking-wider text-amber-700 font-semibold">Description</th>
-                                    <th className="py-3 text-right text-xs uppercase tracking-wider text-amber-700 font-semibold">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-amber-50">
-                                <tr>
-                                    <td className="py-5 text-gray-700">
-                                        <p className="font-medium text-gray-900">{invoice.description || 'Premium Cashmere Products & Services'}</p>
-                                        <p className="text-sm text-gray-500 mt-1">Handcrafted with tradition, delivered with excellence.</p>
-                                    </td>
-                                    <td className="py-5 text-right font-semibold text-gray-900">
+                        {/* Summary & Totals */}
+                        <div className="flex justify-end">
+                            <div className="w-72">
+                                <div className="flex justify-between py-3 border-b border-gray-50 text-sm">
+                                    <span className="text-gray-500 font-medium">Subtotal</span>
+                                    <span className="font-bold text-gray-900">{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(invoice.amount))}</span>
+                                </div>
+                                <div className="flex justify-between py-3 border-b border-gray-50 text-sm">
+                                    <span className="text-gray-500 font-medium">Tax (0%)</span>
+                                    <span className="font-bold text-gray-900">₹0.00</span>
+                                </div>
+                                <div className="flex justify-between items-center pt-6">
+                                    <span className="text-xs uppercase tracking-widest font-bold text-gray-900">Total Due</span>
+                                    <span className="font-bold text-3xl text-brand-primary">
                                         {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(invoice.amount))}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {/* Totals */}
-                    <div className="flex justify-end border-t-2 border-amber-100 pt-6">
-                        <div className="w-72 space-y-3">
-                            <div className="flex justify-between text-sm text-gray-500">
-                                <span>Subtotal</span>
-                                <span className="font-medium">{new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(invoice.amount))}</span>
-                            </div>
-                            <div className="flex justify-between text-sm text-gray-500">
-                                <span>Tax (0%)</span>
-                                <span className="font-medium">₹0.00</span>
-                            </div>
-                            <div className="flex justify-between items-center pt-4 border-t-2 border-amber-200 bg-gradient-to-r from-amber-50 to-orange-50 -mx-4 px-4 py-3 rounded-lg">
-                                <span className="font-bold text-amber-900 text-lg">Total Due</span>
-                                <span className="font-bold text-2xl bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent">
-                                    {new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(Number(invoice.amount))}
-                                </span>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Footer */}
-                    <div className="mt-16 text-center border-t border-amber-100 pt-8">
-                        <div className="inline-block px-6 py-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-100">
-                            <p className="text-amber-800 font-medium" style={{ fontFamily: 'Georgia, serif' }}>Thank you for choosing OurCashmir!</p>
-                            <p className="text-sm text-amber-600 mt-1">Where tradition meets timeless elegance.</p>
+                    {/* Footer - Bottom Aligned */}
+                    <div className="mt-auto pt-12 border-t border-gray-100 flex flex-col md:flex-row justify-between items-end gap-6">
+                        <div className="space-y-1">
+                            <p className="font-bold text-sm text-gray-900">Bank Details</p>
+                            <p className="text-xs text-gray-500">Bank: J&K Bank</p>
+                            <p className="text-xs text-gray-500">Account: 1234567890</p>
+                            <p className="text-xs text-gray-500">IFSC: JAKA0PADSHA</p>
                         </div>
-                        <p className="text-xs text-gray-400 mt-4">Please reference invoice #{invoice.id.toUpperCase()} for all correspondence.</p>
+                        <div className="text-right space-y-2">
+                            <p className="text-2xl font-bold font-mono tracking-tighter text-gray-900">OurCashmir.</p>
+                            <p className="text-xs text-gray-400">Transforming ideas into reality.</p>
+                        </div>
                     </div>
                 </div>
             </div>

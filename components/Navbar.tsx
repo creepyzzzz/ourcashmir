@@ -153,12 +153,6 @@ export const Navbar: React.FC = () => {
           {/* Right Actions */}
           <div className="flex items-center gap-2 sm:gap-3 relative z-10 ml-auto flex-shrink-0">
             {/* AnimatedThemeToggler removed */}
-            <Link
-              href="/login"
-              className="hidden sm:inline-flex items-center justify-center text-sm font-medium text-gray-400 hover:text-brand-white transition-colors mr-4"
-            >
-              Log in
-            </Link>
             <InteractiveHoverButton
               onClick={() => {
                 router.push('/login');
@@ -166,7 +160,7 @@ export const Navbar: React.FC = () => {
               }}
               className="hidden sm:inline-flex items-center justify-center text-sm"
             >
-              Start Project
+              Log in
             </InteractiveHoverButton>
             {/* Mobile Menu Button */}
             <button
@@ -262,7 +256,7 @@ export const Navbar: React.FC = () => {
                   }}
                   className="w-full block py-4 text-center text-lg font-bold bg-brand-primary text-black rounded-full transition-transform active:scale-95"
                 >
-                  Start Project
+                  Log in
                 </OptimizedLink>
               </motion.div>
             </div>

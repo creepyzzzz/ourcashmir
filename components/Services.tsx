@@ -3,6 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Search, MousePointer2, Star, Share2, Video, Code, ArrowUpRight } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface Service {
   title: string;
@@ -10,6 +12,7 @@ interface Service {
   icon: React.ElementType;
   colSpan: string;
   bgClass?: string;
+  backgroundImage?: string;
   link?: string;
 }
 
@@ -19,48 +22,66 @@ const services: Service[] = [
     description: "Build communities and drive real engagement with data-driven strategies.",
     icon: Share2,
     colSpan: "col-span-2 row-span-2 md:col-span-2 md:row-span-2",
-    bgClass: "bg-brand-primary text-black"
+    backgroundImage: '/images/social-media-pattern-v2.webp'
   },
   {
     title: "Influencer Marketing",
     description: "Collaborate with Kashmir's top creators.",
     icon: MousePointer2,
-    colSpan: "col-span-1 md:col-span-1 md:row-span-1"
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
+    backgroundImage: '/images/influencer-pattern.webp'
   },
   {
     title: "SEO & Ads",
     description: "Rank higher and reach more customers.",
     icon: Search,
-    colSpan: "col-span-1 md:col-span-1 md:row-span-1"
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
+    backgroundImage: '/images/seo-ads-pattern.webp'
   },
   {
     title: "Content Production",
     description: "High-quality reels, shorts, and creatives.",
     icon: Video,
-    colSpan: "col-span-1 md:col-span-1 md:row-span-1"
+    colSpan: "col-span-1 md:col-span-1 md:row-span-1",
+    backgroundImage: '/images/content-prod-pattern.webp'
   },
   {
     title: "Web Development",
     description: "Fast, responsive, and SEO-optimized sites.",
     icon: Code,
     colSpan: "col-span-1 md:col-span-1 md:row-span-1",
-    link: "/web-development"
+    link: "/web-development",
+    backgroundImage: '/images/web-dev-pattern.webp'
   },
   {
     title: "Brand Strategy",
     description: "A complete roadmap for success.",
     icon: Star,
-    colSpan: "col-span-2 md:col-span-1 md:row-span-1"
+    colSpan: "col-span-2 md:col-span-1 md:row-span-1",
+    backgroundImage: '/images/brand-strategy-pattern.webp'
   }
 ];
-
-import Link from 'next/link';
 
 const ServiceCard = ({ service }: { service: Service }) => {
   const CardContent = () => (
     <>
+      {/* Background Image if present */}
+      {service.backgroundImage && (
+        <>
+          <div className="absolute inset-0 z-0">
+            <Image
+              src={service.backgroundImage}
+              alt={service.title}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-black/40 z-10" />
+          </div>
+        </>
+      )}
+
       {/* Content Layer */}
-      <div className="relative z-10 flex flex-col h-full justify-between transition-all duration-300 group-hover:translate-y-[-10px]">
+      <div className="relative z-20 flex flex-col h-full justify-between transition-all duration-300 group-hover:translate-y-[-10px]">
         <div className="flex justify-between items-start mb-2 md:mb-4">
           <div className={`p-2 md:p-3 rounded-full ${service.bgClass ? 'bg-black/10' : 'bg-brand-primary/10'}`}>
             <service.icon className={`w-5 h-5 md:w-6 md:h-6 ${service.bgClass ? 'text-black' : 'text-brand-primary'}`} />
@@ -81,7 +102,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
       </div>
 
       {/* Overlay "Click to see more" */}
-      <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-end bg-gradient-to-t from-black/80 to-transparent h-1/2 z-20">
+      <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-center items-end bg-gradient-to-t from-black/80 to-transparent h-1/2 z-30">
         <span className="text-white text-xs font-bold tracking-widest uppercase border-b border-brand-primary pb-0.5">
           Click to see more
         </span>
@@ -89,14 +110,18 @@ const ServiceCard = ({ service }: { service: Service }) => {
     </>
   );
 
+  const containerClasses = `group relative overflow-hidden rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer ${service.bgClass
+    ? service.bgClass
+    : service.backgroundImage
+      ? 'border border-gray-800 hover:border-white/20'
+      : 'bg-gray-900/40 border border-gray-800 hover:border-white/20'
+    } ${service.colSpan}`;
+
   if (service.link) {
     return (
       <Link href={service.link} legacyBehavior>
         <motion.a
-          className={`group relative overflow-hidden rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer ${service.bgClass
-            ? service.bgClass
-            : 'bg-gray-900/40 border border-gray-800 hover:border-white/20'
-            } ${service.colSpan}`}
+          className={containerClasses}
           initial="initial"
           whileHover="hover"
           whileTap="hover"
@@ -109,10 +134,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
 
   return (
     <motion.div
-      className={`group relative overflow-hidden rounded-2xl md:rounded-3xl p-4 md:p-6 flex flex-col justify-between transition-all duration-300 cursor-pointer ${service.bgClass
-        ? service.bgClass
-        : 'bg-gray-900/40 border border-gray-800 hover:border-white/20'
-        } ${service.colSpan}`}
+      className={containerClasses}
       initial="initial"
       whileHover="hover"
       whileTap="hover"
