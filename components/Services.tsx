@@ -75,7 +75,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
               fill
               className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-black/40 z-10" />
+            <div className="absolute inset-0 bg-black/55 z-10" />
           </div>
         </>
       )}
@@ -83,8 +83,8 @@ const ServiceCard = ({ service }: { service: Service }) => {
       {/* Content Layer */}
       <div className="relative z-20 flex flex-col h-full justify-between transition-all duration-300 group-hover:translate-y-[-10px]">
         <div className="flex justify-between items-start mb-2 md:mb-4">
-          <div className={`p-2 md:p-3 rounded-full ${service.bgClass ? 'bg-black/10' : 'bg-brand-primary/10'}`}>
-            <service.icon className={`w-5 h-5 md:w-6 md:h-6 ${service.bgClass ? 'text-black' : 'text-brand-primary'}`} />
+          <div className={`p-2 md:p-3 rounded-full ${service.bgClass ? 'bg-black/10' : 'bg-brand-primary/10 backdrop-blur-sm'}`}>
+            <service.icon className={`w-5 h-5 md:w-6 md:h-6 ${service.bgClass ? 'text-black' : 'text-brand-primary drop-shadow-md'}`} />
           </div>
           <ArrowUpRight
             className={`w-4 h-4 md:w-5 md:h-5 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:translate-x-1 group-hover:-translate-y-1 ${service.bgClass ? 'text-black' : 'text-brand-primary'}`}
@@ -92,10 +92,10 @@ const ServiceCard = ({ service }: { service: Service }) => {
         </div>
 
         <div>
-          <h3 className={`text-base font-bold mb-1 md:mb-2 md:text-2xl ${service.bgClass ? 'text-black' : 'text-white'}`}>
+          <h3 className={`text-base font-bold mb-1 md:mb-2 md:text-2xl ${service.bgClass ? 'text-black' : 'text-white [text-shadow:_0_2px_4px_rgb(0_0_0_/_0.8)]'}`}>
             {service.title}
           </h3>
-          <p className={`text-xs md:text-sm leading-relaxed ${service.bgClass ? 'text-black/70 font-medium' : 'text-gray-400'} line-clamp-2 md:line-clamp-none`}>
+          <p className={`text-xs md:text-sm leading-relaxed ${service.bgClass ? 'text-black/70 font-medium' : 'text-white/90 font-medium [text-shadow:_0_1px_2px_rgb(0_0_0_/_0.8)]'} line-clamp-2 md:line-clamp-none`}>
             {service.description}
           </p>
         </div>
