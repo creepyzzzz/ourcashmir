@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Outfit, Oswald } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 
-const dmSans = DM_Sans({ subsets: ["latin"] });
+const dmSans = DM_Sans({ subsets: ["latin"], variable: '--font-dm-sans' });
+const outfit = Outfit({ subsets: ["latin"], variable: '--font-outfit' });
+const oswald = Oswald({ subsets: ["latin"], variable: '--font-oswald' });
 
 export const metadata: Metadata = {
     metadataBase: new URL('https://www.ourcashmir.com'),
@@ -68,7 +70,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
-            <body className={`${dmSans.className} bg-brand-bg text-brand-white antialiased`}>
+            <body className={`${dmSans.className} ${outfit.variable} ${oswald.variable} bg-brand-bg text-brand-white antialiased`}>
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="dark"

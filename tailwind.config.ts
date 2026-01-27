@@ -73,6 +73,8 @@ const config: Config = {
             }),
             fontFamily: {
                 sans: ['"DM Sans"', 'sans-serif'],
+                outfit: ['var(--font-outfit)', 'sans-serif'],
+                oswald: ['var(--font-oswald)', 'sans-serif'],
             },
             colors: {
                 brand: {
