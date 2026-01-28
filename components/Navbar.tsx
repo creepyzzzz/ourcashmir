@@ -91,9 +91,9 @@ export const Navbar: React.FC = () => {
             <img
               src="/favicon/logo.png"
               alt="OurCashmir Logo"
-              className={`transition-all duration-700 object-contain ${isScrolled ? 'h-8 sm:h-9' : 'h-10 sm:h-12'}`}
+              className={`transition-all duration-700 object-contain ${isScrolled ? 'h-5 sm:h-9' : 'h-7 sm:h-12'}`}
             />
-            <span className={`font-display font-bold tracking-tighter text-brand-white transition-all duration-700 ${isScrolled ? 'text-sm sm:text-base' : 'text-base sm:text-lg'}`}>
+            <span className={`font-display font-bold tracking-tighter text-brand-white transition-all duration-700 ${isScrolled ? 'text-[11px] sm:text-base' : 'text-[13px] sm:text-lg'}`}>
               OUR<span className="text-brand-primary group-hover:text-brand-white transition-colors">CASHMIR</span>
             </span>
           </OptimizedLink>
@@ -165,13 +165,13 @@ export const Navbar: React.FC = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden w-8 h-8 flex items-center justify-center rounded-full bg-brand-surface text-brand-white border border-brand-primary/20 ml-2"
+              className="md:hidden w-7 h-7 flex items-center justify-center rounded-full bg-brand-surface text-brand-white border border-brand-primary/20 ml-2"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
-                <X className="w-4 h-4" />
+                <X className="w-3.5 h-3.5" />
               ) : (
-                <Menu className="w-4 h-4" />
+                <Menu className="w-3.5 h-3.5" />
               )}
             </button>
           </div>

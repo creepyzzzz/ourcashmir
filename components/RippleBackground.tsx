@@ -36,16 +36,20 @@ const RippleBackground: React.FC = () => {
             const width = canvas.width / dpr;
             const height = canvas.height / dpr;
 
-            const cols = Math.ceil(width / CONFIG.gridSpacing) + 2;
-            const rows = Math.ceil(height / CONFIG.gridSpacing) + 2;
+            // Dynamic grid spacing based on screen width
+            const isMobile = window.innerWidth < 768;
+            const gridSpacing = isMobile ? 20 : CONFIG.gridSpacing;
+
+            const cols = Math.ceil(width / gridSpacing) + 2;
+            const rows = Math.ceil(height / gridSpacing) + 2;
 
             gridSizeRef.current = { cols, rows };
 
             const newPoints = [];
             for (let y = 0; y < rows; y++) {
                 for (let x = 0; x < cols; x++) {
-                    const originX = (x * CONFIG.gridSpacing) - CONFIG.gridSpacing;
-                    const originY = (y * CONFIG.gridSpacing) - CONFIG.gridSpacing;
+                    const originX = (x * gridSpacing) - gridSpacing;
+                    const originY = (y * gridSpacing) - gridSpacing;
                     newPoints.push({
                         x: originX,
                         y: originY,
@@ -172,7 +176,7 @@ const RippleBackground: React.FC = () => {
             // Draw Grid Lines (Cloth effect)
             ctx.strokeStyle = CONFIG.connectionColor;
             ctx.lineWidth = 1; // Thicker lines for visibility
-            ctx.globalAlpha = 0.4; // More opaque for visibility
+            ctx.globalAlpha = 0.15; // Reduced opacity
 
             // Draw Horizontal Lines
             ctx.beginPath();

@@ -9,15 +9,15 @@ const Hero: React.FC = () => {
     <section className="relative w-full overflow-hidden">
       <RippleBackground />
 
-      <div className="relative w-full px-4 md:px-12 lg:px-20 pt-32 pb-12 md:pb-20 max-w-screen-2xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-20">
+      <div className="relative w-full px-4 md:px-12 lg:px-20 pt-24 md:pt-32 pb-12 md:pb-20 max-w-screen-2xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-20">
 
         {/* Left Content */}
-        <div className="flex-1 space-y-8 z-10">
-          <div className="inline-block bg-brand-primary px-4 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase text-black">
+        <div className="flex-1 space-y-5 md:space-y-8 z-10">
+          <div className="inline-block bg-brand-primary px-3 py-1 md:px-4 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold tracking-wider uppercase text-black">
             We can help you
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-[76px] leading-[1.1] md:leading-[1.1] font-bold text-brand-white tracking-tight font-oswald uppercase flex flex-col">
+          <h1 className="text-3xl md:text-6xl lg:text-[76px] leading-[1.1] md:leading-[1.1] font-bold text-brand-white tracking-tight font-oswald uppercase flex flex-col">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-0 md:gap-x-4">
               <span>Growing</span>
               <RotatingText
@@ -36,23 +36,23 @@ const Hero: React.FC = () => {
             <span>of Kashmir</span>
           </h1>
 
-          <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-md">
+          <p className="text-gray-400 text-[13px] md:text-base leading-relaxed max-w-md">
             Most businesses in Kashmir struggle to reach the right people.
             <span className="text-brand-primary font-semibold"> Our Cashmir</span> bridges that gap with Meta ads that target buyers and collaborations that build trust fast.
           </p>
 
-          <div className="flex items-center gap-6 pt-2">
+          <div className="flex items-center gap-4 md:gap-6 pt-2">
             <Link href="/login">
-              <button className="flex items-center gap-2 md:gap-3 bg-brand-primary text-black px-6 py-3 md:px-6 md:py-4 rounded-full text-xs font-bold tracking-widest hover:bg-brand-primary/90 transition-colors">
+              <button className="flex items-center gap-2 md:gap-3 bg-brand-primary text-black px-5 py-2.5 md:px-6 md:py-4 rounded-full text-[10px] md:text-xs font-extrabold tracking-widest hover:bg-brand-primary/90 transition-colors">
                 GET STARTED
                 <div className="border border-black/30 rounded-full p-0.5">
-                  <ArrowRight size={12} />
+                  <ArrowRight size={10} className="md:w-3 md:h-3" />
                 </div>
               </button>
             </Link>
 
             <Link href="/portfolio">
-              <button className="text-xs font-bold tracking-widest text-brand-white hover:opacity-70 border-b border-transparent hover:border-white transition-all uppercase">
+              <button className="text-[10px] md:text-xs font-bold tracking-widest text-brand-white hover:opacity-70 border-b border-white/20 hover:border-white transition-all uppercase px-1 py-1">
                 VIEW PORTFOLIO
               </button>
             </Link>
