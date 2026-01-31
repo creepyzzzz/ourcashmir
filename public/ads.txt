@@ -1,0 +1,13 @@
+# ads.txt for OurCashmir
+# https://www.ourcashmir.com/ads.txt
+#
+# This file declares authorized digital sellers of advertising inventory.
+# Update this file if you use advertising networks like Google AdSense, etc.
+#
+# Format: <domain>, <publisher-id>, <relationship>, [certification-id]
+#
+# Example for Google AdSense:
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+#
+# Currently no advertising networks are authorized.
+# Add your advertising network entries below when needed.

@@ -1,19 +1,32 @@
 {
-    "name": "OurCashmir marketing Platform",
+    "name": "OurCashmir - Digital Marketing Agency",
     "short_name": "OurCashmir",
+    "description": "Kashmir's premier digital marketing agency offering web development, social media marketing, and influencer campaigns.",
+    "start_url": "/",
+    "scope": "/",
+    "id": "/",
     "icons": [
         {
             "src": "/favicon/android-chrome-192x192.png",
             "sizes": "192x192",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         },
         {
             "src": "/favicon/android-chrome-512x512.png",
             "sizes": "512x512",
-            "type": "image/png"
+            "type": "image/png",
+            "purpose": "any maskable"
         }
     ],
     "theme_color": "#00C853",
     "background_color": "#000000",
-    "display": "standalone"
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "categories": [
+        "business",
+        "marketing"
+    ],
+    "lang": "en",
+    "dir": "ltr"
 }

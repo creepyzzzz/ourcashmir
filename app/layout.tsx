@@ -29,6 +29,16 @@ export const metadata: Metadata = {
             'max-snippet': -1,
         },
     },
+    // Canonical URL
+    alternates: {
+        canonical: 'https://www.ourcashmir.com',
+    },
+    // Search engine verification - Add your verification codes here
+    verification: {
+        google: 'your-google-verification-code', // Get from Google Search Console
+        yandex: 'your-yandex-verification-code', // Optional
+        // bing: 'your-bing-verification-code',  // Optional
+    },
     openGraph: {
         title: "OurCashmir - Marketing Platform",
         description: "Kashmir's premier marketing agency for brand growth.",
@@ -36,7 +46,7 @@ export const metadata: Metadata = {
         siteName: 'OurCashmir',
         images: [
             {
-                url: '/images/og-image.png', // Ensure this image exists or create a placeholder
+                url: '/images/og-image.webp',
                 width: 1200,
                 height: 630,
                 alt: 'OurCashmir Marketing Platform',
@@ -49,7 +59,7 @@ export const metadata: Metadata = {
         card: 'summary_large_image',
         title: "OurCashmir - Marketing Platform",
         description: "Kashmir's premier marketing agency for brand growth.",
-        images: ['/images/og-image.png'],
+        images: ['/images/og-image.webp'],
         creator: '@ourcashmir',
     },
     icons: {
@@ -61,6 +71,9 @@ export const metadata: Metadata = {
         apple: "/favicon/apple-touch-icon.png",
     },
     manifest: "/favicon/site.webmanifest",
+    // Additional metadata for better SEO
+    category: 'marketing',
+    classification: 'Business',
 };
 
 export default function RootLayout({

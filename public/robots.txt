@@ -1,0 +1,41 @@
+# robots.txt for OurCashmir
+# https://www.ourcashmir.com
+
+User-agent: *
+Allow: /
+
+# Disallow admin and authenticated areas
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /settings/
+Disallow: /billing/
+Disallow: /approvals/
+Disallow: /reports/
+Disallow: /projects/
+Disallow: /communication/
+Disallow: /blog-panel/
+Disallow: /api/
+
+# Disallow authentication pages
+Disallow: /login
+Disallow: /auth/
+
+# Allow search engines to index public pages
+Allow: /blog/
+Allow: /portfolio
+Allow: /contact
+Allow: /faq
+Allow: /influencers
+Allow: /clients
+Allow: /terms
+Allow: /privacy
+Allow: /refunds
+Allow: /shipping
+Allow: /web-development
+Allow: /affiliate
+
+# Sitemaps
+Sitemap: https://www.ourcashmir.com/sitemap.xml
+
+# Crawl-delay (optional, respected by some crawlers)
+Crawl-delay: 1
