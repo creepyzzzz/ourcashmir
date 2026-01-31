@@ -19,7 +19,7 @@ const nextConfig = {
     devIndicators: {
         allowedDevOrigins: ['10.190.74.210'],
     },
-    
+
     // Security Headers to fix Burp Suite findings
     async headers() {
         return [
@@ -61,6 +61,21 @@ const nextConfig = {
                     {
                         key: 'Permissions-Policy',
                         value: 'camera=(), microphone=(), geolocation=()',
+                    },
+                    // Cross-Origin Embedder Policy
+                    {
+                        key: 'Cross-Origin-Embedder-Policy',
+                        value: 'credentialless',
+                    },
+                    // Cross-Origin Opener Policy
+                    {
+                        key: 'Cross-Origin-Opener-Policy',
+                        value: 'same-origin-allow-popups',
+                    },
+                    // Cross-Origin Resource Policy
+                    {
+                        key: 'Cross-Origin-Resource-Policy',
+                        value: 'same-origin',
                     },
                 ],
             },
