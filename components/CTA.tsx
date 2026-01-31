@@ -3,111 +3,86 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Calendar } from 'lucide-react';
 
 const CTA: React.FC = () => {
   return (
-    <section className="w-full px-6 md:px-12 lg:px-20 max-w-screen-2xl mx-auto py-32 md:py-40">
-      <div className="relative flex flex-col items-center text-center">
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 max-w-screen-2xl mx-auto py-12 sm:py-16 md:py-20 lg:py-28">
+      <div className="relative w-full rounded-2xl sm:rounded-3xl lg:rounded-[2.5rem] bg-brand-darker border border-white/5 overflow-hidden p-6 sm:p-8 md:p-12 lg:p-20">
 
-        {/* Animated gradient line */}
-        <motion.div
-          className="absolute top-0 left-1/2 w-px h-20 bg-gradient-to-b from-transparent via-brand-primary/40 to-transparent"
-          initial={{ opacity: 0, scaleY: 0 }}
-          whileInView={{ opacity: 1, scaleY: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          style={{ originY: 0, x: '-50%', y: -80 }}
+        {/* Background Grid Pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
+            backgroundSize: '32px 32px'
+          }}
         />
 
-        {/* Main Heading with staggered reveal */}
-        <div className="overflow-hidden">
-          <motion.h2
-            className="text-5xl md:text-7xl lg:text-8xl font-bold text-brand-white leading-[0.95] tracking-tight font-outfit"
-            initial={{ y: 100, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
-            Let&apos;s talk
-          </motion.h2>
-        </div>
+        {/* Radial Gradient Glow */}
+        <div className="absolute top-0 right-0 w-[300px] md:w-[500px] lg:w-[600px] h-[300px] md:h-[500px] lg:h-[600px] bg-brand-primary/10 rounded-full blur-[80px] md:blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
 
-        <div className="overflow-hidden mt-2">
-          <motion.h2
-            className="text-5xl md:text-7xl lg:text-8xl font-bold leading-[0.95] tracking-tight font-outfit"
-            initial={{ y: 100, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-          >
-            <span className="text-gray-600">about </span>
-            <span className="text-brand-primary">your project</span>
-          </motion.h2>
-        </div>
+        <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-end justify-between gap-8 sm:gap-10 lg:gap-16">
 
-        {/* Subtext */}
-        <motion.p
-          className="mt-8 text-gray-500 text-base md:text-lg max-w-md leading-relaxed font-outfit"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          We&apos;d love to hear from you. Let&apos;s create something extraordinary together.
-        </motion.p>
-
-        {/* CTA Button with magnetic effect */}
-        <motion.div
-          className="mt-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          <Link href="/contact">
-            <motion.button
-              className="group relative flex items-center gap-3 px-8 py-4 rounded-full border border-white/10 bg-white/[0.02] backdrop-blur-sm overflow-hidden font-outfit"
-              whileHover={{
-                borderColor: 'rgba(0, 200, 83, 0.3)',
-                backgroundColor: 'rgba(0, 200, 83, 0.05)'
-              }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.3 }}
+          {/* Left Content */}
+          <div className="max-w-2xl space-y-5 sm:space-y-6 md:space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/5 border border-white/5 text-[10px] sm:text-xs font-medium text-brand-primary font-outfit uppercase tracking-wider sm:tracking-widest"
             >
-              <span className="relative z-10 text-sm font-medium text-gray-400 group-hover:text-brand-white transition-colors duration-300">
-                Start a conversation
-              </span>
-              <motion.span
-                className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full bg-brand-primary text-brand-darker"
-                whileHover={{ rotate: 45 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              >
-                <ArrowUpRight size={14} />
-              </motion.span>
-            </motion.button>
-          </Link>
-        </motion.div>
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-brand-primary animate-pulse" />
+              Open for collaborations
+            </motion.div>
 
-        {/* Contact info */}
-        <motion.div
-          className="mt-16 flex flex-col md:flex-row items-center gap-8 text-sm text-gray-600 font-outfit"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        >
-          <motion.a
-            href="mailto:info@ourcashmir.com"
-            className="hover:text-brand-primary transition-colors duration-300"
-            whileHover={{ x: 4 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          >
-            info@ourcashmir.com
-          </motion.a>
-          <span className="hidden md:block w-1 h-1 rounded-full bg-gray-700" />
-          <span className="text-gray-700">Kashmir, India</span>
-        </motion.div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-[1.1] font-outfit"
+            >
+              <span className="text-gray-500">Let's discuss</span>
+              <br />
+              your project.
+            </motion.h2>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-sm sm:text-base md:text-lg text-gray-400 font-light max-w-md lg:max-w-lg font-outfit leading-relaxed"
+            >
+              Whether you need a complete brand overhaul or a targeted campaign, we&apos;re ready to help.
+            </motion.p>
+          </div>
+
+          {/* Right Actions */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full lg:w-auto">
+            <Link href="/contact" className="w-full sm:w-auto">
+              <motion.button
+                className="group w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 rounded-full bg-brand-primary text-brand-darker text-sm sm:text-base font-bold tracking-wide font-outfit transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,200,83,0.3)] hover:brightness-110"
+                whileTap={{ scale: 0.98 }}
+              >
+                <span>Start a Project</span>
+                <ArrowUpRight size={16} className="sm:w-[18px] sm:h-[18px] transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </motion.button>
+            </Link>
+
+            <Link href="/schedule" className="w-full sm:w-auto">
+              <motion.button
+                className="group w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 rounded-full bg-white/5 border border-white/10 text-white text-sm sm:text-base font-medium tracking-wide font-outfit backdrop-blur-sm transition-all duration-300 hover:bg-white/10"
+                whileTap={{ scale: 0.98 }}
+              >
+                <span>Schedule a Call</span>
+                <Calendar size={16} className="sm:w-[18px] sm:h-[18px] transition-transform duration-300 group-hover:scale-110" />
+              </motion.button>
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );
