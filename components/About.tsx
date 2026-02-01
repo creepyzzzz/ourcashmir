@@ -14,7 +14,7 @@ const data = [
 
 const About: React.FC = () => {
   return (
-    <section className="w-full px-4 md:px-12 lg:px-20 max-w-screen-2xl mx-auto mb-16 md:mb-24 flex flex-col lg:flex-row items-center gap-8 md:gap-16">
+    <section className="w-full px-4 md:px-12 lg:px-20 max-w-screen-2xl mx-auto mb-16 md:mb-24 flex flex-col lg:flex-row items-center gap-8 md:gap-16" id="about">
 
       {/* Left Text Content */}
       <div className="flex-1 space-y-8 order-2 lg:order-1">

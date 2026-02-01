@@ -3,93 +3,109 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowRight, Mail, Instagram, Twitter, Linkedin } from 'lucide-react';
+import { ArrowRight, Mail, Instagram, Linkedin, MessageCircle } from 'lucide-react';
 import { Dock, DockIcon } from '@/components/ui/Dock';
 
 const footerLinks = {
-    company: [
-        { label: 'About', href: '/about' },
-        { label: 'Careers', href: '/careers' },
-        { label: 'Contact', href: '/contact' },
-        { label: 'Blog', href: '/blog' },
+    explore: [
+        { label: 'About Us', href: '/#about' },
+        { label: 'Our Portfolio', href: '/portfolio' },
+        { label: 'Our Services', href: '/#services' },
+        { label: 'Influencer Network', href: '/influencers' },
+        { label: 'Affiliate Program', href: '/affiliate' },
     ],
-    services: [
-        { label: 'Marketing', href: '/services' },
-        { label: 'Influencers', href: '/influencers' },
-        { label: 'Development', href: '/development' },
-        { label: 'Consulting', href: '/consulting' },
+    resources: [
+        { label: 'Latest Blog', href: '/blog' },
+        { label: 'Help & FAQ', href: '/faq' },
+        { label: 'Contact Us', href: '/contact' },
+        { label: 'Our Clients', href: '/clients' },
     ],
     legal: [
-        { label: 'Privacy', href: '/privacy' },
-        { label: 'Terms', href: '/terms' },
-        { label: 'Cookies', href: '/cookies' },
+        { label: 'Privacy Policy', href: '/privacy' },
+        { label: 'Terms of Service', href: '/terms' },
+        { label: 'Refund Policy', href: '/refunds' },
+        { label: 'Shipping Policy', href: '/shipping' },
     ],
 };
 
 const socialLinks = [
-    { icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
-    { icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
-    { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
+    { icon: Instagram, href: 'https://instagram.com/ourcashmir', label: 'Instagram' },
+    { icon: Linkedin, href: 'https://linkedin.com/company/ourcashmir', label: 'LinkedIn' },
+    { icon: MessageCircle, href: 'https://wa.me/917889676481', label: 'WhatsApp' },
     { icon: Mail, href: 'mailto:info@ourcashmir.com', label: 'Email' },
 ];
 
 const Footer: React.FC = () => {
     return (
-        <footer className="relative bg-brand-darker border-t border-white/[0.04]">
+        <footer className="relative bg-black border-t border-white/[0.04] overflow-hidden">
+            {/* Background Glows */}
+            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-brand-primary/3 rounded-full blur-[100px] pointer-events-none" />
+
             {/* Main Footer Content */}
-            <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-20 pt-12 md:pt-16 lg:pt-20 pb-8 md:pb-12">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-12 lg:gap-24">
+            <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-20 pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12 relative z-10">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
 
                     {/* Brand Column */}
-                    <div className="lg:col-span-5 space-y-6 md:space-y-8">
-                        <Link href="/" className="inline-block">
-                            <motion.img
-                                src="/favicon/logo.png"
-                                alt="OurCashmir Logo"
-                                className="h-8 md:h-10 w-auto"
-                                whileHover={{ opacity: 0.8 }}
-                                transition={{ duration: 0.2 }}
-                            />
+                    <div className="lg:col-span-4 space-y-8">
+                        <Link href="/" className="inline-block group">
+                            <div className="flex items-center gap-3">
+                                <motion.img
+                                    src="/favicon/logo.png"
+                                    alt="OurCashmir Logo"
+                                    className="h-10 md:h-12 w-auto"
+                                    whileHover={{ scale: 1.05, rotate: 5 }}
+                                    transition={{ type: 'spring', stiffness: 400, damping: 10 }}
+                                />
+                                <div className="flex flex-col">
+                                    <span className="font-display font-bold text-xl tracking-tighter text-white">
+                                        OUR<span className="text-brand-primary">CASHMIR</span>
+                                    </span>
+                                    <span className="text-[10px] text-gray-500 tracking-[0.2em] uppercase">Marketing Platform</span>
+                                </div>
+                            </div>
                         </Link>
 
-                        <p className="text-gray-500 text-sm md:text-base leading-relaxed max-w-xs md:max-w-sm font-outfit">
-                            Crafting digital experiences for visionary brands in Kashmir and beyond.
+                        <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-sm font-outfit">
+                            We bridge the gap between Kashmiri heritage and digital excellence,
+                            empowering local brands to reach global audiences through innovation.
                         </p>
 
                         {/* Newsletter */}
-                        <div className="space-y-3">
-                            <p className="text-[10px] md:text-xs text-gray-600 uppercase tracking-[0.15em] font-outfit">Newsletter</p>
-                            <div className="group relative max-w-[280px] md:max-w-xs">
+                        <div className="space-y-4 pt-4">
+                            <p className="text-[10px] md:text-xs text-gray-500 uppercase tracking-[0.2em] font-semibold font-outfit">Stay Updated</p>
+                            <div className="group relative max-w-xs">
                                 <input
                                     type="email"
-                                    placeholder="your@email.com"
-                                    className="w-full bg-transparent border-b border-white/10 py-2.5 md:py-3 pr-10 text-sm text-brand-white placeholder:text-gray-600 focus:outline-none focus:border-brand-primary/50 transition-colors duration-500 font-outfit"
+                                    placeholder="Enter your email"
+                                    className="w-full bg-white/[0.03] border border-white/10 rounded-xl py-3 px-4 text-sm text-brand-white placeholder:text-gray-600 focus:outline-none focus:border-brand-primary/30 focus:bg-white/[0.05] transition-all duration-500 font-outfit"
                                 />
                                 <motion.button
-                                    className="absolute right-0 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-brand-primary transition-colors duration-300"
-                                    whileHover={{ x: 4 }}
-                                    whileTap={{ scale: 0.9 }}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg bg-brand-primary/10 flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-black transition-colors duration-300"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
                                 >
-                                    <ArrowRight size={14} className="md:w-4 md:h-4" />
+                                    <ArrowRight size={16} />
                                 </motion.button>
                             </div>
                         </div>
                     </div>
 
                     {/* Links Grid */}
-                    <div className="lg:col-span-7 grid grid-cols-3 gap-4 sm:gap-6 md:gap-8">
+                    <div className="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-8 md:gap-12">
                         {Object.entries(footerLinks).map(([category, links]) => (
-                            <div key={category} className="space-y-4 md:space-y-6">
-                                <h4 className="text-[9px] md:text-[10px] font-medium text-gray-600 uppercase tracking-[0.15em] md:tracking-[0.2em] font-outfit">
+                            <div key={category} className="space-y-6">
+                                <h4 className="text-[10px] md:text-[11px] font-bold text-white uppercase tracking-[0.2em] font-outfit flex items-center gap-2">
+                                    <span className="w-1 h-1 rounded-full bg-brand-primary" />
                                     {category}
                                 </h4>
-                                <ul className="space-y-2 md:space-y-3">
+                                <ul className="space-y-3">
                                     {links.map((link) => (
                                         <li key={link.href}>
                                             <Link href={link.href}>
                                                 <motion.span
-                                                    className="text-xs md:text-sm text-gray-500 hover:text-brand-white transition-colors duration-300 font-outfit inline-block"
-                                                    whileHover={{ x: 4 }}
+                                                    className="text-xs md:text-sm text-gray-500 hover:text-brand-primary transition-colors duration-300 font-outfit inline-block"
+                                                    whileHover={{ x: 6 }}
                                                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                                                 >
                                                     {link.label}
@@ -105,24 +121,24 @@ const Footer: React.FC = () => {
             </div>
 
             {/* Bottom Section */}
-            <div className="border-t border-white/[0.04]">
-                <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-5 md:py-6 lg:py-8">
-                    <div className="relative flex flex-col md:flex-row items-center justify-between gap-5 md:gap-0 md:h-16 lg:h-20">
+            <div className="border-t border-white/[0.04] bg-white/[0.01]">
+                <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 lg:py-10">
+                    <div className="relative flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0">
 
                         {/* Copyright */}
-                        <div className="order-2 md:order-1 md:absolute md:left-0 z-10">
-                            <p className="text-[10px] md:text-xs text-gray-600 font-outfit">
-                                © {new Date().getFullYear()} OurCashmir
+                        <div className="order-3 md:order-1">
+                            <p className="text-[10px] md:text-xs text-gray-600 font-outfit tracking-wide">
+                                © {new Date().getFullYear()} OurCashmir. All rights reserved.
                             </p>
                         </div>
 
                         {/* Social Dock */}
-                        <div className="order-1 md:order-2 md:absolute md:left-1/2 md:-translate-x-1/2 z-0 w-full md:w-auto flex justify-center">
+                        <div className="order-1 md:order-2 md:absolute md:left-1/2 md:-translate-x-1/2">
                             <Dock
-                                iconSize={32}
-                                iconMagnification={44}
-                                iconDistance={80}
-                                className="border-white/[0.06] bg-white/[0.02]"
+                                iconSize={36}
+                                iconMagnification={48}
+                                iconDistance={100}
+                                className="border-white/[0.06] bg-black/40 backdrop-blur-xl"
                             >
                                 {socialLinks.map((social) => (
                                     <DockIcon key={social.label}>
@@ -131,9 +147,9 @@ const Footer: React.FC = () => {
                                             target={social.href.startsWith('http') ? '_blank' : undefined}
                                             rel={social.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                                             aria-label={social.label}
-                                            className="text-gray-500 hover:text-brand-primary transition-colors duration-300"
+                                            className="text-gray-400 hover:text-brand-primary transition-colors duration-300"
                                         >
-                                            <social.icon size={16} strokeWidth={1.5} />
+                                            <social.icon size={18} strokeWidth={1.5} />
                                         </Link>
                                     </DockIcon>
                                 ))}
@@ -141,9 +157,13 @@ const Footer: React.FC = () => {
                         </div>
 
                         {/* Status */}
-                        <div className="hidden md:flex items-center gap-2 order-3 md:absolute md:right-0 z-10">
-                            <span className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" />
-                            <span className="text-[10px] md:text-xs text-gray-600 font-outfit">All systems operational</span>
+                        <div className="flex items-center gap-3 order-2 md:order-3">
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-primary/5 border border-brand-primary/10">
+                                <span className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" />
+                                <span className="text-[10px] md:text-xs text-brand-primary font-medium tracking-wide uppercase font-outfit">
+                                    Innovating in Kashmir
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -62,7 +62,7 @@ const CTA: React.FC = () => {
 
           {/* Right Actions */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full lg:w-auto">
-            <Link href="/contact" className="w-full sm:w-auto">
+            <Link href="/login" className="w-full sm:w-auto">
               <motion.button
                 className="group w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 rounded-full bg-brand-primary text-brand-darker text-sm sm:text-base font-bold tracking-wide font-outfit transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,200,83,0.3)] hover:brightness-110"
                 whileTap={{ scale: 0.98 }}
@@ -72,7 +72,7 @@ const CTA: React.FC = () => {
               </motion.button>
             </Link>
 
-            <Link href="/schedule" className="w-full sm:w-auto">
+            <Link href="/contact" className="w-full sm:w-auto">
               <motion.button
                 className="group w-full sm:w-auto flex items-center justify-center gap-2 sm:gap-3 px-5 sm:px-6 md:px-8 py-3 sm:py-4 md:py-5 rounded-full bg-white/5 border border-white/10 text-white text-sm sm:text-base font-medium tracking-wide font-outfit backdrop-blur-sm transition-all duration-300 hover:bg-white/10"
                 whileTap={{ scale: 0.98 }}
