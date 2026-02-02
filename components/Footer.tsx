@@ -125,10 +125,22 @@ const Footer: React.FC = () => {
                 <div className="container mx-auto px-4 sm:px-6 md:px-12 lg:px-20 py-8 lg:py-10">
                     <div className="relative flex flex-col md:flex-row items-center justify-between gap-8 md:gap-0">
 
-                        {/* Copyright */}
-                        <div className="order-3 md:order-1">
+                        {/* Copyright & Disclaimer */}
+                        <div className="order-3 md:order-1 space-y-1">
                             <p className="text-[10px] md:text-xs text-gray-600 font-outfit tracking-wide">
                                 © {new Date().getFullYear()} OurCashmir. All rights reserved.
+                            </p>
+                            <p className="text-[9px] md:text-[10px] text-gray-600 font-outfit tracking-wide">
+                                Disclaimer: Site Contents designed, developed, maintained and updated by{' '}
+                                <a
+                                    href="https://epplicon.com"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-brand-primary hover:text-brand-primary/80 transition-colors duration-300 underline underline-offset-2"
+                                >
+                                    Epplicon Technologies
+                                </a>
+                                .
                             </p>
                         </div>
 
