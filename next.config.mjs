@@ -38,9 +38,10 @@ const nextConfig = {
                         value: 'max-age=31536000; includeSubDomains; preload',
                     },
                     // Fix: Content-Security-Policy frame-ancestors (additional clickjacking protection)
+                    // Also allow YouTube embeds via frame-src
                     {
                         key: 'Content-Security-Policy',
-                        value: "frame-ancestors 'self'",
+                        value: "frame-ancestors 'self'; frame-src 'self' https://www.youtube.com https://youtube.com https://www.youtube-nocookie.com",
                     },
                     // Prevent MIME type sniffing
                     {
@@ -62,21 +63,13 @@ const nextConfig = {
                         key: 'Permissions-Policy',
                         value: 'camera=(), microphone=(), geolocation=()',
                     },
-                    // Cross-Origin Embedder Policy
-                    {
-                        key: 'Cross-Origin-Embedder-Policy',
-                        value: 'credentialless',
-                    },
-                    // Cross-Origin Opener Policy
+                    // Cross-Origin Opener Policy (safe to keep - doesn't block embeds)
                     {
                         key: 'Cross-Origin-Opener-Policy',
                         value: 'same-origin-allow-popups',
                     },
-                    // Cross-Origin Resource Policy
-                    {
-                        key: 'Cross-Origin-Resource-Policy',
-                        value: 'same-origin',
-                    },
+                    // NOTE: Cross-Origin-Embedder-Policy and Cross-Origin-Resource-Policy 
+                    // were removed as they block third-party iframes (YouTube, etc.)
                 ],
             },
             {
